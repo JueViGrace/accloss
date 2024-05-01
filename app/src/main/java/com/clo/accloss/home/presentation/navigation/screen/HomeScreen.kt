@@ -69,8 +69,9 @@ internal data class HomeScreen(
                         screens.contains(
                             AppScreen(
                                 initialScreen = AppRoutes.HomeModule(
-                                homeRoute = item.screen
-                            ).screen).initialScreen
+                                    homeRoute = item.screen
+                                ).screen
+                            ).initialScreen
                         ) -> {
                             navigator.replace(
                                 AppScreen(
@@ -93,13 +94,14 @@ internal data class HomeScreen(
                 },
                 onEndSession = {
                     when (state.session) {
-                        is RequestState.Error -> {
+                        is RequestState.Success -> {
                             viewModel.endSession()
                             navigator.replaceAll(AppRoutes.AuthModule(AuthRoutes.LoginRoute.screen).screen)
                         }
-                        RequestState.Idle -> TODO()
-                        RequestState.Loading -> TODO()
-                        is RequestState.Success -> TODO()
+                        else -> {
+                            viewModel.endSession()
+                            navigator.replaceAll(AppRoutes.AuthModule(AuthRoutes.LoginRoute.screen).screen)
+                        }
                     }
                 }
             )
