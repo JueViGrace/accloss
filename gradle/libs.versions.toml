@@ -1,0 +1,84 @@
+[versions]
+agp = "8.4.0"
+kotlin = "1.9.23"
+coreKtx = "1.13.0"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+lifecycleRuntimeKtx = "2.7.0"
+activityCompose = "1.9.0"
+composeBom = "2024.04.01"
+coilComposeVersion = "2.5.0"
+kotlinxCoroutinesCore = "1.8.0"
+kotlin-serialization = "1.6.2"
+koin = "3.5.6"
+truth = "1.4.2"
+voyager = "1.0.0"
+sqldelight = "2.0.2"
+paging = "3.2.1"
+ktor = "2.3.10"
+
+[libraries]
+# [ANDROID]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+
+# [KOTLINX]
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+
+# [TESTS]
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+
+# [COMPOSE]
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilComposeVersion" }
+
+# [CONNECTION: ktor]
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+# [DEPENDENCY INJECTION: KOIN]
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+
+# [NAVIGATION: VOYAGER]
+voyager-bottom-sheet-navigator = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
+voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-screenmodel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
+voyager-tab-navigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
+voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
+
+# [DATABASE: SQLDELIGHT]
+sqldelight-android-driver = { group = "app.cash.sqldelight", name= "android-driver", version.ref= "sqldelight" }
+sqldelight-coroutines-extensions = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-async-extensions = { group = "app.cash.sqldelight", name = "async-extensions", version.ref = "sqldelight" }
+sqldelight-paging-extensions = { group = "app.cash.sqldelight", name = "androidx-paging3-extensions", version.ref = "sqldelight" }
+
+# [PAGINATION: PAGING 3]
+paging-runtime = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging" }
+paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+sqldelight = { id = "app.cash.sqldelight", version.ref  = "sqldelight" }

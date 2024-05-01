@@ -1,0 +1,60 @@
+CREATE TABLE IF NOT EXISTS user(
+    nombre TEXT NOT NULL,
+    username TEXT NOT NULL DEFAULT '',
+    password TEXT NOT NULL DEFAULT '',
+    almacen TEXT NOT NULL DEFAULT '',
+    ualterprec REAL NOT NULL DEFAULT 0.0,
+    fechamodifi TEXT NOT NULL DEFAULT '',
+    vendedor TEXT NOT NULL DEFAULT '',
+    desactivo REAL NOT NULL DEFAULT 0.0,
+    sesionactiva TEXT NOT NULL DEFAULT '',
+    correlativo TEXT NOT NULL DEFAULT '',
+    superves TEXT NOT NULL DEFAULT '',
+    kcxCodven TEXT NOT NULL DEFAULT '',
+    recibocobro TEXT NOT NULL DEFAULT '',
+    correlativoreclamo TEXT NOT NULL DEFAULT '',
+    ultSinc TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    empresa TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY(vendedor, empresa)
+);
+
+getUsers:
+SELECT *
+FROM user;
+
+getUser:
+SELECT *
+FROM user
+WHERE
+vendedor == :vendedor
+AND
+empresa == :empresa;
+
+addUser:
+INSERT OR REPLACE
+INTO user (
+nombre,
+username,
+password,
+almacen,
+ualterprec,
+fechamodifi,
+vendedor,
+desactivo,
+sesionactiva,
+correlativo,
+superves,
+kcxCodven,
+recibocobro,
+correlativoreclamo,
+ultSinc,
+empresa
+)
+VALUES ?;
+
+deleteUser:
+DELETE FROM user
+WHERE
+vendedor == :vendedor
+AND
+empresa == :empresa;

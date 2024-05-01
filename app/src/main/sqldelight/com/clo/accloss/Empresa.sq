@@ -1,0 +1,33 @@
+CREATE TABLE empresa (
+     agenciaEmpresa TEXT NOT NULL DEFAULT '',
+     nombreEmpresa TEXT NOT NULL DEFAULT '',
+     codigoEmpresa TEXT NOT NULL DEFAULT '',
+     statusEmpresa TEXT NOT NULL DEFAULT '',
+     enlaceEmpresa TEXT NOT NULL DEFAULT '',
+     enlaceEmpresaPost TEXT NOT NULL DEFAULT '',
+     PRIMARY KEY (codigoEmpresa)
+);
+
+getEmpresas:
+SELECT *
+FROM empresa;
+
+getEmpresa:
+SELECT *
+FROM empresa
+WHERE codigoEmpresa == :codigoEmpresa;
+
+addEmpresa:
+INSERT OR REPLACE
+INTO empresa (
+ agenciaEmpresa,
+ nombreEmpresa,
+ codigoEmpresa,
+ statusEmpresa,
+ enlaceEmpresa,
+ enlaceEmpresaPost
+)
+VALUES ?;
+
+deleteEmpresa:
+DELETE FROM empresa WHERE codigoEmpresa == :codigoEmpresa;
