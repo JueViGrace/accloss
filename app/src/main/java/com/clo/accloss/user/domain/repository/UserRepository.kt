@@ -1,20 +1,20 @@
 package com.clo.accloss.user.domain.repository
 
-import com.clo.accloss.auth.login.domain.model.Login
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.network.ApiOperation
 import com.clo.accloss.core.state.RequestState
+import com.clo.accloss.modules.auth.login.domain.model.Login
+import com.clo.accloss.user.data.local.UserLocalDataSource
+import com.clo.accloss.user.data.remote.source.UserRemoteDataSource
+import com.clo.accloss.user.domain.mappers.toDatabase
+import com.clo.accloss.user.domain.mappers.toDomain
+import com.clo.accloss.user.domain.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import com.clo.accloss.user.data.local.UserLocalDataSource
-import com.clo.accloss.user.data.remote.source.UserRemoteDataSource
-import com.clo.accloss.user.domain.mappers.toDatabase
-import com.clo.accloss.user.domain.mappers.toDomain
-import com.clo.accloss.user.domain.model.User
 
 class UserRepository(
     private val userRemoteDataSource: UserRemoteDataSource,
@@ -26,8 +26,7 @@ class UserRepository(
         .getSafeUser(
             baseUrl = login.baseUrl,
             username = login.username,
-            password = login.password,
-            agencia = login.agencia
+            password = login.password
         )
         .map { apiOperation ->
             when (apiOperation) {
@@ -40,7 +39,6 @@ class UserRepository(
                 is ApiOperation.Success -> {
                     RequestState.Success(
                         data = apiOperation.data.toDomain()
-
                     )
                 }
             }
@@ -83,7 +81,4 @@ class UserRepository(
     }.flowOn(Dispatchers.IO)
 
     suspend fun addUser(user: User) = userLocalDataSource.addUser(user = user.toDatabase())
-
-    suspend fun deleteUser(codigo: String, empresa: String) = userLocalDataSource
-        .deleteUser(codigo, empresa)
 }

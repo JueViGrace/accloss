@@ -3,6 +3,8 @@ import kotlin.Boolean;
 CREATE TABLE session (
     user TEXT NOT NULL,
     empresa TEXT NOT NULL,
+    enlaceEmpresa TEXT NOT NULL,
+    enlaceEmpresaPost TEXT NOT NULL,
     active INTEGER AS Boolean NOT NULL DEFAULT 1
 );
 
@@ -17,6 +19,8 @@ INSERT OR REPLACE
 INTO session (
 user,
 empresa,
+enlaceEmpresa,
+enlaceEmpresaPost,
 active
 )
 VALUES ?;

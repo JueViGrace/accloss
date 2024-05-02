@@ -1,6 +1,6 @@
 package com.clo.accloss.user.domain.rules
 
-import com.clo.accloss.auth.login.domain.model.Login
+import com.clo.accloss.modules.auth.login.domain.model.Login
 
 object UserValidator {
     fun validateErrors(login: Login): UserValidationResult {

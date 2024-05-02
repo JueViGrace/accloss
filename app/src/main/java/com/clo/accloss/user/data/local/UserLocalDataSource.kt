@@ -37,10 +37,4 @@ class UserLocalDataSource(
             db.userQueries.addUser(user = user)
         }
     }.await()
-
-    suspend fun deleteUser(codigo: String, empresa: String) = scope.async {
-        dbHelper.withDatabase { db ->
-            db.userQueries.deleteUser(vendedor = codigo, empresa = empresa)
-        }
-    }.await()
 }

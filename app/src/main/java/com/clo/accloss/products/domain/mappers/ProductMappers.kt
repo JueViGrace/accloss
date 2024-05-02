@@ -1,0 +1,93 @@
+package com.clo.accloss.products.domain.mappers
+
+import com.clo.accloss.products.data.remote.model.ProductResponseItem
+import com.clo.accloss.products.domain.model.Product
+import com.clo.accloss.Product as ProductEntity
+
+fun ProductEntity.toDomain(): Product = Product(
+    codigo = codigo,
+    comprometido = comprometido,
+    dctotope = dctotope,
+    discont = discont,
+    enpreventa = enpreventa,
+    existencia = existencia,
+    fechamodifi = fechamodifi,
+    grupo = grupo,
+    marca = marca,
+    nombre = nombre,
+    precio1 = precio1,
+    precio2 = precio2,
+    precio3 = precio3,
+    precio4 = precio4,
+    precio5 = precio5,
+    precio6 = precio6,
+    precio7 = precio7,
+    referencia = referencia,
+    subgrupo = subgrupo,
+    unidad = unidad,
+    vtaMax = vta_max,
+    vtaMin = vta_min,
+    vtaMinenx = vta_minenx,
+    vtaSolofac = vta_solofac.toInt(),
+    vtaSolone = vta_solone.toInt(),
+    url = url,
+    empresa = empresa
+)
+
+fun Product.toDatabase(): ProductEntity = ProductEntity(
+    codigo = codigo,
+    comprometido = comprometido,
+    dctotope = dctotope,
+    discont = discont,
+    enpreventa = enpreventa,
+    existencia = existencia,
+    fechamodifi = fechamodifi,
+    grupo = grupo,
+    marca = marca,
+    nombre = nombre,
+    precio1 = precio1,
+    precio2 = precio2,
+    precio3 = precio3,
+    precio4 = precio4,
+    precio5 = precio5,
+    precio6 = precio6,
+    precio7 = precio7,
+    referencia = referencia,
+    subgrupo = subgrupo,
+    unidad = unidad,
+    vta_max = vtaMax,
+    vta_min = vtaMin,
+    vta_minenx = vtaMinenx,
+    vta_solofac = vtaSolofac.toLong(),
+    vta_solone = vtaSolone.toLong(),
+    url = url,
+    empresa = empresa
+)
+
+fun ProductResponseItem.toDomain(): Product = Product(
+    codigo = codigo ?: "",
+    comprometido = comprometido ?: 0.0,
+    dctotope = dctotope ?: 0.0,
+    discont = discont ?: 0.0,
+    enpreventa = enpreventa ?: "",
+    existencia = existencia ?: 0.0,
+    fechamodifi = fechamodifi ?: "",
+    grupo = grupo ?: "",
+    marca = marca ?: "",
+    nombre = nombre ?: "",
+    precio1 = precio1 ?: 0.0,
+    precio2 = precio2 ?: 0.0,
+    precio3 = precio3 ?: 0.0,
+    precio4 = precio4 ?: 0.0,
+    precio5 = precio5 ?: 0.0,
+    precio6 = precio6 ?: 0.0,
+    precio7 = precio7 ?: 0.0,
+    referencia = referencia ?: "",
+    subgrupo = subgrupo ?: "",
+    unidad = unidad ?: "",
+    vtaMax = vtaMax ?: 0.0,
+    vtaMin = vtaMin ?: 0.0,
+    vtaMinenx = vtaMinenx ?: 0.0,
+    vtaSolofac = vtaSolofac ?: 0,
+    vtaSolone = vtaSolone ?: 0
+)

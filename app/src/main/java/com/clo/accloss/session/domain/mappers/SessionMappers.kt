@@ -6,11 +6,15 @@ import com.clo.accloss.Session as SessionEntity
 fun SessionEntity.toDomain(): Session = Session(
     user = user,
     empresa = empresa,
+    enlaceEmpresa = enlaceEmpresa,
+    enlaceEmpresaPost = enlaceEmpresaPost,
     active = active
 )
 
 fun Session.toDatabase(): SessionEntity = SessionEntity(
     user = user,
     empresa = empresa,
+    enlaceEmpresa = enlaceEmpresa,
+    enlaceEmpresaPost = enlaceEmpresaPost,
     active = active
 )

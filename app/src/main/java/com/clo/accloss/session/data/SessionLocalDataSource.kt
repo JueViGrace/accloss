@@ -40,6 +40,9 @@ class SessionLocalDataSource(
 
     suspend fun deleteSession(session: Session) = scope.async {
         dbHelper.withDatabase { db ->
+            db.productQueries.deleteProducts(session.empresa)
+            db.userQueries.deleteUser(session.user, session.empresa)
+            db.empresaQueries.deleteEmpresa(session.empresa)
             db.sessionQueries.deleteSession(
                 user = session.user,
                 empresa = session.empresa

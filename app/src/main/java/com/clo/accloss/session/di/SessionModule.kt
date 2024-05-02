@@ -1,8 +1,9 @@
-package session.di
+package com.clo.accloss.session.di
 
-import org.koin.dsl.module
 import com.clo.accloss.session.data.SessionLocalDataSource
 import com.clo.accloss.session.domain.repository.SessionRepository
+import com.clo.accloss.session.domain.usecase.GetSession
+import org.koin.dsl.module
 
 val sessionModule = module {
     single {
@@ -11,5 +12,9 @@ val sessionModule = module {
 
     single {
         SessionRepository(get())
+    }
+
+    single {
+        GetSession(get())
     }
 }

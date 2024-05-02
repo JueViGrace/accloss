@@ -16,8 +16,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class EmpresaRepository(
-    private val empresaLocalDataSource: EmpresaLocalDataSource,
-    private val empresaRemoteDataSource: EmpresaRemoteDataSource
+    private val empresaRemoteDataSource: EmpresaRemoteDataSource,
+    private val empresaLocalDataSource: EmpresaLocalDataSource
 ) {
 
     fun getRemoteEmpresa(codigo: String): Flow<RequestState<Empresa>> = empresaRemoteDataSource
@@ -75,6 +75,4 @@ class EmpresaRepository(
     }.flowOn(Dispatchers.IO)
 
     suspend fun addEmpresa(empresa: Empresa) = empresaLocalDataSource.addEmpresa(empresa = empresa.toDatabase())
-
-    suspend fun deleteEmpresa(codigo: String) = empresaLocalDataSource.deleteEmpresa(codigo = codigo)
 }

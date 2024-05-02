@@ -18,7 +18,7 @@ fun App() {
         ) {
             Navigator(
                 screen = AppScreen(
-                    initialScreen = AppRoutes.AuthModule().screen
+                    initialScreen = AppRoutes.HomeModule().screen
                 )
             ) { navigator ->
                 SlideTransition(navigator = navigator)

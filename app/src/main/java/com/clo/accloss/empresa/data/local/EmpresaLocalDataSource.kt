@@ -13,7 +13,6 @@ class EmpresaLocalDataSource(
     private val dbHelper: DbHelper,
     private val scope: CoroutineScope
 ) {
-
     suspend fun getEmpresas(): Flow<List<Empresa>> = scope.async {
         dbHelper.withDatabase { db ->
             db.empresaQueries
@@ -35,11 +34,6 @@ class EmpresaLocalDataSource(
     suspend fun addEmpresa(empresa: Empresa) = scope.async {
         dbHelper.withDatabase { db ->
             db.empresaQueries.addEmpresa(empresa)
-        }
-    }.await()
-    suspend fun deleteEmpresa(codigo: String) = scope.async {
-        dbHelper.withDatabase { db ->
-            db.empresaQueries.deleteEmpresa(codigoEmpresa = codigo)
         }
     }.await()
 }
