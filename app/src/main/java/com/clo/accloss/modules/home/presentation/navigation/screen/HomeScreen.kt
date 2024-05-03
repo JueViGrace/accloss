@@ -12,8 +12,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.clo.accloss.app.navigation.routes.AppRoutes
-import com.clo.accloss.app.navigation.screen.AppScreen
+import com.clo.accloss.modules.app.navigation.routes.AppRoutes
+import com.clo.accloss.modules.app.navigation.screen.AppScreen
 import com.clo.accloss.core.presentation.components.ErrorScreen
 import com.clo.accloss.core.presentation.components.LoadingScreen
 import com.clo.accloss.modules.auth.navigation.routes.AuthRoutes

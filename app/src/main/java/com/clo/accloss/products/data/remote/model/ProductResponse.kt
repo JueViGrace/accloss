@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class ProductResponse(
 
     @SerialName("articulo")
-    val product: List<ProductResponseItem>? = null,
+    val product: List<ProductResponseItem> = emptyList(),
 
     @SerialName("status")
     val status: String? = null

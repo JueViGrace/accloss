@@ -1,0 +1,73 @@
+CREATE TABLE IF NOT EXISTS lineas_factura (
+    agencia TEXT NOT NULL DEFAULT '',
+    cantidad REAL NOT NULL DEFAULT 0.0,
+    cntdevuelt REAL NOT NULL DEFAULT 0.0,
+    codcoord TEXT NOT NULL DEFAULT '',
+    codhijo TEXT NOT NULL DEFAULT '',
+    codigo TEXT NOT NULL DEFAULT '',
+    dmontoneto REAL NOT NULL DEFAULT 0.0,
+    dmontototal REAL NOT NULL DEFAULT 0.0,
+    documento TEXT NOT NULL DEFAULT '',
+    dpreciofin REAL NOT NULL DEFAULT 0.0,
+    dpreciounit REAL NOT NULL DEFAULT 0.0,
+    dvndmtototal REAL NOT NULL DEFAULT 0.0,
+    fechadoc TEXT NOT NULL DEFAULT '',
+    fechamodifi TEXT NOT NULL DEFAULT '',
+    grupo TEXT NOT NULL DEFAULT '',
+    nombre TEXT NOT NULL DEFAULT '',
+    origen REAL NOT NULL DEFAULT 0.0,
+    pid TEXT NOT NULL DEFAULT '',
+    subgrupo TEXT NOT NULL DEFAULT '',
+    timpueprc REAL NOT NULL DEFAULT 0.0,
+    tipodoc TEXT NOT NULL DEFAULT '',
+    tipodocv TEXT NOT NULL DEFAULT '',
+    unidevuelt REAL NOT NULL DEFAULT 0.0,
+    vendedor TEXT NOT NULL DEFAULT '',
+    vndcntdevuelt REAL NOT NULL DEFAULT 0.0,
+    empresa TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY(documento, codigo, empresa)
+);
+
+getLineasFactura:
+SELECT *
+FROM lineas_factura
+WHERE
+documento == :documento
+AND
+empresa == :empresa;
+
+addLineasFactura:
+INSERT OR REPLACE
+INTO lineas_factura (
+    agencia,
+    cantidad,
+    cntdevuelt,
+    codcoord,
+    codhijo,
+    codigo,
+    dmontoneto,
+    dmontototal,
+    documento,
+    dpreciofin,
+    dpreciounit,
+    dvndmtototal,
+    fechadoc,
+    fechamodifi,
+    grupo,
+    nombre,
+    origen,
+    pid,
+    subgrupo,
+    timpueprc,
+    tipodoc,
+    tipodocv,
+    unidevuelt,
+    vendedor,
+    vndcntdevuelt,
+    empresa
+)
+VALUES ?;
+
+deleteLineasFactura:
+DELETE FROM lineas_factura
+WHERE empresa == :empresa;

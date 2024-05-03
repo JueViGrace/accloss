@@ -31,7 +31,7 @@ class SessionLocalDataSource(
     suspend fun updateSession(session: Session) = scope.async {
         dbHelper.withDatabase { db ->
             db.sessionQueries.updateSessions(
-                active = session.active,
+                active = true,
                 user = session.user,
                 empresa = session.empresa
             )
@@ -41,6 +41,15 @@ class SessionLocalDataSource(
     suspend fun deleteSession(session: Session) = scope.async {
         dbHelper.withDatabase { db ->
             db.productQueries.deleteProducts(session.empresa)
+            db.lineasFacturaQueries.deleteLineasFactura(session.empresa)
+            db.lineasPedidoQueries.deleteLineasPedido(session.empresa)
+            db.facturaQueries.deleteFacturas(session.empresa)
+            db.pedidoQueries.deletePedidos(session.empresa)
+            db.clienteQueries.deleteClientes(session.empresa)
+            db.estadisticaQueries.deleteEstadisticas(session.empresa)
+            db.vendedorQueries.deleteVendedor(session.empresa)
+            db.gerenciaQueries.deleteGerencias(session.empresa)
+            updateSession(session)
             db.userQueries.deleteUser(session.user, session.empresa)
             db.empresaQueries.deleteEmpresa(session.empresa)
             db.sessionQueries.deleteSession(

@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS gerencia (
+    kngCodgcia TEXT NOT NULL DEFAULT '',
+    kngCodcoord TEXT NOT NULL DEFAULT '',
+    fechamodifi TEXT NOT NULL,
+    empresa TEXT NOT NULL,
+    PRIMARY KEY(kngCodcoord, empresa)
+);
+
+addGerencia:
+INSERT OR REPLACE
+INTO gerencia (
+    kngCodgcia,
+    kngCodcoord,
+    fechamodifi,
+    empresa
+)
+VALUES ?;
+
+deleteGerencias:
+DELETE FROM gerencia
+WHERE empresa == :empresa;

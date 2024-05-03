@@ -1,0 +1,121 @@
+CREATE TABLE IF NOT EXISTS factura (
+    aceptadev TEXT NOT NULL DEFAULT '',
+    agencia TEXT NOT NULL DEFAULT '',
+    bsflete REAL NOT NULL DEFAULT 0.0,
+    bsiva REAL NOT NULL DEFAULT 0.0,
+    bsmtofte REAL NOT NULL DEFAULT 0.0,
+    bsmtoiva REAL NOT NULL DEFAULT 0.0,
+    bsretencioniva REAL NOT NULL DEFAULT 0.0,
+    cbsret REAL NOT NULL DEFAULT 0.0,
+    cbsretflete REAL NOT NULL DEFAULT 0.0,
+    cbsretiva REAL NOT NULL DEFAULT 0.0,
+    cbsrparme REAL NOT NULL DEFAULT 0.0,
+    cdret REAL NOT NULL DEFAULT 0.0,
+    cdretflete REAL NOT NULL DEFAULT 0.0,
+    cdretiva REAL NOT NULL DEFAULT 0.0,
+    cdrparme REAL NOT NULL DEFAULT 0.0,
+    codcliente TEXT NOT NULL DEFAULT '',
+    codcoord TEXT NOT NULL DEFAULT '',
+    contribesp REAL NOT NULL DEFAULT 0.0,
+    dFlete REAL NOT NULL DEFAULT 0.0,
+    diascred REAL NOT NULL DEFAULT 0.0,
+    documento TEXT NOT NULL DEFAULT '',
+    dretencion REAL NOT NULL DEFAULT 0.0,
+    dretencioniva REAL NOT NULL DEFAULT 0.0,
+    dtotalfinal REAL NOT NULL DEFAULT 0.0,
+    dtotdescuen REAL NOT NULL DEFAULT 0.0,
+    dtotdev REAL NOT NULL DEFAULT 0.0,
+    dtotimpuest REAL NOT NULL DEFAULT 0.0,
+    dtotneto REAL NOT NULL DEFAULT 0.0,
+    dtotpagos REAL NOT NULL DEFAULT 0.0,
+    dvndmtototal REAL NOT NULL DEFAULT 0.0,
+    emision TEXT NOT NULL DEFAULT '',
+    estatusdoc TEXT NOT NULL DEFAULT '',
+    fchvencedcto TEXT NOT NULL DEFAULT '',
+    fechamodifi TEXT NOT NULL DEFAULT '',
+    ktiNegesp TEXT NOT NULL DEFAULT '',
+    mtodcto REAL NOT NULL DEFAULT 0.0,
+    nombrecli TEXT NOT NULL DEFAULT '',
+    recepcion TEXT NOT NULL DEFAULT '',
+    retmunMto REAL NOT NULL DEFAULT 0.0,
+    rutaParme TEXT NOT NULL DEFAULT '',
+    tasadoc REAL NOT NULL DEFAULT 0.0,
+    tienedcto TEXT NOT NULL DEFAULT '',
+    tipodoc TEXT NOT NULL DEFAULT '',
+    tipodocv TEXT NOT NULL DEFAULT '',
+    tipoprecio REAL NOT NULL DEFAULT 0.0,
+    vence TEXT NOT NULL DEFAULT '',
+    vendedor TEXT NOT NULL DEFAULT '',
+    empresa TEXT NOT NULL DEFAULT ''
+);
+
+getFacturas:
+SELECT *
+FROM factura
+WHERE empresa == :empresa;
+
+getFactura:
+SELECT *
+FROM factura
+WHERE
+documento == :documento
+AND
+empresa == :empresa;
+
+addFactura:
+INSERT OR REPLACE
+INTO factura (
+    aceptadev,
+    agencia,
+    bsflete,
+    bsiva,
+    bsmtofte,
+    bsmtoiva,
+    bsretencioniva,
+    cbsret,
+    cbsretflete,
+    cbsretiva,
+    cbsrparme,
+    cdret,
+    cdretflete,
+    cdretiva,
+    cdrparme,
+    codcliente,
+    codcoord,
+    contribesp,
+    dFlete,
+    diascred,
+    documento,
+    dretencion,
+    dretencioniva,
+    dtotalfinal,
+    dtotdescuen,
+    dtotdev,
+    dtotimpuest,
+    dtotneto,
+    dtotpagos,
+    dvndmtototal,
+    emision,
+    estatusdoc,
+    fchvencedcto,
+    fechamodifi,
+    ktiNegesp,
+    mtodcto,
+    nombrecli,
+    recepcion,
+    retmunMto,
+    rutaParme,
+    tasadoc,
+    tienedcto,
+    tipodoc,
+    tipodocv,
+    tipoprecio,
+    vence,
+    vendedor,
+    empresa
+)
+VALUES ?;
+
+deleteFacturas:
+DELETE FROM factura
+WHERE empresa == :empresa;

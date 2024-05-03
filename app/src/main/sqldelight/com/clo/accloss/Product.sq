@@ -1,5 +1,5 @@
-CREATE TABLE product (
-      codigo TEXT PRIMARY KEY NOT NULL DEFAULT '',
+CREATE TABLE IF NOT EXISTS product (
+      codigo TEXT NOT NULL DEFAULT '',
       grupo TEXT NOT NULL DEFAULT '',
       subgrupo TEXT NOT NULL DEFAULT '',
       nombre TEXT NOT NULL DEFAULT '',
@@ -16,16 +16,17 @@ CREATE TABLE product (
       precio7 REAL NOT NULL DEFAULT '0.0',
       fechamodifi TEXT NOT NULL,
       discont REAL NOT NULL DEFAULT '0',
-      vta_max REAL NOT NULL DEFAULT '0.0',
-      vta_min REAL NOT NULL DEFAULT '0.0',
+      vtaMax REAL NOT NULL DEFAULT '0.0',
+      vtaMin REAL NOT NULL DEFAULT '0.0',
       dctotope REAL NOT NULL DEFAULT '0.00',
       enpreventa TEXT NOT NULL DEFAULT '0',
       comprometido REAL NOT NULL DEFAULT '0.0',
-      vta_minenx REAL NOT NULL DEFAULT '0.000',
-      vta_solofac INTEGER NOT NULL DEFAULT '0',
-      vta_solone INTEGER NOT NULL DEFAULT '0',
+      vtaMinenx REAL NOT NULL DEFAULT '0.000',
+      vtaSolofac INTEGER NOT NULL DEFAULT '0',
+      vtaSolone INTEGER NOT NULL DEFAULT '0',
       url TEXT NOT NULL,
-      empresa TEXT NOT NULL
+      empresa TEXT NOT NULL,
+      PRIMARY KEY(codigo, empresa)
 );
 
 countProducts:
@@ -66,14 +67,14 @@ precio6,
 precio7,
 fechamodifi,
 discont,
-vta_max,
-vta_min,
+vtaMax,
+vtaMin,
 dctotope,
 enpreventa,
 comprometido,
-vta_minenx,
-vta_solofac,
-vta_solone,
+vtaMinenx,
+vtaSolofac,
+vtaSolone,
 url,
 empresa
 )

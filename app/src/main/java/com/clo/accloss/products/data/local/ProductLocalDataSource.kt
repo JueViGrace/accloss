@@ -1,19 +1,15 @@
 package com.clo.accloss.products.data.local
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
-import app.cash.sqldelight.paging3.QueryPagingSource
-import com.clo.accloss.core.common.Constants.MIN_PAGE
-import com.clo.accloss.core.common.Constants.PREFETCH
 import com.clo.accloss.core.database.helper.DbHelper
+import com.clo.accloss.products.domain.mappers.toDatabase
+import com.clo.accloss.products.domain.mappers.toDomain
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import com.clo.accloss.Product as ProductEntity
 
 class ProductLocalDataSource(

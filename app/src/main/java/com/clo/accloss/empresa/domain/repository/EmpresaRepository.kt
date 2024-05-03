@@ -1,6 +1,7 @@
 package com.clo.accloss.empresa.domain.repository
 
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
+import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import com.clo.accloss.core.network.ApiOperation
 import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.empresa.data.local.EmpresaLocalDataSource
@@ -19,22 +20,31 @@ class EmpresaRepository(
     private val empresaRemoteDataSource: EmpresaRemoteDataSource,
     private val empresaLocalDataSource: EmpresaLocalDataSource
 ) {
+    fun getRemoteEmpresa(
+        codigo: String
+    ): Flow<RequestState<Empresa>> = flow {
+        emit(RequestState.Loading)
 
-    fun getRemoteEmpresa(codigo: String): Flow<RequestState<Empresa>> = empresaRemoteDataSource
-        .getSafeEmpresa(codigo = codigo)
-        .map { apiOperation ->
-            when (apiOperation) {
-                is ApiOperation.Failure -> {
+        val apiOperation = empresaRemoteDataSource
+            .getSafeEmpresa(codigo = codigo)
+
+        when (apiOperation) {
+            is ApiOperation.Failure -> {
+                emit(
                     RequestState.Error(
-                        message = apiOperation.error.message ?: "Internal Server Error"
+                        message = apiOperation.error.message ?: SERVER_ERROR
                     )
-                }
-                is ApiOperation.Loading -> RequestState.Loading
-                is ApiOperation.Success -> RequestState.Success(
-                    data = apiOperation.data.toDomain()
+                )
+            }
+            is ApiOperation.Success -> {
+                emit(
+                    RequestState.Success(
+                        data = apiOperation.data.toDomain()
+                    )
                 )
             }
         }
+    }.flowOn(Dispatchers.IO)
 
     suspend fun getEmpresas(): Flow<RequestState<List<Empresa>>> = flow {
         emit(RequestState.Loading)

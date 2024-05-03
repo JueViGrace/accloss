@@ -1,0 +1,86 @@
+CREATE TABLE IF NOT EXISTS cliente (
+     cantdocs REAL NOT NULL DEFAULT 0.0,
+     codigo TEXT NOT NULL DEFAULT '',
+     contribespecial REAL NOT NULL DEFAULT 0.0,
+     diasultvta REAL NOT NULL DEFAULT 0.0,
+     direccion TEXT NOT NULL DEFAULT '',
+     email TEXT NOT NULL DEFAULT '',
+     fchcrea TEXT NOT NULL DEFAULT '',
+     fchultvta TEXT NOT NULL DEFAULT '',
+     fechamodifi TEXT NOT NULL DEFAULT '',
+     kneActiva TEXT NOT NULL DEFAULT '',
+     kneMtomin REAL NOT NULL DEFAULT 0.0,
+     limcred REAL NOT NULL DEFAULT 0.0,
+     mtoultvta REAL NOT NULL DEFAULT 0.0,
+     noemifac INTEGER NOT NULL DEFAULT 0,
+     noeminota INTEGER NOT NULL DEFAULT 0,
+     nombre TEXT NOT NULL DEFAULT '',
+     perscont TEXT NOT NULL DEFAULT '',
+     prcdpagdia REAL NOT NULL DEFAULT 0.0,
+     precio REAL NOT NULL DEFAULT 0.0,
+     promdiasp REAL NOT NULL DEFAULT 0.0,
+     promdiasvta REAL NOT NULL DEFAULT 0.0,
+     prommtodoc REAL NOT NULL DEFAULT 0.0,
+     riesgocrd REAL NOT NULL DEFAULT 0.0,
+     sector TEXT NOT NULL DEFAULT '',
+     status REAL NOT NULL DEFAULT 0.0,
+     subcodigo TEXT NOT NULL DEFAULT '',
+     telefonos TEXT NOT NULL DEFAULT '',
+     totmtodocs REAL NOT NULL DEFAULT 0.0,
+     vendedor TEXT NOT NULL DEFAULT '',
+     empresa TEXT NOT NULL DEFAULT '',
+     PRIMARY KEY(codigo, empresa)
+);
+
+getClientes:
+SELECT *
+FROM cliente
+WHERE empresa == :empresa;
+
+getCliente:
+SELECT *
+FROM cliente
+WHERE
+empresa == :empresa
+AND
+codigo == :codigo;
+
+addCliente:
+INSERT OR REPLACE
+INTO cliente (
+     cantdocs,
+     codigo,
+     contribespecial,
+     diasultvta,
+     direccion,
+     email,
+     fchcrea,
+     fchultvta,
+     fechamodifi,
+     kneActiva,
+     kneMtomin,
+     limcred,
+     mtoultvta,
+     noemifac,
+     noeminota,
+     nombre,
+     perscont,
+     prcdpagdia,
+     precio,
+     promdiasp,
+     promdiasvta,
+     prommtodoc,
+     riesgocrd,
+     sector,
+     status,
+     subcodigo,
+     telefonos,
+     totmtodocs,
+     vendedor,
+     empresa
+)
+VALUES ?;
+
+deleteClientes:
+DELETE FROM cliente
+WHERE empresa == :empresa;

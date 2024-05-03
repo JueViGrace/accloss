@@ -9,13 +9,12 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.clo.accloss.app.navigation.routes.AppRoutes
-import com.clo.accloss.app.navigation.screen.AppScreen
+import com.clo.accloss.core.presentation.components.LoadingScreen
+import com.clo.accloss.modules.app.navigation.routes.AppRoutes
+import com.clo.accloss.modules.app.navigation.screen.AppScreen
 import com.clo.accloss.modules.auth.login.presentation.components.LoginContent
 import com.clo.accloss.modules.auth.login.presentation.events.LoginEvents
 import com.clo.accloss.modules.auth.login.presentation.viewmodel.LoginViewModel
-import com.clo.accloss.core.presentation.components.LoadingScreen
-import com.clo.accloss.modules.home.presentation.navigation.routes.HomeRoutes
 
 object LoginScreen : Screen {
     private fun readResolve(): Any = LoginScreen
@@ -52,7 +51,7 @@ object LoginScreen : Screen {
                 if (session.active) {
                     navigator.replace(
                         AppScreen(
-                               initialScreen = AppRoutes.HomeModule().screen
+                            initialScreen = AppRoutes.HomeModule().screen
                         )
                     )
                     viewModel.onEvent(LoginEvents.OnLoginDismiss)

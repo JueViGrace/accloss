@@ -97,7 +97,6 @@ class LoginViewModel(
                                                     errorMessage = null,
                                                     loadingEmpresa = false,
                                                     empresaError = "Credenciales incorrectas",
-                                                    errors = true
                                                 )
                                             }
                                             newLogin = null
@@ -112,7 +111,6 @@ class LoginViewModel(
                                 empresa = null,
                                 empresaError = result.codigoError,
                                 canLogin = false,
-                                errors = true,
                                 errorMessage = null,
                                 loadingEmpresa = false,
                             )
@@ -143,7 +141,6 @@ class LoginViewModel(
                         empresaError = null,
                         usernameError = null,
                         passwordError = null,
-                        errors = null
                     )
                 }
                 newLogin = null
@@ -211,7 +208,6 @@ class LoginViewModel(
                                                 _state.update { loginState ->
                                                     loginState.copy(
                                                         user = result.data,
-                                                        errors = false,
                                                         errorMessage = null,
                                                         usernameError = null,
                                                         passwordError = null,
@@ -222,7 +218,6 @@ class LoginViewModel(
                                             } else {
                                                 _state.update { loginState ->
                                                     loginState.copy(
-                                                        errors = true,
                                                         errorMessage = "Credenciales incorrectas",
                                                         loadingUser = false
                                                     )
@@ -239,7 +234,6 @@ class LoginViewModel(
                                 errorMessage = null,
                                 usernameError = result.usernameError,
                                 passwordError = result.passwordError,
-                                errors = true,
                                 loadingUser = false
                             )
                         }
@@ -252,39 +246,12 @@ class LoginViewModel(
     private fun checkSession() {
         screenModelScope.launch {
             sessionRepository.getCurrentUser().collect { result ->
-                when (result) {
-                    is RequestState.Error -> {
-                        _state.update { loginState ->
-                            loginState.copy(
-                                session = result
-                            )
-                        }
-                    }
-                    RequestState.Idle -> {
-                        _state.update { loginState ->
-                            loginState.copy(
-                                session = RequestState.Idle
-                            )
-                        }
-                    }
-                    RequestState.Loading -> {
-                        _state.update { loginState ->
-                            loginState.copy(
-                                session = result
-                            )
-                        }
-                    }
-                    is RequestState.Success -> {
-                        _state.update { loginState ->
-                            loginState.copy(
-                                session = result
-                            )
-                        }
-                    }
+                _state.update { loginState ->
+                    loginState.copy(
+                        session = result
+                    )
                 }
             }
         }
     }
-
-    fun getErrors() = _state.value.errors == false
 }

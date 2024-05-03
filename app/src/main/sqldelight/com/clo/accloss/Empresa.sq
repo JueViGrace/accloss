@@ -1,4 +1,4 @@
-CREATE TABLE empresa (
+CREATE TABLE IF NOT EXISTS empresa (
      agenciaEmpresa TEXT NOT NULL DEFAULT '',
      nombreEmpresa TEXT NOT NULL DEFAULT '',
      codigoEmpresa TEXT NOT NULL DEFAULT '',

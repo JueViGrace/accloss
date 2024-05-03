@@ -1,6 +1,7 @@
 package com.clo.accloss.user.domain.repository
 
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
+import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import com.clo.accloss.core.network.ApiOperation
 import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.modules.auth.login.domain.model.Login
@@ -14,7 +15,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 
 class UserRepository(
     private val userRemoteDataSource: UserRemoteDataSource,
@@ -22,27 +22,33 @@ class UserRepository(
 ) {
     fun getRemoteUser(
         login: Login
-    ): Flow<RequestState<User>> = userRemoteDataSource
-        .getSafeUser(
-            baseUrl = login.baseUrl,
-            username = login.username,
-            password = login.password
-        )
-        .map { apiOperation ->
-            when (apiOperation) {
-                is ApiOperation.Failure -> {
+    ): Flow<RequestState<User>> = flow {
+        emit(RequestState.Loading)
+
+        val apiOperation = userRemoteDataSource
+            .getSafeUser(
+                baseUrl = login.baseUrl,
+                username = login.username,
+                password = login.password
+            )
+
+        when (apiOperation) {
+            is ApiOperation.Failure -> {
+                emit(
                     RequestState.Error(
-                        message = apiOperation.error.message ?: "Internal Server Error"
+                        message = apiOperation.error.message ?: SERVER_ERROR
                     )
-                }
-                is ApiOperation.Loading -> RequestState.Loading
-                is ApiOperation.Success -> {
+                )
+            }
+            is ApiOperation.Success -> {
+                emit(
                     RequestState.Success(
                         data = apiOperation.data.toDomain()
                     )
-                }
+                )
             }
         }
+    }.flowOn(Dispatchers.IO)
 
     suspend fun getUsers(): Flow<RequestState<User>> = flow {
         emit(RequestState.Loading)

@@ -16,5 +16,4 @@ data class LoginState(
     val empresaError: String? = null,
     val usernameError: String? = null,
     val passwordError: String? = null,
-    val errors: Boolean? = null
 )

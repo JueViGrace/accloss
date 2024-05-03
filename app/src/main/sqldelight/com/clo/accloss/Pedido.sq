@@ -1,0 +1,58 @@
+CREATE TABLE IF NOT EXISTS pedido (
+    fechamodifi TEXT NOT NULL DEFAULT '',
+    kePedstatus TEXT NOT NULL DEFAULT '',
+    ktiCodcli TEXT NOT NULL DEFAULT '',
+    ktiCodven TEXT NOT NULL DEFAULT '',
+    ktiCondicion TEXT NOT NULL DEFAULT '',
+    ktiDocsol TEXT NOT NULL DEFAULT '',
+    ktiFchdoc TEXT NOT NULL DEFAULT '',
+    ktiNdoc TEXT NOT NULL DEFAULT '',
+    ktiNegesp TEXT NOT NULL DEFAULT '',
+    ktiNombrecli TEXT NOT NULL DEFAULT '',
+    ktiNroped TEXT NOT NULL DEFAULT '',
+    ktiStatus TEXT NOT NULL DEFAULT '',
+    ktiTdoc TEXT NOT NULL DEFAULT '',
+    ktiTipprec REAL NOT NULL DEFAULT 0.0,
+    ktiTotneto REAL NOT NULL DEFAULT 0.0,
+    empresa TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY(ktiNdoc, empresa)
+);
+
+getPedidos:
+SELECT *
+FROM pedido
+WHERE empresa == :empresa;
+
+getPedido:
+SELECT *
+FROM pedido
+WHERE
+empresa == :empresa
+AND
+ktiNdoc == :pedido;
+
+addPedido:
+INSERT OR REPLACE
+INTO pedido (
+    fechamodifi,
+    kePedstatus,
+    ktiCodcli,
+    ktiCodven,
+    ktiCondicion,
+    ktiDocsol,
+    ktiFchdoc,
+    ktiNdoc,
+    ktiNegesp,
+    ktiNombrecli,
+    ktiNroped,
+    ktiStatus,
+    ktiTdoc,
+    ktiTipprec,
+    ktiTotneto,
+    empresa
+)
+VALUES ?;
+
+deletePedidos:
+DELETE FROM pedido
+WHERE empresa == :empresa;

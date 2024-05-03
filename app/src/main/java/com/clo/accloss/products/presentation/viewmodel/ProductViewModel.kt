@@ -56,8 +56,9 @@ class ProductViewModel(
 
                     is RequestState.Success -> {
                         productRepository.getProducts(
-                            session = result.data,
-                            forceReload = _state.value.reload ?: false
+                            empresa = result.data.empresa,
+                            baseUrl = result.data.enlaceEmpresa,
+                            forceReload = _state.value.reload == true
                         ).collect { productResult ->
                             _state.update { productState ->
                                 productState.copy(

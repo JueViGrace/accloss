@@ -5,16 +5,15 @@ import com.clo.accloss.core.network.KtorClient
 import com.clo.accloss.user.data.remote.model.UserResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import kotlinx.coroutines.flow.Flow
 
 class UserRemoteDataSource(
     private val ktorClient: KtorClient
 ) {
-    fun getSafeUser(
+    suspend fun getSafeUser(
         baseUrl: String,
         username: String,
         password: String
-    ): Flow<ApiOperation<UserResponse>> = ktorClient.safeApiCall {
+    ): ApiOperation<UserResponse> = ktorClient.safeApiCall {
         val url =
             "/webservice/c_validar_usuario.php?username=$username&password=$password"
         ktorClient

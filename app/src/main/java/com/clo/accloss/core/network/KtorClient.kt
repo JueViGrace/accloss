@@ -36,7 +36,7 @@ class KtorClient {
         }
     }
 
-    inline fun <T> safeApiCall(crossinline apiCall: suspend () -> T): Flow<ApiOperation<T>> = flow {
+/*    inline fun <T> safeApiCall(crossinline apiCall: suspend () -> T): Flow<ApiOperation<T>> = flow {
         emit(ApiOperation.Loading())
 
         try {
@@ -44,5 +44,13 @@ class KtorClient {
         } catch (e: Exception) {
             emit(ApiOperation.Failure(error = e))
         }
-    }.flowOn(Dispatchers.Default)
+    }.flowOn(Dispatchers.Default)*/
+
+    suspend inline fun <T> safeApiCall(crossinline apiCall: suspend () -> T): ApiOperation<T> {
+        return try {
+            ApiOperation.Success(data = apiCall())
+        } catch (e: Exception) {
+            ApiOperation.Failure(error = e)
+        }
+    }
 }

@@ -1,0 +1,80 @@
+CREATE TABLE IF NOT EXISTS estadistica (
+clivisit REAL NOT NULL DEFAULT 0.0,
+cntclientes REAL NOT NULL DEFAULT 0.0,
+cntfacturas REAL NOT NULL DEFAULT 0.0,
+cntpedidos REAL NOT NULL DEFAULT 0.0,
+cntrecl REAL NOT NULL DEFAULT 0.0,
+codcoord TEXT NOT NULL DEFAULT '',
+defdolTotneto REAL NOT NULL DEFAULT 0.0,
+devdolTotneto REAL NOT NULL DEFAULT 0.0,
+fechaEstad TEXT NOT NULL DEFAULT '',
+lomMontovtas REAL NOT NULL DEFAULT 0.0,
+lomPrcvisit REAL NOT NULL DEFAULT 0.0,
+lomPrcvtas REAL NOT NULL DEFAULT 0.0,
+metavend REAL NOT NULL DEFAULT 0.0,
+mtofacturas REAL NOT NULL DEFAULT 0.0,
+mtopedidos REAL NOT NULL DEFAULT 0.0,
+mtorecl REAL NOT NULL DEFAULT 0.0,
+nombrevend TEXT NOT NULL DEFAULT '',
+nomcoord TEXT NOT NULL DEFAULT '',
+ppgdolTotneto REAL NOT NULL DEFAULT 0.0,
+prcmeta REAL NOT NULL DEFAULT 0.0,
+prcvisitas REAL NOT NULL DEFAULT 0.0,
+rlomMontovtas REAL NOT NULL DEFAULT 0.0,
+rlomPrcvisit REAL NOT NULL DEFAULT 0.0,
+rlomPrcvtas REAL NOT NULL DEFAULT 0.0,
+totdolcob REAL NOT NULL DEFAULT 0.0,
+vendedor TEXT NOT NULL DEFAULT '',
+empresa TEXT NOT NULL DEFAULT '',
+PRIMARY KEY(vendedor, empresa)
+);
+
+getEstadisticas:
+SELECT *
+FROM estadistica
+WHERE empresa == :empresa;
+
+getEstadistica:
+SELECT *
+FROM estadistica
+WHERE
+vendedor == :vendedor
+AND
+empresa == :empresa;
+
+addEstadistica:
+INSERT OR REPLACE
+INTO estadistica (
+clivisit,
+cntclientes,
+cntfacturas,
+cntpedidos,
+cntrecl,
+codcoord,
+defdolTotneto,
+devdolTotneto,
+fechaEstad,
+lomMontovtas,
+lomPrcvisit,
+lomPrcvtas,
+metavend,
+mtofacturas,
+mtopedidos,
+mtorecl,
+nombrevend,
+nomcoord,
+ppgdolTotneto,
+prcmeta,
+prcvisitas,
+rlomMontovtas,
+rlomPrcvisit,
+rlomPrcvtas,
+totdolcob,
+vendedor,
+empresa
+)
+VALUES ?;
+
+deleteEstadisticas:
+DELETE FROM estadistica
+WHERE empresa == :empresa;

@@ -1,0 +1,51 @@
+CREATE TABLE IF NOT EXISTS vendedor (
+    email TEXT NOT NULL DEFAULT '',
+    nombre TEXT NOT NULL DEFAULT '',
+    sector TEXT NOT NULL DEFAULT '',
+    subsector TEXT NOT NULL DEFAULT '',
+    supervpor TEXT NOT NULL DEFAULT '',
+    telefonoMovil TEXT NOT NULL DEFAULT '',
+    telefonos TEXT NOT NULL DEFAULT '',
+    ultSinc TEXT NOT NULL DEFAULT '',
+    username TEXT NOT NULL DEFAULT '',
+    vendedor TEXT NOT NULL DEFAULT '',
+    version TEXT NOT NULL DEFAULT '',
+    empresa TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY(vendedor, empresa)
+);
+
+getVendedores:
+SELECT *
+FROM vendedor
+WHERE empresa == :empresa
+ORDER BY ultSinc ASC;
+
+getVendedor:
+SELECT *
+FROM vendedor
+WHERE
+empresa == :empresa
+AND
+vendedor == :vendedor;
+
+addVendedor:
+INSERT OR REPLACE
+INTO vendedor (
+email,
+nombre,
+sector,
+subsector,
+supervpor,
+telefonoMovil,
+telefonos,
+ultSinc,
+username,
+vendedor,
+version,
+empresa
+)
+VALUES ?;
+
+deleteVendedor:
+DELETE FROM vendedor
+WHERE empresa == :empresa;

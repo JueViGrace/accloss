@@ -1,0 +1,41 @@
+CREATE TABLE IF NOT EXISTS lineas_pedido (
+    kmvArtprec REAL NOT NULL DEFAULT 0.0,
+    kmvCant REAL NOT NULL DEFAULT 0.0,
+    kmvCodart TEXT NOT NULL DEFAULT '',
+    kmvDctolin REAL NOT NULL DEFAULT 0.0,
+    kmvNombre TEXT NOT NULL DEFAULT '',
+    kmvStot REAL NOT NULL DEFAULT 0.0,
+    ktiNdoc TEXT NOT NULL DEFAULT '',
+    ktiTdoc TEXT NOT NULL DEFAULT '',
+    ktiTipprec REAL NOT NULL DEFAULT 0.0,
+    empresa TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY(kmvCodart, ktiNdoc, empresa)
+);
+
+getLineasPedido:
+SELECT *
+FROM lineas_pedido
+WHERE
+ktiNdoc == :documento
+AND
+empresa == :empresa;
+
+addLineasPedido:
+INSERT OR REPLACE
+INTO lineas_pedido (
+    kmvArtprec,
+    kmvCant,
+    kmvCodart,
+    kmvDctolin,
+    kmvNombre,
+    kmvStot,
+    ktiNdoc,
+    ktiTdoc,
+    ktiTipprec,
+    empresa
+)
+VALUES ?;
+
+deleteLineasPedido:
+DELETE FROM lineas_pedido
+WHERE empresa == :empresa;
