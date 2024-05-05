@@ -4,8 +4,8 @@ import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import com.clo.accloss.core.network.ApiOperation
 import com.clo.accloss.core.state.RequestState
-import com.clo.accloss.empresa.data.local.EmpresaLocalDataSource
-import com.clo.accloss.empresa.data.remote.source.EmpresaRemoteDataSource
+import com.clo.accloss.empresa.data.local.EmpresaLocalSource
+import com.clo.accloss.empresa.data.remote.source.EmpresaRemoteSource
 import com.clo.accloss.empresa.domain.mappers.toDatabase
 import com.clo.accloss.empresa.domain.mappers.toDomain
 import com.clo.accloss.empresa.domain.model.Empresa
@@ -14,18 +14,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 
 class EmpresaRepository(
-    private val empresaRemoteDataSource: EmpresaRemoteDataSource,
-    private val empresaLocalDataSource: EmpresaLocalDataSource
+    private val empresaRemoteSource: EmpresaRemoteSource,
+    private val empresaLocalSource: EmpresaLocalSource
 ) {
     fun getRemoteEmpresa(
         codigo: String
     ): Flow<RequestState<Empresa>> = flow {
         emit(RequestState.Loading)
 
-        val apiOperation = empresaRemoteDataSource
+        val apiOperation = empresaRemoteSource
             .getSafeEmpresa(codigo = codigo)
 
         when (apiOperation) {
@@ -49,7 +48,7 @@ class EmpresaRepository(
     suspend fun getEmpresas(): Flow<RequestState<List<Empresa>>> = flow {
         emit(RequestState.Loading)
 
-        empresaLocalDataSource.getEmpresas()
+        empresaLocalSource.getEmpresas()
             .catch { e ->
                 emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
             }
@@ -75,7 +74,7 @@ class EmpresaRepository(
     suspend fun getEmpresa(codigo: String): Flow<RequestState<Empresa>> = flow {
         emit(RequestState.Loading)
 
-        empresaLocalDataSource.getEmpresa(codigo = codigo)
+        empresaLocalSource.getEmpresa(codigo = codigo)
             .catch { e ->
                 emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
             }
@@ -84,5 +83,5 @@ class EmpresaRepository(
             }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun addEmpresa(empresa: Empresa) = empresaLocalDataSource.addEmpresa(empresa = empresa.toDatabase())
+    suspend fun addEmpresa(empresa: Empresa) = empresaLocalSource.addEmpresa(empresa = empresa.toDatabase())
 }

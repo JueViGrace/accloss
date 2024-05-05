@@ -1,12 +1,11 @@
 package com.clo.accloss.products.domain.repository
 
-import androidx.paging.map
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import com.clo.accloss.core.network.ApiOperation
 import com.clo.accloss.core.state.RequestState
-import com.clo.accloss.products.data.local.ProductLocalDataSource
-import com.clo.accloss.products.data.remote.source.ProductRemoteDataSource
+import com.clo.accloss.products.data.local.ProductLocalSource
+import com.clo.accloss.products.data.remote.source.ProductRemoteSource
 import com.clo.accloss.products.domain.mappers.toDatabase
 import com.clo.accloss.products.domain.mappers.toDomain
 import com.clo.accloss.products.domain.model.Product
@@ -15,17 +14,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 
 class ProductRepository(
-    private val productRemoteDataSource: ProductRemoteDataSource,
-    private val productLocalDataSource: ProductLocalDataSource
+    private val productRemoteSource: ProductRemoteSource,
+    private val productLocalSource: ProductLocalSource
 ) {
     /*private fun getRemoteProducts(
         baseUrl: String,
         empresa: String
     ): Flow<List<Product>> = flow<List<Product>> {
-        productRemoteDataSource
+        productRemoteSource
             .getSafeProducts(
                 baseUrl = baseUrl
             )
@@ -51,7 +49,7 @@ class ProductRepository(
     ): Flow<RequestState<List<Product>>> = flow {
         emit(RequestState.Loading)
 
-        val apiOperation = productRemoteDataSource
+        val apiOperation = productRemoteSource
             .getSafeProducts(
                 baseUrl = baseUrl
             )
@@ -88,7 +86,7 @@ class ProductRepository(
 
         var reload = forceReload
 
-        productLocalDataSource.getProducts(empresa)
+        productLocalSource.getProducts(empresa)
             .catch { e ->
                 emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
             }
@@ -134,7 +132,7 @@ class ProductRepository(
     ): Flow<RequestState<Product>> = flow {
         emit(RequestState.Loading)
 
-        productLocalDataSource.getProduct(
+        productLocalSource.getProduct(
             codigo = user,
             empresa = empresa
         )
@@ -147,5 +145,5 @@ class ProductRepository(
     }.flowOn(Dispatchers.IO)
 
     private suspend fun addProduct(product: Product) =
-        productLocalDataSource.addProduct(product = product.toDatabase())
+        productLocalSource.addProduct(product = product.toDatabase())
 }

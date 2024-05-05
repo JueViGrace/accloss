@@ -4,7 +4,7 @@ import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import com.clo.accloss.core.network.ApiOperation
 import com.clo.accloss.core.state.RequestState
-import com.clo.accloss.modules.auth.login.domain.model.Login
+import com.clo.accloss.core.presentation.auth.login.domain.model.Login
 import com.clo.accloss.user.data.local.UserLocalDataSource
 import com.clo.accloss.user.data.remote.source.UserRemoteDataSource
 import com.clo.accloss.user.domain.mappers.toDatabase

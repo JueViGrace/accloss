@@ -1,6 +1,6 @@
 package com.clo.accloss.lineaspedido.domain.mappers
 
-import com.clo.accloss.lineaspedido.data.remote.model.LineasPedidosItem
+import com.clo.accloss.lineaspedido.data.remote.model.LineasPedidoItem
 import com.clo.accloss.lineaspedido.domain.model.LineasPedido
 import com.clo.accloss.Lineas_pedido as LineasPedidoEntity
 
@@ -30,7 +30,7 @@ fun LineasPedido.toDatabase(): LineasPedidoEntity = LineasPedidoEntity(
     empresa = empresa,
 )
 
-fun LineasPedidosItem.toDomain(): LineasPedido = LineasPedido(
+fun LineasPedidoItem.toDomain(): LineasPedido = LineasPedido(
     kmvArtprec = kmvArtprec ?: 0.0,
     kmvCant = kmvCant ?: 0.0,
     kmvCodart = kmvCodart ?: "",

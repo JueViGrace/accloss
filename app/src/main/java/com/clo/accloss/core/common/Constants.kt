@@ -1,6 +1,6 @@
 package com.clo.accloss.core.common
 
-import com.clo.accloss.modules.home.presentation.navigation.routes.HomeRoutes
+import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeRoutes
 
 object Constants {
     const val APP_VERSION: String = "1.0.0"

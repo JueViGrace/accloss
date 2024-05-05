@@ -1,7 +1,7 @@
 package com.clo.accloss.cliente.domain.repository
 
-import com.clo.accloss.cliente.data.local.ClienteLocalDataSource
-import com.clo.accloss.cliente.data.remote.source.ClienteRemoteDataSource
+import com.clo.accloss.cliente.data.local.ClienteLocalSource
+import com.clo.accloss.cliente.data.remote.source.ClienteRemoteSource
 import com.clo.accloss.cliente.domain.mappers.toDatabase
 import com.clo.accloss.cliente.domain.mappers.toDomain
 import com.clo.accloss.cliente.domain.model.Cliente
@@ -16,8 +16,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class ClienteRepository(
-    private val clienteRemoteDataSource: ClienteRemoteDataSource,
-    private val clienteLocalDataSource: ClienteLocalDataSource
+    private val clienteRemoteSource: ClienteRemoteSource,
+    private val clienteLocalSource: ClienteLocalSource
 ) {
     private fun getRemoteClientes(
         baseUrl: String,
@@ -26,7 +26,7 @@ class ClienteRepository(
     ): Flow<RequestState<List<Cliente>>> = flow {
         emit(RequestState.Loading)
 
-        val apiOperation = clienteRemoteDataSource
+        val apiOperation = clienteRemoteSource
             .getSafeClientes(
                 baseUrl = baseUrl,
                 user = user
@@ -62,7 +62,7 @@ class ClienteRepository(
 
         var reload = forceReload
 
-        clienteLocalDataSource.getClientes(empresa)
+        clienteLocalSource.getClientes(empresa)
             .catch { e ->
                 emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
             }
@@ -108,7 +108,7 @@ class ClienteRepository(
     ): Flow<RequestState<Cliente>> = flow<RequestState<Cliente>> {
         emit(RequestState.Loading)
 
-        clienteLocalDataSource.getCliente(
+        clienteLocalSource.getCliente(
             codigo = codigo,
             empresa = empresa
         )
@@ -125,5 +125,5 @@ class ClienteRepository(
     }.flowOn(Dispatchers.IO)
 
     private suspend fun addCliente(cliente: Cliente) =
-        clienteLocalDataSource.addCliente(cliente.toDatabase())
+        clienteLocalSource.addCliente(cliente.toDatabase())
 }

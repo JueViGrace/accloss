@@ -3,8 +3,8 @@ package com.clo.accloss.vendedor.domain.repository
 import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import com.clo.accloss.core.network.ApiOperation
 import com.clo.accloss.core.state.RequestState
-import com.clo.accloss.vendedor.data.local.VendedorLocalDataSource
-import com.clo.accloss.vendedor.data.remote.source.VendedorRemoteDataSource
+import com.clo.accloss.vendedor.data.local.VendedorLocalSource
+import com.clo.accloss.vendedor.data.remote.source.VendedorRemoteSource
 import com.clo.accloss.vendedor.domain.mappers.toDatabase
 import com.clo.accloss.vendedor.domain.mappers.toDomain
 import com.clo.accloss.vendedor.domain.model.Vendedor
@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class VendedorRepository(
-    private val vendedorRemoteDataSource: VendedorRemoteDataSource,
-    private val vendedorLocalDataSource: VendedorLocalDataSource
+    private val vendedorRemoteSource: VendedorRemoteSource,
+    private val vendedorLocalSource: VendedorLocalSource
 ) {
     fun getRemoteVendedor(
         baseUrl: String,
@@ -24,7 +24,7 @@ class VendedorRepository(
     ): Flow<RequestState<List<Vendedor>>> = flow {
         emit(RequestState.Loading)
 
-        val apiOperation = vendedorRemoteDataSource
+        val apiOperation = vendedorRemoteSource
             .getSafeVendedor(
                 baseUrl = baseUrl,
                 user = user
@@ -60,7 +60,7 @@ class VendedorRepository(
 
         var reload = forceReload
 
-        vendedorLocalDataSource.getVendedores(empresa).collect { cachedList ->
+        vendedorLocalSource.getVendedores(empresa).collect { cachedList ->
             if (cachedList.isNotEmpty() && !reload) {
                 emit(
                     RequestState.Success(
@@ -97,5 +97,5 @@ class VendedorRepository(
     }.flowOn(Dispatchers.IO)
 
     private suspend fun addVendedor(vendedor: Vendedor) =
-        vendedorLocalDataSource.addVendedor(vendedor = vendedor.toDatabase())
+        vendedorLocalSource.addVendedor(vendedor = vendedor.toDatabase())
 }

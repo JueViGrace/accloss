@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.clo.accloss.modules.app.App
+import com.clo.accloss.core.presentation.app.App
 import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {

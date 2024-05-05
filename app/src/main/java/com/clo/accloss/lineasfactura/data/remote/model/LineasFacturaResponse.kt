@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class LineasFacturaResponse(
 
     @SerialName("datos_facturas")
-    val datosFacturas: List<LineasFacturasItem> = emptyList(),
+    val lineasFacturas: List<LineasFacturasItem> = emptyList(),
 
     @SerialName("status")
     val status: String? = null

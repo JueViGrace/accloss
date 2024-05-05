@@ -4,17 +4,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LineasPedidosResponse(
+data class LineasPedidoResponse(
 
     @SerialName("datos_pedidos")
-    val datosPedidos: List<LineasPedidosItem> = emptyList(),
+    val lineasPedidos: List<LineasPedidoItem> = emptyList(),
 
     @SerialName("status")
     val status: String? = null
 )
 
 @Serializable
-data class LineasPedidosItem(
+data class LineasPedidoItem(
 
     @SerialName("kmv_nombre")
     val kmvNombre: String? = null,

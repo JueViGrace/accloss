@@ -2,7 +2,7 @@ package com.clo.accloss.session.domain.repository
 
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.state.RequestState
-import com.clo.accloss.session.data.SessionLocalDataSource
+import com.clo.accloss.session.data.SessionLocalSource
 import com.clo.accloss.session.domain.mappers.toDatabase
 import com.clo.accloss.session.domain.mappers.toDomain
 import com.clo.accloss.session.domain.model.Session
@@ -13,12 +13,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class SessionRepository(
-    private val sessionLocalDataSource: SessionLocalDataSource
+    private val sessionLocalSource: SessionLocalSource
 ) {
     fun getCurrentUser(): Flow<RequestState<Session>> = flow {
         emit(RequestState.Loading)
 
-        sessionLocalDataSource.getCurrentUser()
+        sessionLocalSource.getCurrentUser()
             .catch { e ->
                 emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
             }
@@ -28,11 +28,11 @@ class SessionRepository(
     }.flowOn(Dispatchers.IO)
 
     suspend fun addSession(session: Session) =
-        sessionLocalDataSource.addSession(session.toDatabase())
+        sessionLocalSource.addSession(session.toDatabase())
 
     suspend fun updateSession(session: Session) =
-        sessionLocalDataSource.updateSession(session.toDatabase())
+        sessionLocalSource.updateSession(session.toDatabase())
 
     suspend fun deleteSession(session: Session) =
-        sessionLocalDataSource.deleteSession(session.toDatabase())
+        sessionLocalSource.deleteSession(session.toDatabase())
 }

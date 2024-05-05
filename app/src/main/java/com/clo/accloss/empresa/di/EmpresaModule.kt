@@ -1,17 +1,17 @@
 package com.clo.accloss.empresa.di
 
-import com.clo.accloss.empresa.data.local.EmpresaLocalDataSource
+import com.clo.accloss.empresa.data.local.EmpresaLocalSource
 import com.clo.accloss.empresa.domain.repository.EmpresaRepository
-import com.clo.accloss.empresa.data.remote.source.EmpresaRemoteDataSource
+import com.clo.accloss.empresa.data.remote.source.EmpresaRemoteSource
 import org.koin.dsl.module
 
 val empresaModule = module {
     single {
-        EmpresaRemoteDataSource(get())
+        EmpresaRemoteSource(get())
     }
 
     single {
-        EmpresaLocalDataSource(get(), get())
+        EmpresaLocalSource(get(), get())
     }
 
     single {

@@ -3,9 +3,12 @@ package com.clo.accloss.core.di
 import com.clo.accloss.cliente.di.clienteModule
 import com.clo.accloss.empresa.di.empresaModule
 import com.clo.accloss.estadistica.di.estadisticaModule
+import com.clo.accloss.factura.di.facturaModule
 import com.clo.accloss.gerencia.di.gerenciaModule
-import com.clo.accloss.modules.auth.login.di.authModule
-import com.clo.accloss.modules.home.di.homeModule
+import com.clo.accloss.lineasfactura.di.lineasFacturaModule
+import com.clo.accloss.lineaspedido.di.lineasPedidoModule
+import com.clo.accloss.core.presentation.auth.login.di.authModule
+import com.clo.accloss.core.presentation.home.di.homeModule
 import com.clo.accloss.pedido.di.pedidoModule
 import com.clo.accloss.products.di.productModule
 import com.clo.accloss.session.di.sessionModule
@@ -25,6 +28,9 @@ val sharedModule = module {
         clienteModule,
         vendedorModule,
         estadisticaModule,
-        pedidoModule
+        pedidoModule,
+        facturaModule,
+        lineasFacturaModule,
+        lineasPedidoModule,
     )
 }

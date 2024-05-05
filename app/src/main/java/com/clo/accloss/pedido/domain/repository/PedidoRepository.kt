@@ -4,8 +4,8 @@ import com.clo.accloss.core.common.Constants
 import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import com.clo.accloss.core.network.ApiOperation
 import com.clo.accloss.core.state.RequestState
-import com.clo.accloss.pedido.data.local.PedidoLocalDataSource
-import com.clo.accloss.pedido.data.remote.source.PedidoRemoteDataSource
+import com.clo.accloss.pedido.data.local.PedidoLocalSource
+import com.clo.accloss.pedido.data.remote.source.PedidoRemoteSource
 import com.clo.accloss.pedido.domain.mappers.toDatabase
 import com.clo.accloss.pedido.domain.mappers.toDomain
 import com.clo.accloss.pedido.domain.model.Pedido
@@ -16,8 +16,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class PedidoRepository(
-    private val pedidoRemoteDataSource: PedidoRemoteDataSource,
-    private val pedidoLocalDataSource: PedidoLocalDataSource
+    private val pedidoRemoteSource: PedidoRemoteSource,
+    private val pedidoLocalSource: PedidoLocalSource
 ) {
     private fun getRemotePedidos(
         baseUrl: String,
@@ -26,7 +26,7 @@ class PedidoRepository(
     ): Flow<RequestState<List<Pedido>>> = flow {
         emit(RequestState.Loading)
 
-        val apiOperation = pedidoRemoteDataSource
+        val apiOperation = pedidoRemoteSource
             .getSafePedidos(
                 baseUrl = baseUrl,
                 user = user
@@ -57,12 +57,12 @@ class PedidoRepository(
         user: String,
         empresa: String,
         forceReload: Boolean = false
-    ): Flow<RequestState<List<Pedido>>> = flow<RequestState<List<Pedido>>> {
+    ): Flow<RequestState<List<Pedido>>> = flow {
         emit(RequestState.Loading)
 
         var reload = forceReload
 
-        pedidoLocalDataSource.getPedidos(empresa)
+        pedidoLocalSource.getPedidos(empresa)
             .catch { e ->
                 emit(RequestState.Error(message = e.message ?: Constants.DB_ERROR_MESSAGE))
             }
@@ -108,7 +108,7 @@ class PedidoRepository(
     ): Flow<RequestState<Pedido>> = flow<RequestState<Pedido>> {
         emit(RequestState.Loading)
 
-        pedidoLocalDataSource.getPedido(
+        pedidoLocalSource.getPedido(
             pedido = pedido,
             empresa = empresa
         )
@@ -125,5 +125,5 @@ class PedidoRepository(
     }.flowOn(Dispatchers.IO)
 
     private suspend fun addPedido(pedido: Pedido) =
-        pedidoLocalDataSource.addPedido(pedido = pedido.toDatabase())
+        pedidoLocalSource.addPedido(pedido = pedido.toDatabase())
 }

@@ -3,8 +3,8 @@ package com.clo.accloss.gerencia.domain.repository
 import com.clo.accloss.core.common.Constants
 import com.clo.accloss.core.network.ApiOperation
 import com.clo.accloss.core.state.RequestState
-import com.clo.accloss.gerencia.data.local.GerenciaLocalDataSource
-import com.clo.accloss.gerencia.data.remote.source.GerenciaRemoteDataSource
+import com.clo.accloss.gerencia.data.local.GerenciaLocalSource
+import com.clo.accloss.gerencia.data.remote.source.GerenciaRemoteSource
 import com.clo.accloss.gerencia.domain.mappers.toDatabase
 import com.clo.accloss.gerencia.domain.mappers.toDomain
 import com.clo.accloss.gerencia.domain.model.Gerencia
@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class GerenciaRepository(
-    private val gerenciaRemoteDataSource: GerenciaRemoteDataSource,
-    private val gerenciaLocalDataSource: GerenciaLocalDataSource
+    private val gerenciaRemoteSource: GerenciaRemoteSource,
+    private val gerenciaLocalSource: GerenciaLocalSource
 ) {
     fun getRemoteGerencia(
         baseUrl: String,
@@ -24,7 +24,7 @@ class GerenciaRepository(
     ): Flow<RequestState<List<Gerencia>>> = flow {
         emit(RequestState.Loading)
 
-        val apiOperation = gerenciaRemoteDataSource
+        val apiOperation = gerenciaRemoteSource
             .getSafeGerencias(
                 baseUrl = baseUrl,
                 user = user
@@ -57,5 +57,5 @@ class GerenciaRepository(
     }.flowOn(Dispatchers.IO)
 
     private suspend fun addGerencia(gerencia: Gerencia) =
-        gerenciaLocalDataSource.addGerencias(gerencia = gerencia.toDatabase())
+        gerenciaLocalSource.addGerencias(gerencia = gerencia.toDatabase())
 }

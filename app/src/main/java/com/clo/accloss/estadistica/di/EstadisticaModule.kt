@@ -1,16 +1,16 @@
 package com.clo.accloss.estadistica.di
 
-import com.clo.accloss.estadistica.data.local.EstadisticaLocalDataSource
-import com.clo.accloss.estadistica.data.remote.source.EstadisticaRemoteDataSource
+import com.clo.accloss.estadistica.data.local.EstadisticaLocalSource
+import com.clo.accloss.estadistica.data.remote.source.EstadisticaRemoteSource
 import com.clo.accloss.estadistica.domain.repository.EstadisticaRepository
 import org.koin.dsl.module
 
 val estadisticaModule = module {
     single {
-        EstadisticaLocalDataSource(get(), get())
+        EstadisticaLocalSource(get(), get())
     }
     single {
-        EstadisticaRemoteDataSource(get())
+        EstadisticaRemoteSource(get())
     }
     single {
         EstadisticaRepository(get(), get())
