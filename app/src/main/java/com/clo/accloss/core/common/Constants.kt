@@ -19,6 +19,7 @@ object Constants {
 
     val menuList = listOf(
         HomeRoutes.DashboardModule,
-        HomeRoutes.ProductsModule
+        HomeRoutes.ProductsModule,
+
     )
 }

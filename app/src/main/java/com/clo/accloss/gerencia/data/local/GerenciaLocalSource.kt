@@ -1,7 +1,7 @@
 package com.clo.accloss.gerencia.data.local
 
 import com.clo.accloss.Gerencia
-import com.clo.accloss.core.database.helper.DbHelper
+import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 

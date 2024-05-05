@@ -8,7 +8,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.presentation.auth.login.domain.model.Login
 import com.clo.accloss.core.presentation.auth.login.presentation.events.LoginEvents
 import com.clo.accloss.core.presentation.auth.login.presentation.state.LoginState
-import com.clo.accloss.core.state.RequestState
+import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.empresa.domain.repository.EmpresaRepository
 import com.clo.accloss.empresa.domain.rules.EmpresaValidator
 import kotlinx.coroutines.flow.MutableStateFlow

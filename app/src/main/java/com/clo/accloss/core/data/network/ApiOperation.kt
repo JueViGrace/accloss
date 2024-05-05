@@ -1,4 +1,4 @@
-package com.clo.accloss.core.network
+package com.clo.accloss.core.data.network
 
 sealed interface ApiOperation<T> {
     data class Success<T>(val data: T) : ApiOperation<T>

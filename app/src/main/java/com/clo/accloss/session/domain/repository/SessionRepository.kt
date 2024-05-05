@@ -1,7 +1,7 @@
 package com.clo.accloss.session.domain.repository
 
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
-import com.clo.accloss.core.state.RequestState
+import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.session.data.SessionLocalSource
 import com.clo.accloss.session.domain.mappers.toDatabase
 import com.clo.accloss.session.domain.mappers.toDomain

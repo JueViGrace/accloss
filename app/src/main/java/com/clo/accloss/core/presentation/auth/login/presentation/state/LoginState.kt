@@ -1,6 +1,6 @@
 package com.clo.accloss.core.presentation.auth.login.presentation.state
 
-import com.clo.accloss.core.state.RequestState
+import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.empresa.domain.model.Empresa
 import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.user.domain.model.User

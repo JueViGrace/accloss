@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.clo.accloss.core.state.RequestState
+import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.core.presentation.home.presentation.state.HomeState
 import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.session.domain.repository.SessionRepository

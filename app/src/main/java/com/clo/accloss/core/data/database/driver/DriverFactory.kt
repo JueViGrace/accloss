@@ -1,4 +1,4 @@
-package com.clo.accloss.core.database.driver
+package com.clo.accloss.core.data.database.driver
 
 import android.content.Context
 import app.cash.sqldelight.db.SqlDriver

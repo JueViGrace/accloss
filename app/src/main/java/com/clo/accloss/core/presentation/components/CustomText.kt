@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
 @Composable
@@ -19,7 +20,9 @@ fun CustomText(
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = 1,
     color: Color = MaterialTheme.colorScheme.onSurface,
-    textDecoration: TextDecoration = TextDecoration.None
+    textDecoration: TextDecoration = TextDecoration.None,
+    softWrap: Boolean = false,
+    overflow: TextOverflow = TextOverflow.Clip
 ) {
     Text(
         text = text,
@@ -29,6 +32,8 @@ fun CustomText(
         maxLines = maxLines,
         color = color,
         modifier = modifier,
-        textDecoration = textDecoration
+        textDecoration = textDecoration,
+        softWrap = softWrap,
+        overflow = overflow
     )
 }

@@ -4,6 +4,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import com.clo.accloss.R
 import com.clo.accloss.core.presentation.dashboard.presentation.navigation.screen.DashboardScreen
 import com.clo.accloss.products.presentation.screen.ProductsScreen
+import com.clo.accloss.vendedor.presentation.navigation.screens.VendedorScreen
 
 sealed class HomeRoutes(
     val screen: Screen,
@@ -22,5 +23,12 @@ sealed class HomeRoutes(
             screen = ProductsScreen,
             title = "Artículos",
             icon = R.drawable.ic_inventory_2_24px
+        )
+
+    data object VendedorModule :
+        HomeRoutes(
+            screen = VendedorScreen,
+            title = "Vendedores",
+            icon = R.drawable.ic_corporate_fare_24px
         )
 }

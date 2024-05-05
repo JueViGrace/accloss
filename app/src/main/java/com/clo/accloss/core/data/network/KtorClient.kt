@@ -1,4 +1,4 @@
-package com.clo.accloss.core.network
+package com.clo.accloss.core.data.network
 
 import com.clo.accloss.core.common.Constants.BASE_URL
 import io.ktor.client.HttpClient

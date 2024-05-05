@@ -7,8 +7,8 @@ import com.clo.accloss.cliente.domain.mappers.toDomain
 import com.clo.accloss.cliente.domain.model.Cliente
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.Constants.SERVER_ERROR
-import com.clo.accloss.core.network.ApiOperation
-import com.clo.accloss.core.state.RequestState
+import com.clo.accloss.core.data.network.ApiOperation
+import com.clo.accloss.core.presentation.state.RequestState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

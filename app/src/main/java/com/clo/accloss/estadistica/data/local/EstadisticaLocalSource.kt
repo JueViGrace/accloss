@@ -3,7 +3,7 @@ package com.clo.accloss.estadistica.data.local
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
-import com.clo.accloss.core.database.helper.DbHelper
+import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow

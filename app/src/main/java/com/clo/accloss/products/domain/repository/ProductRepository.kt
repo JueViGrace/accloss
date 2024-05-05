@@ -2,8 +2,8 @@ package com.clo.accloss.products.domain.repository
 
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.Constants.SERVER_ERROR
-import com.clo.accloss.core.network.ApiOperation
-import com.clo.accloss.core.state.RequestState
+import com.clo.accloss.core.data.network.ApiOperation
+import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.products.data.local.ProductLocalSource
 import com.clo.accloss.products.data.remote.source.ProductRemoteSource
 import com.clo.accloss.products.domain.mappers.toDatabase

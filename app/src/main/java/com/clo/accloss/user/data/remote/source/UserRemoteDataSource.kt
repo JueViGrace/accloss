@@ -1,7 +1,7 @@
 package com.clo.accloss.user.data.remote.source
 
-import com.clo.accloss.core.network.ApiOperation
-import com.clo.accloss.core.network.KtorClient
+import com.clo.accloss.core.data.network.ApiOperation
+import com.clo.accloss.core.data.network.KtorClient
 import com.clo.accloss.user.data.remote.model.UserResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.get

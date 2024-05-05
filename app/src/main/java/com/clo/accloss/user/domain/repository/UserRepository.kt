@@ -2,8 +2,8 @@ package com.clo.accloss.user.domain.repository
 
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.Constants.SERVER_ERROR
-import com.clo.accloss.core.network.ApiOperation
-import com.clo.accloss.core.state.RequestState
+import com.clo.accloss.core.data.network.ApiOperation
+import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.core.presentation.auth.login.domain.model.Login
 import com.clo.accloss.user.data.local.UserLocalDataSource
 import com.clo.accloss.user.data.remote.source.UserRemoteDataSource
