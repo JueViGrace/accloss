@@ -6,7 +6,8 @@ import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.user.domain.model.User
 
 data class LoginState(
-    val session: RequestState<Session> = RequestState.Idle,
+    val currentSession: RequestState<Session> = RequestState.Idle,
+    val sessions: RequestState<List<Session>> = RequestState.Loading,
     val empresa: Empresa? = null,
     val user: User? = null,
     val loadingEmpresa: Boolean = false,

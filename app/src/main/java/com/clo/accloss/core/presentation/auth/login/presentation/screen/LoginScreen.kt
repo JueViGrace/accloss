@@ -9,7 +9,6 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.clo.accloss.core.presentation.components.LoadingScreen
 import com.clo.accloss.core.presentation.app.navigation.routes.AppRoutes
 import com.clo.accloss.core.presentation.app.navigation.screen.AppScreen
 import com.clo.accloss.core.presentation.auth.login.presentation.components.LoginContent
@@ -29,33 +28,18 @@ object LoginScreen : Screen {
         val editLogin = viewModel.newLogin
         val editEmpresa = viewModel.newEmpresa
 
-        state.session.DisplayResult(
-            onIdle = {
-                LoginContent(
-                    editEmpresa = editEmpresa,
-                    editLogin = editLogin,
-                    state = state,
-                    onEvent = viewModel::onEvent
-                )
-            },
-            onLoading = { LoadingScreen() },
-            onError = {
-                LoginContent(
-                    editEmpresa = editEmpresa,
-                    editLogin = editLogin,
-                    state = state,
-                    onEvent = viewModel::onEvent
-                )
-            },
-            onSuccess = { session ->
-                if (session.active) {
-                    navigator.replace(
-                        AppScreen(
-                            initialScreen = AppRoutes.HomeModule().screen
-                        )
+        LoginContent(
+            editEmpresa = editEmpresa,
+            editLogin = editLogin,
+            state = state,
+            onEvent = viewModel::onEvent,
+            onNavigate = {
+                navigator.replace(
+                    AppScreen(
+                        initialScreen = AppRoutes.HomeModule().screen
                     )
-                    viewModel.onEvent(LoginEvents.OnLoginDismiss)
-                }
+                )
+                viewModel.onEvent(LoginEvents.OnLoginDismiss)
             }
         )
     }

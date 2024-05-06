@@ -131,7 +131,7 @@ class LoginViewModel(
             LoginEvents.OnLoginDismiss -> {
                 _state.update { loginState ->
                     loginState.copy(
-                        session = RequestState.Idle,
+                        currentSession = RequestState.Idle,
                         empresa = null,
                         user = null,
                         loadingEmpresa = false,
@@ -171,17 +171,18 @@ class LoginViewModel(
                                                 )
                                             }
                                         }
-                                        RequestState.Idle -> {}
-                                        RequestState.Loading -> {
-                                            _state.update { loginState ->
-                                                loginState.copy(
-                                                    errorMessage = null,
-                                                    loadingUser = true
-                                                )
-                                            }
-                                        }
                                         is RequestState.Success -> {
                                             if (result.data.username.isNotEmpty()) {
+                                                val session = Session(
+                                                    nombre = result.data.nombre,
+                                                    nombreEmpresa = empresa.nombreEmpresa,
+                                                    user = result.data.vendedor,
+                                                    empresa = empresa.codigoEmpresa,
+                                                    enlaceEmpresa = "https://${empresa.enlaceEmpresa}",
+                                                    enlaceEmpresaPost = "http://${empresa.enlaceEmpresa}:5001",
+                                                    active = true
+                                                )
+
                                                 empresaRepository.addEmpresa(
                                                     empresa = empresa.copy(
                                                         enlaceEmpresa = "https://${empresa.enlaceEmpresa}/webservice",
@@ -195,15 +196,9 @@ class LoginViewModel(
                                                     )
                                                 )
 
-                                                sessionRepository.addSession(
-                                                    Session(
-                                                        user = result.data.vendedor,
-                                                        empresa = empresa.codigoEmpresa,
-                                                        enlaceEmpresa = "https://${empresa.enlaceEmpresa}",
-                                                        enlaceEmpresaPost = "http://${empresa.enlaceEmpresa}:5001",
-                                                        active = true
-                                                    )
-                                                )
+                                                sessionRepository.addSession(session)
+
+                                                sessionRepository.updateSession(session)
 
                                                 _state.update { loginState ->
                                                     loginState.copy(
@@ -224,6 +219,14 @@ class LoginViewModel(
                                                 }
                                             }
                                         }
+                                        else -> {
+                                            _state.update { loginState ->
+                                                loginState.copy(
+                                                    errorMessage = null,
+                                                    loadingUser = true
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -240,6 +243,13 @@ class LoginViewModel(
                     }
                 }
             }
+
+            is LoginEvents.OnSessionSelected -> {
+                screenModelScope.launch {
+                    sessionRepository.addSession(session = event.session.copy(active = true))
+                    checkSession()
+                }
+            }
         }
     }
 
@@ -248,7 +258,17 @@ class LoginViewModel(
             sessionRepository.getCurrentUser().collect { result ->
                 _state.update { loginState ->
                     loginState.copy(
-                        session = result
+                        currentSession = result
+                    )
+                }
+            }
+        }
+
+        screenModelScope.launch {
+            sessionRepository.getSessions().collect { result ->
+                _state.update { loginState ->
+                    loginState.copy(
+                        sessions = result
                     )
                 }
             }

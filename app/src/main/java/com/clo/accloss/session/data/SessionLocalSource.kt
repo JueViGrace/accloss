@@ -1,6 +1,7 @@
 package com.clo.accloss.session.data
 
 import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import com.clo.accloss.Session
 import com.clo.accloss.core.data.database.helper.DbHelper
@@ -21,6 +22,15 @@ class SessionLocalSource(
         }
     }.await()
 
+    suspend fun getSessions(): Flow<List<Session>> = scope.async {
+        dbHelper.withDatabase { db ->
+            db.sessionQueries
+                .getSessions()
+                .asFlow()
+                .mapToList(scope.coroutineContext)
+        }
+    }.await()
+
     suspend fun addSession(session: Session) = scope.async {
         dbHelper.withDatabase { db ->
             db.sessionQueries
@@ -31,8 +41,6 @@ class SessionLocalSource(
     suspend fun updateSession(session: Session) = scope.async {
         dbHelper.withDatabase { db ->
             db.sessionQueries.updateSessions(
-                active = true,
-                user = session.user,
                 empresa = session.empresa
             )
         }
@@ -49,7 +57,6 @@ class SessionLocalSource(
             db.estadisticaQueries.deleteEstadisticas(session.empresa)
             db.vendedorQueries.deleteVendedor(session.empresa)
             db.gerenciaQueries.deleteGerencias(session.empresa)
-            updateSession(session)
             db.userQueries.deleteUser(session.user, session.empresa)
             db.empresaQueries.deleteEmpresa(session.empresa)
             db.sessionQueries.deleteSession(

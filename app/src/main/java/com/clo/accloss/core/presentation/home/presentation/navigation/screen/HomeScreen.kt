@@ -3,10 +3,13 @@ package com.clo.accloss.core.presentation.home.presentation.navigation.screen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
-import cafe.adriel.voyager.koin.getNavigatorScreenModel
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -14,40 +17,48 @@ import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.core.presentation.app.navigation.routes.AppRoutes
 import com.clo.accloss.core.presentation.app.navigation.screen.AppScreen
+import com.clo.accloss.core.presentation.auth.login.presentation.viewmodel.LoginViewModel
 import com.clo.accloss.core.presentation.components.ErrorScreen
 import com.clo.accloss.core.presentation.components.LoadingScreen
-import com.clo.accloss.core.presentation.auth.navigation.routes.AuthRoutes
+import com.clo.accloss.core.presentation.home.presentation.components.AddAccountDialog
 import com.clo.accloss.core.presentation.home.presentation.components.HomeContent
 import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeRoutes
 import com.clo.accloss.core.presentation.home.presentation.viewmodel.HomeViewModel
 
 internal data class HomeScreen(
-    val homeRoute: Screen
+    var homeRoute: Screen
 ) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = navigator.getNavigatorScreenModel<HomeViewModel>()
-        val state by viewModel.state.collectAsState()
+        val homeViewModel = getScreenModel<HomeViewModel>()
+        val state by homeViewModel.state.collectAsState()
 
-        state.session.DisplayResult(
+        val loginViewModel = getScreenModel<LoginViewModel>()
+        val loginState by loginViewModel.state.collectAsState()
+        val editEmpresa = loginViewModel.newEmpresa ?: ""
+        val editLogin = loginViewModel.newLogin
+
+        var showDialog by remember {
+            mutableStateOf(false)
+        }
+
+        state.currentSession.DisplayResult(
             onLoading = {
                 LoadingScreen()
             },
             onError = {
                 ErrorScreen(it)
-                viewModel.endSession()
+                homeViewModel.endSession()
                 navigator.replaceAll(
                     AppScreen(
-                        initialScreen = AppRoutes.AuthModule(
-                            AuthRoutes.LoginRoute.screen
-                        ).screen
+                        initialScreen = AppRoutes.AuthModule().screen
                     )
                 )
             },
-            onSuccess = {
+            onSuccess = { session ->
                 Navigator(
                     screen = homeRoute,
                     disposeBehavior = NavigatorDisposeBehavior(disposeNestedNavigators = true),
@@ -62,16 +73,39 @@ internal data class HomeScreen(
                                     AppRoutes.HomeModule(
                                         homeRoute = HomeRoutes.DashboardModule.screen
                                     ).screen
-
                                 )
                                 true
                             }
                         }
                     }
                 ) {
+                    if (showDialog) {
+                        AddAccountDialog(
+                            editEmpresa = editEmpresa,
+                            editLogin = editLogin,
+                            state = loginState,
+                            showChanged = { newValue ->
+                                showDialog = newValue
+                            },
+                            onEvent = { event ->
+                                loginViewModel.onEvent(event)
+                            }
+                        )
+                    }
+
                     HomeContent(
                         homeRoute = homeRoute,
+                        currentSession = session,
+                        sessions = state.sessions,
                         currentScreen = { CurrentScreen() },
+                        onChangeSession = { newSession ->
+                            if (!newSession.active) {
+                                homeViewModel.onEvent(newSession)
+                            }
+                        },
+                        onAddSession = {
+                            showDialog = true
+                        },
                         onMenuClick = { item ->
                             val screens = navigator.items.map {
                                 it as HomeScreen
@@ -80,44 +114,33 @@ internal data class HomeScreen(
                                 homeRoute != HomeRoutes.DashboardModule.screen &&
                                     item == HomeRoutes.DashboardModule.screen
                                 -> {
-                                    navigator.pop()
+                                    navigator.popUntilRoot()
                                 }
-
                                 screens.contains(
-                                    AppScreen(
-                                        initialScreen = AppRoutes.HomeModule(
-                                            homeRoute = item.screen
-                                        ).screen
-                                    ).initialScreen
+                                    AppRoutes.HomeModule(
+                                        homeRoute = item.screen
+                                    ).screen
                                 ) -> {
                                     navigator.replace(
-                                        AppScreen(
-                                            initialScreen = AppRoutes.HomeModule(
-                                                homeRoute = item.screen
-                                            ).screen
-                                        )
+                                        AppRoutes.HomeModule(
+                                            homeRoute = item.screen
+                                        ).screen
                                     )
                                 }
 
                                 else -> {
                                     navigator.push(
-                                        AppScreen(
-                                            initialScreen = AppRoutes.HomeModule(
-                                                homeRoute = item.screen
-                                            ).screen
-                                        )
+                                        AppRoutes.HomeModule(
+                                            homeRoute = item.screen
+                                        ).screen
                                     )
                                 }
                             }
                         },
                         onEndSession = {
-                            viewModel.endSession()
+                            homeViewModel.endSession()
                             navigator.replaceAll(
-                                AppScreen(
-                                    initialScreen = AppRoutes.AuthModule(
-                                        AuthRoutes.LoginRoute.screen
-                                    ).screen
-                                )
+                                AppRoutes.AuthModule().screen
                             )
                         }
                     )

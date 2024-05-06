@@ -27,6 +27,24 @@ class SessionRepository(
             }
     }.flowOn(Dispatchers.IO)
 
+    fun getSessions(): Flow<RequestState<List<Session>>> = flow<RequestState<List<Session>>> {
+        emit(RequestState.Loading)
+
+        sessionLocalSource.getSessions()
+            .catch { e ->
+                emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
+            }
+            .collect { list ->
+                emit(
+                    RequestState.Success(
+                        data = list.map { session ->
+                            session.toDomain()
+                        }
+                    )
+                )
+            }
+    }.flowOn(Dispatchers.IO)
+
     suspend fun addSession(session: Session) =
         sessionLocalSource.addSession(session.toDatabase())
 

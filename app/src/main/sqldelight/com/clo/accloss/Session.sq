@@ -1,23 +1,37 @@
 import kotlin.Boolean;
 
 CREATE TABLE IF NOT EXISTS session (
+    nombre TEXT NOT NULL,
+    nombreEmpresa TEXT NOT NULL,
     user TEXT NOT NULL,
     empresa TEXT NOT NULL,
     enlaceEmpresa TEXT NOT NULL,
     enlaceEmpresaPost TEXT NOT NULL,
     active INTEGER AS Boolean NOT NULL DEFAULT 1,
-    PRIMARY KEY(user, empresa)
+    PRIMARY KEY(empresa)
 );
+
+countUsers:
+SELECT COUNT(*)
+FROM session;
 
 getCurrentUser:
 SELECT *
 FROM session
 WHERE
-active == 1;
+active == 1
+ORDER BY
+nombreEmpresa DESC;
+
+getSessions:
+SELECT *
+FROM session;
 
 addSession:
 INSERT OR REPLACE
 INTO session (
+nombre,
+nombreEmpresa,
 user,
 empresa,
 enlaceEmpresa,
@@ -28,10 +42,8 @@ VALUES ?;
 
 updateSessions:
 UPDATE session
-SET active = :active
+SET active = 0
 WHERE
-user != :user
-OR
 empresa != :empresa;
 
 deleteSession:

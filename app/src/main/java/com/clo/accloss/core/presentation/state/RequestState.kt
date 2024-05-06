@@ -31,6 +31,7 @@ sealed class RequestState<out T> {
             null
         }
     }
+    fun getSuccessDataSafe(): T? = if (this.isSuccess()) (this as Success).data else getSuccessDataOrNull()
 
     /**
      * Returns an error message from an [Error]
