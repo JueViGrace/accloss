@@ -19,13 +19,13 @@ getCurrentUser:
 SELECT *
 FROM session
 WHERE
-active == 1
-ORDER BY
-nombreEmpresa DESC;
+active == 1;
 
 getSessions:
 SELECT *
-FROM session;
+FROM session
+ORDER BY
+nombreEmpresa ASC;
 
 addSession:
 INSERT OR REPLACE

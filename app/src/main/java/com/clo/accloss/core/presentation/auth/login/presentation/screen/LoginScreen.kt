@@ -6,24 +6,22 @@ import androidx.compose.runtime.getValue
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.clo.accloss.core.presentation.app.navigation.routes.AppRoutes
 import com.clo.accloss.core.presentation.app.navigation.screen.AppScreen
 import com.clo.accloss.core.presentation.auth.login.presentation.components.LoginContent
 import com.clo.accloss.core.presentation.auth.login.presentation.events.LoginEvents
 import com.clo.accloss.core.presentation.auth.login.presentation.viewmodel.LoginViewModel
+import com.clo.accloss.core.presentation.home.presentation.navigation.screen.HomeScreen
 
-object LoginScreen : Screen {
-    private fun readResolve(): Any = LoginScreen
-
+class LoginScreen : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = getScreenModel<LoginViewModel>()
+        val viewModel = koinScreenModel<LoginViewModel>()
         val state by viewModel.state.collectAsState()
         val editLogin = viewModel.newLogin
         val editEmpresa = viewModel.newEmpresa
@@ -34,9 +32,9 @@ object LoginScreen : Screen {
             state = state,
             onEvent = viewModel::onEvent,
             onNavigate = {
-                navigator.replace(
+                navigator.replaceAll(
                     AppScreen(
-                        initialScreen = AppRoutes.HomeModule().screen
+                        initialScreen = HomeScreen()
                     )
                 )
                 viewModel.onEvent(LoginEvents.OnLoginDismiss)

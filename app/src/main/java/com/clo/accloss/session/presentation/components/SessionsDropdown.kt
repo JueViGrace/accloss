@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -62,6 +62,10 @@ fun SessionsDropdown(
         Icons.Filled.ArrowDropDown
     }
 
+    var newList: List<Session> by remember {
+        mutableStateOf(emptyList())
+    }
+
     sessions.DisplayResult(
         onLoading = {
             LoadingComponent(
@@ -77,105 +81,108 @@ fun SessionsDropdown(
             }
         },
         onSuccess = { list ->
-            Box {
-                if (list.isEmpty()) {
-                    CustomOutlinedTextField(
-                        modifier = modifier,
-                        value = "No hay sesiones",
-                        onValueChanged = { _ ->
-                        },
-                        placeholder = { CustomText(text = placeholder) },
-                        trailingIcon = {
-                            Icon(
-                                imageVector = icon,
-                                contentDescription = "",
-                                modifier = Modifier.clickable {
-                                    expanded = !expanded
-                                }
-                            )
-                        },
-                        readOnly = true
-                    )
-                } else {
-                    CustomOutlinedTextField(
-                        modifier = Modifier.fillMaxWidth()
-                            .onGloballyPositioned { coordinates ->
-                                textFieldSize = coordinates.size.toSize()
-                            }.padding(5.dp),
-                        value = "Escoge una sesión",
-                        onValueChanged = { _ ->
-                        },
-                        label = { CustomText(text = label) },
-                        placeholder = { CustomText(text = placeholder) },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                expanded = true
-                            }
-                        ),
-                        leadingIcon = if (painter != null) {
-                            {
-                                Icon(
-                                    painter = painter,
-                                    contentDescription = "",
-                                )
-                            }
-                        } else {
-                            null
-                        },
-                        trailingIcon = {
-                            Icon(
-                                imageVector = icon,
-                                contentDescription = "",
-                                modifier = Modifier.clickable {
-                                    expanded = !expanded
-                                }
-                            )
-                        },
-                        readOnly = true
-                    )
-
-                    DropdownMenu(
-                        modifier = Modifier
-                            .width(
-                                with(LocalDensity.current) { textFieldSize.width.toDp() }
-                            ),
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
-                    ) {
-                        list.forEach { session ->
-                            DropdownMenuItem(
-                                text = {
-                                    Row(
-                                        horizontalArrangement = Arrangement.spacedBy(
-                                            5.dp,
-                                            Alignment.CenterHorizontally
-                                        ),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.ic_account_circle_24px),
-                                            contentDescription = ""
-                                        )
-                                        CustomText(
-                                            text = "${session.nombre}, ${session.nombreEmpresa}",
-                                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                                            fontWeight = MaterialTheme.typography.bodyLarge.fontWeight
-                                        )
-                                    }
-                                },
-                                onClick = {
-                                    onSessionSelected(session)
-                                    expanded = false
-                                }
-                            )
-                        }
-                    }
-                }
-            }
+            newList = list
         },
     )
+
+    Box {
+        if (newList.isEmpty()) {
+            CustomOutlinedTextField(
+                modifier = modifier,
+                value = "No hay sesiones",
+                onValueChanged = { _ ->
+                },
+                placeholder = { CustomText(text = placeholder) },
+                trailingIcon = {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = "",
+                        modifier = Modifier.clickable {
+                            expanded = !expanded
+                        }
+                    )
+                },
+                readOnly = true
+            )
+        } else {
+            CustomOutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        textFieldSize = coordinates.size.toSize()
+                    },
+                value = "Escoge una sesión",
+                onValueChanged = { _ ->
+                },
+                label = { CustomText(text = label) },
+                placeholder = { CustomText(text = placeholder) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        expanded = true
+                    }
+                ),
+                leadingIcon = if (painter != null) {
+                    {
+                        Icon(
+                            painter = painter,
+                            contentDescription = "",
+                        )
+                    }
+                } else {
+                    null
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = "",
+                        modifier = Modifier.clickable {
+                            expanded = !expanded
+                        }
+                    )
+                },
+                readOnly = true
+            )
+
+            DropdownMenu(
+                modifier = Modifier
+                    .width(
+                        with(LocalDensity.current) { textFieldSize.width.toDp() }
+                    ),
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                newList.forEach { session ->
+                    DropdownMenuItem(
+                        text = {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    5.dp,
+                                    Alignment.CenterHorizontally
+                                ),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_account_circle_24px),
+                                    contentDescription = ""
+                                )
+                                CustomText(
+                                    text = "${session.nombre}, ${session.nombreEmpresa}",
+                                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                                    fontWeight = MaterialTheme.typography.bodyLarge.fontWeight
+                                )
+                            }
+                        },
+                        onClick = {
+                            onSessionSelected(session)
+                            expanded = false
+                        }
+                    )
+                }
+            }
+        }
+    }
 }

@@ -27,8 +27,8 @@ class GetSession(
                     is RequestState.Success -> {
                         emit(
                             RequestState.Success(
-                            data = result.data
-                        )
+                                data = result.data
+                            )
                         )
                     }
 

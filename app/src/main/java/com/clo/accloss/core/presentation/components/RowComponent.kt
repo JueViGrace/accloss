@@ -28,11 +28,11 @@ fun RowComponent(
 
         when {
             field.isNotEmpty() && value.isNotEmpty() -> {
-                CustomText(text = "$field:")
+                CustomText(text = field)
                 CustomText(text = value)
             }
             field.isNotEmpty() -> {
-                CustomText(text = "$field:")
+                CustomText(text = field)
             }
             value.isNotEmpty() -> {
                 CustomText(text = value)

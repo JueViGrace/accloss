@@ -4,6 +4,5 @@ import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 
 data class HomeState(
-    val currentSession: RequestState<Session> = RequestState.Loading,
-    val sessions: RequestState<List<Session>> = RequestState.Loading
+    val currentSession: RequestState<Session> = RequestState.Loading
 )

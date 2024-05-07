@@ -1,6 +1,7 @@
 package com.clo.accloss.core.common
 
-import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeRoutes
+import cafe.adriel.voyager.navigator.tab.Tab
+import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeTabs
 
 object Constants {
     const val APP_VERSION: String = "1.0.0"
@@ -11,15 +12,25 @@ object Constants {
 
     const val BASE_URL: String = "https://cloccidental.com"
 
+    const val HOME: String = "Home"
+    const val PROFILE: String = "Profile"
+
     const val HUNDRED_DOUBLE: Double = 100.00
 
     const val MIN_PAGE: Int = 20
 
     const val PREFETCH: Int = 10
 
-    val menuList = listOf(
-        HomeRoutes.DashboardModule,
-        HomeRoutes.ProductsModule,
+    val homeTabs: List<Tab> = HomeTabs::class.sealedSubclasses
+        .map { routes ->
+            routes.objectInstance?.tab as Tab
+        }
 
+    val GERENCIAS = listOf(
+        "G95",
+        "G96",
+        "G97",
+        "G98",
+        "G99",
     )
 }

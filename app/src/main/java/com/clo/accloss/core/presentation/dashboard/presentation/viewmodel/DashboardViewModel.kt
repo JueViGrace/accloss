@@ -8,20 +8,18 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.presentation.dashboard.presentation.state.DashboardState
 import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.session.domain.model.Session
-import com.clo.accloss.session.domain.repository.SessionRepository
 import com.clo.accloss.session.domain.usecase.GetSession
 import com.clo.accloss.user.domain.repository.UserRepository
 import com.clo.accloss.vendedor.domain.repository.VendedorRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
     private val getSession: GetSession,
-    private val userRepository: UserRepository,
     private val vendedorRepository: VendedorRepository
 ) : ScreenModel {
     private var _state: MutableStateFlow<DashboardState> = MutableStateFlow(DashboardState())
@@ -57,7 +55,13 @@ class DashboardViewModel(
                     baseUrl = session.enlaceEmpresa,
                     user = session.user,
                     empresa = session.empresa
-                )
+                ).collect { result ->
+                    _state.update { dashboardState ->
+                        dashboardState.copy(
+                            vendedores = result
+                        )
+                    }
+                }
             }
         }
     }

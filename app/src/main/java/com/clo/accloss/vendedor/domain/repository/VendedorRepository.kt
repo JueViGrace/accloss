@@ -1,5 +1,6 @@
 package com.clo.accloss.vendedor.domain.repository
 
+import com.clo.accloss.core.common.Constants.GERENCIAS
 import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import com.clo.accloss.core.data.network.ApiOperation
 import com.clo.accloss.core.presentation.state.RequestState
@@ -26,6 +27,39 @@ class VendedorRepository(
 
         val apiOperation = vendedorRemoteSource
             .getSafeVendedor(
+                baseUrl = baseUrl,
+                user = user
+            )
+
+        when (apiOperation) {
+            is ApiOperation.Failure -> {
+                emit(
+                    RequestState.Error(
+                        message = apiOperation.error.message ?: SERVER_ERROR
+                    )
+                )
+            }
+            is ApiOperation.Success -> {
+                emit(
+                    RequestState.Success(
+                        data = apiOperation.data.map { vendedorResponse ->
+                            vendedorResponse.toDomain().copy(empresa = empresa)
+                        }
+                    )
+                )
+            }
+        }
+    }.flowOn(Dispatchers.IO)
+
+    fun getRemoteCoordinaciones(
+        baseUrl: String,
+        user: String,
+        empresa: String
+    ): Flow<RequestState<List<Vendedor>>> = flow {
+        emit(RequestState.Loading)
+
+        val apiOperation = vendedorRemoteSource
+            .getSafeCoordinaciones(
                 baseUrl = baseUrl,
                 user = user
             )
@@ -89,6 +123,29 @@ class VendedorRepository(
                             }
                         }
                         else -> emit(RequestState.Loading)
+                    }
+                }
+                if (GERENCIAS.contains(user)) {
+                    getRemoteCoordinaciones(
+                        baseUrl = baseUrl,
+                        user = user,
+                        empresa = empresa
+                    ).collect { result ->
+                        when (result) {
+                            is RequestState.Error -> {
+                                emit(
+                                    RequestState.Error(
+                                        message = result.message
+                                    )
+                                )
+                            }
+                            is RequestState.Success -> {
+                                result.data.forEach { vendedor ->
+                                    addVendedor(vendedor)
+                                }
+                            }
+                            else -> emit(RequestState.Loading)
+                        }
                     }
                 }
                 reload = false

@@ -7,8 +7,6 @@ import com.clo.accloss.factura.di.facturaModule
 import com.clo.accloss.gerencia.di.gerenciaModule
 import com.clo.accloss.lineasfactura.di.lineasFacturaModule
 import com.clo.accloss.lineaspedido.di.lineasPedidoModule
-import com.clo.accloss.core.presentation.auth.login.di.authModule
-import com.clo.accloss.core.presentation.home.di.homeModule
 import com.clo.accloss.pedido.di.pedidoModule
 import com.clo.accloss.products.di.productModule
 import com.clo.accloss.session.di.sessionModule
@@ -20,9 +18,7 @@ val sharedModule = module {
     includes(
         empresaModule,
         userModule,
-        authModule,
         sessionModule,
-        homeModule,
         productModule,
         gerenciaModule,
         clienteModule,

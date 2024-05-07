@@ -22,4 +22,18 @@ class VendedorRemoteSource(
             )
             .body<List<VendedorResponse>>()
     }
+
+    suspend fun getSafeCoordinaciones(
+        baseUrl: String,
+        user: String
+    ): ApiOperation<List<VendedorResponse>> = ktorClient.safeApiCall {
+        ktorClient
+            .client(
+                baseUrl = baseUrl
+            )
+            .get(
+                urlString = "/webservice/c_datos_maestros.php?codigo=$user"
+            )
+            .body<List<VendedorResponse>>()
+    }
 }
