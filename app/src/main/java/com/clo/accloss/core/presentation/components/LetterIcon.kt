@@ -22,7 +22,7 @@ fun LetterIcon(
             .size(50.dp)
             .background(
                 color = MaterialTheme.colorScheme.primaryContainer,
-
+                shape = CircleShape
             )
             .clip(CircleShape)
             .padding(10.dp),

@@ -28,7 +28,7 @@ fun ListHeader(
         horizontalAlignment = Alignment.Start
     ) {
         Box(
-            modifier = Modifier.width(50.dp),
+            modifier = Modifier.width(60.dp),
             contentAlignment = Alignment.Center
         ) {
             CustomText(
