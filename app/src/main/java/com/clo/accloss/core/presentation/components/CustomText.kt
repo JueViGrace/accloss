@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.TextUnit
 fun CustomText(
     modifier: Modifier = Modifier,
     text: String,
-    fontSize: TextUnit = MaterialTheme.typography.bodyMedium.fontSize,
+    fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     fontWeight: FontWeight? = MaterialTheme.typography.bodyLarge.fontWeight,
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = 1,

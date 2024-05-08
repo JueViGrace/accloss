@@ -14,6 +14,7 @@ object Constants {
 
     const val HOME: String = "Home"
     const val PROFILE: String = "Profile"
+    const val CONTACT: String = "Contacts"
 
     const val HUNDRED_DOUBLE: Double = 100.00
 
@@ -21,10 +22,11 @@ object Constants {
 
     const val PREFETCH: Int = 10
 
-    val homeTabs: List<Tab> = HomeTabs::class.sealedSubclasses
-        .map { routes ->
-            routes.objectInstance?.tab as Tab
-        }
+    val homeTabs: List<Tab> = listOf(
+        HomeTabs.Dashboard.tab,
+        HomeTabs.Contact.tab,
+        HomeTabs.Profile.tab
+    )
 
     val GERENCIAS = listOf(
         "G95",

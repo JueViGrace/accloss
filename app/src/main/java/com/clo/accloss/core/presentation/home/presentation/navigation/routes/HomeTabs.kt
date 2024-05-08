@@ -2,8 +2,10 @@ package com.clo.accloss.core.presentation.home.presentation.navigation.routes
 
 import cafe.adriel.voyager.navigator.tab.Tab
 import com.clo.accloss.R
+import com.clo.accloss.core.common.Constants.CONTACT
 import com.clo.accloss.core.common.Constants.HOME
 import com.clo.accloss.core.common.Constants.PROFILE
+import com.clo.accloss.core.presentation.contact.presentation.navigation.tab.ContactTab
 import com.clo.accloss.core.presentation.dashboard.presentation.navigation.tab.DashboardTab
 import com.clo.accloss.core.presentation.profile.presentation.navigation.tab.ProfileTab
 
@@ -14,9 +16,15 @@ sealed class HomeTabs(val tab: Tab, val index: UShort, val title: String, val ic
         title = HOME,
         icon = R.drawable.ic_home_app_logo_24px
     )
+    data object Contact : HomeTabs(
+        tab = ContactTab,
+        index = 1u,
+        title = CONTACT,
+        icon = R.drawable.ic_contacts_24px
+    )
     data object Profile : HomeTabs(
         tab = ProfileTab,
-        index = 1u,
+        index = 2u,
         title = PROFILE,
         icon = R.drawable.ic_account_circle_24px
     )

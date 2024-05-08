@@ -1,4 +1,4 @@
-package com.clo.accloss.core.presentation.home.presentation.components
+package com.clo.accloss.core.presentation.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog

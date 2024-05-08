@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -60,7 +59,7 @@ fun LoginCardComponent(
     isDialog: Boolean = false
 ) {
     var showSessions by remember {
-        mutableStateOf(true)
+        mutableStateOf(false)
     }
 
     CustomClickableCard(
@@ -70,11 +69,11 @@ fun LoginCardComponent(
         val density = LocalDensity.current
 
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier,
             contentAlignment = Alignment.TopCenter
         ) {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier,
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -103,7 +102,7 @@ fun LoginCardComponent(
             }
 
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier,
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -153,11 +152,12 @@ fun LoginForm(
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LoginNavigationBox(
-            visible = visible,
-            isVisible = isVisible
-        )
-
+        if (!isDialog) {
+            LoginNavigationBox(
+                visible = visible,
+                isVisible = isVisible
+            )
+        }
         TextFieldComponent(
             modifier = Modifier.fillMaxWidth(),
             value = editEmpresa ?: "",
@@ -187,11 +187,7 @@ fun LoginForm(
                     progressModifier = Modifier.size(25.dp)
                 )
             } else {
-                CustomText(
-                    text = "Validar",
-                    fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                )
+                CustomText(text = "Validar")
             }
         }
 
@@ -252,11 +248,7 @@ fun LoginForm(
                     progressModifier = Modifier.size(25.dp)
                 )
             } else {
-                CustomText(
-                    text = "Log in",
-                    fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                )
+                CustomText(text = "Log in")
             }
         }
 
@@ -348,11 +340,7 @@ fun LoginNavigationBox(
                     ),
                     contentDescription = "Log in"
                 )
-                CustomText(
-                    text = "Log In",
-                    fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                )
+                CustomText(text = "Log In")
             }
         }
     }
@@ -377,11 +365,7 @@ fun LoginNavigationBox(
                 horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                CustomText(
-                    text = "Sesiones",
-                    fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                )
+                CustomText(text = "Sesiones")
                 Icon(
                     painter = painterResource(
                         R.drawable.ic_right_24px

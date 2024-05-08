@@ -166,13 +166,13 @@ fun SessionsDropdown(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.ic_account_circle_24px),
-                                    contentDescription = ""
+                                    painter = painterResource(
+                                        id = R.drawable.ic_account_circle_24px
+                                    ),
+                                    contentDescription = "Account"
                                 )
                                 CustomText(
-                                    text = "${session.nombre}, ${session.nombreEmpresa}",
-                                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                                    fontWeight = MaterialTheme.typography.bodyLarge.fontWeight
+                                    text = "${session.nombre}, ${session.nombreEmpresa}"
                                 )
                             }
                         },

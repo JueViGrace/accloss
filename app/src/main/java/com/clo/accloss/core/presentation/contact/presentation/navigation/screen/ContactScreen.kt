@@ -1,46 +1,43 @@
-package com.clo.accloss.products.presentation.screen
+package com.clo.accloss.core.presentation.contact.presentation.navigation.screen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.core.presentation.components.ErrorScreen
 import com.clo.accloss.core.presentation.components.LoadingScreen
-import com.clo.accloss.products.presentation.components.ProductContent
-import com.clo.accloss.products.presentation.viewmodel.ProductViewModel
+import com.clo.accloss.core.presentation.contact.presentation.components.ContactsContent
+import com.clo.accloss.core.presentation.contact.presentation.viewmodel.ContactViewModel
 
-object ProductsScreen : Screen {
-    private fun readResolve(): Any = ProductsScreen
-
-    override val key: ScreenKey = uniqueScreenKey
-
+class ContactScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinScreenModel<ProductViewModel>()
+        val viewModel = koinScreenModel<ContactViewModel>()
         val state by viewModel.state.collectAsState()
 
-        state.products.DisplayResult(
-            onLoading = { LoadingScreen() },
+        state.vendedores.DisplayResult(
+            onLoading = {
+                LoadingScreen()
+            },
             onError = {
                 ErrorScreen(it)
             },
             onSuccess = { list ->
-                ProductContent(
-                    products = list,
+                ContactsContent(
+                    vendedores = list,
                     isRefreshing = state.reload ?: false,
-                    onSelect = { codigo ->
-                    },
                     onRefresh = {
                         viewModel.onRefresh()
+                    },
+                    onSelect = {
+
                     }
                 )
-            }
+            },
         )
     }
 }

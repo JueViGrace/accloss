@@ -4,7 +4,6 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.presentation.home.presentation.state.HomeState
 import com.clo.accloss.core.presentation.state.RequestState
-import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.session.domain.repository.SessionRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,14 +31,6 @@ class HomeViewModel(
                         currentSession = result
                     )
                 }
-            }
-        }
-    }
-
-    fun endSession() {
-        screenModelScope.launch {
-            if (_state.value.currentSession.isSuccess()) {
-                sessionRepository.deleteSession(_state.value.currentSession.getSuccessData())
             }
         }
     }

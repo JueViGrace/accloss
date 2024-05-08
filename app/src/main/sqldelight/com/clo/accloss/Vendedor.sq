@@ -17,16 +17,16 @@ CREATE TABLE IF NOT EXISTS vendedor (
 getVendedores:
 SELECT *
 FROM vendedor
-WHERE empresa == :empresa
-ORDER BY ultSinc ASC;
+WHERE empresa = :empresa
+ORDER BY nombre ASC;
 
 getVendedor:
 SELECT *
 FROM vendedor
 WHERE
-empresa == :empresa
+empresa = :empresa
 AND
-vendedor == :vendedor;
+vendedor = :vendedor;
 
 addVendedor:
 INSERT OR REPLACE
@@ -48,4 +48,4 @@ VALUES ?;
 
 deleteVendedor:
 DELETE FROM vendedor
-WHERE empresa == :empresa;
+WHERE empresa = :empresa;

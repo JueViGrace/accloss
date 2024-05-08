@@ -15,7 +15,6 @@ import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.clo.accloss.core.common.Constants.homeTabs
 import com.clo.accloss.core.presentation.app.navigation.screen.AppScreen
 import com.clo.accloss.core.presentation.auth.navigation.screen.AuthScreen
-import com.clo.accloss.core.presentation.components.ErrorScreen
 import com.clo.accloss.core.presentation.components.LoadingScreen
 import com.clo.accloss.core.presentation.home.presentation.components.HomeContent
 import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeTabs
@@ -44,11 +43,12 @@ class HomeScreen : Screen {
             onSuccess = { session ->
                 TabNavigator(
                     tab = HomeTabs.Dashboard.tab,
+                    disposeNestedNavigators = true,
                     tabDisposable = { tabNavigator ->
                         TabDisposable(navigator = tabNavigator, tabs = homeTabs)
                     },
                     key = key
-                ) { _ ->
+                ) {
                     HomeContent(
                         currentScreen = {
                             CurrentTab()

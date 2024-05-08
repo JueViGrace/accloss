@@ -1,4 +1,4 @@
-package com.clo.accloss.core.presentation.profile.presentation.navigation.tab
+package com.clo.accloss.core.presentation.contact.presentation.navigation.tab
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -9,11 +9,11 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.SlideTransition
+import com.clo.accloss.core.presentation.contact.presentation.navigation.screen.ContactScreen
 import com.clo.accloss.core.presentation.dashboard.presentation.navigation.tab.DashboardTab
 import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeTabs
-import com.clo.accloss.core.presentation.profile.presentation.navigation.screen.ProfileScreen
 
-object ProfileTab : Tab {
+object ContactTab : Tab {
     private fun readResolve(): Any = DashboardTab
 
     override val key: ScreenKey = uniqueScreenKey
@@ -21,11 +21,11 @@ object ProfileTab : Tab {
     override val options: TabOptions
         @Composable
         get() {
-            val icon = painterResource(id = HomeTabs.Profile.icon)
+            val icon = painterResource(id = HomeTabs.Contact.icon)
             return remember {
                 TabOptions(
-                    index = HomeTabs.Profile.index,
-                    title = HomeTabs.Profile.title,
+                    index = HomeTabs.Contact.index,
+                    title = HomeTabs.Contact.title,
                     icon = icon
                 )
             }
@@ -34,7 +34,7 @@ object ProfileTab : Tab {
     @Composable
     override fun Content() {
         Navigator(
-            screen = ProfileScreen(),
+            screen = ContactScreen(),
             key = key
         ) { navigator ->
             SlideTransition(navigator = navigator)
