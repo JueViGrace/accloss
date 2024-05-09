@@ -41,7 +41,6 @@ fun ContactsContent(
     val headers = remember {
         vendedores.map { it.nombre.first().uppercase() }.toSet().toList()
     }
-
     val listState = rememberLazyListState()
 
     Row {

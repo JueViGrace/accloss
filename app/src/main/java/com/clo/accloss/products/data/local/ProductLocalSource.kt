@@ -5,8 +5,10 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import com.clo.accloss.Product as ProductEntity
 
 class ProductLocalSource(
@@ -50,7 +52,7 @@ class ProductLocalSource(
                 )
                 .asFlow()
                 .mapToList(scope.coroutineContext)
-        }
+        }.flowOn(Dispatchers.IO)
     }.await()
 
     suspend fun getProduct(codigo: String, empresa: String): Flow<ProductEntity> = scope.async {
@@ -62,12 +64,16 @@ class ProductLocalSource(
                 )
                 .asFlow()
                 .mapToOne(scope.coroutineContext)
-        }
+        }.flowOn(Dispatchers.IO)
     }.await()
 
-    suspend fun addProduct(product: ProductEntity) = scope.async {
+    suspend fun addProduct(products: List<ProductEntity>) = scope.async {
         dbHelper.withDatabase { db ->
-            db.productQueries.addProducts(product)
+            db.productQueries.transaction {
+                products.forEach { product ->
+                    db.productQueries.addProducts(product)
+                }
+            }
         }
     }.await()
 }

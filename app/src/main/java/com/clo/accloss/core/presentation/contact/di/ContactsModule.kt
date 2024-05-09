@@ -5,6 +5,6 @@ import org.koin.dsl.module
 
 val contactsModule = module {
     factory {
-        ContactViewModel(get(), get())
+        ContactViewModel(get())
     }
 }

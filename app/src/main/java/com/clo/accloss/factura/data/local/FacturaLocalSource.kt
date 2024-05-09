@@ -5,8 +5,10 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import com.clo.accloss.Factura as FacturaEntity
 
 class FacturaLocalSource(
@@ -21,7 +23,7 @@ class FacturaLocalSource(
                 )
                 .asFlow()
                 .mapToList(scope.coroutineContext)
-        }
+        }.flowOn(Dispatchers.IO)
     }.await()
 
     suspend fun getFactura(
@@ -36,12 +38,16 @@ class FacturaLocalSource(
                 )
                 .asFlow()
                 .mapToOne(scope.coroutineContext)
-        }
+        }.flowOn(Dispatchers.IO)
     }.await()
 
-    suspend fun addFactura(factura: FacturaEntity) = scope.async {
+    suspend fun addFactura(facturas: List<FacturaEntity>) = scope.async {
         dbHelper.withDatabase { db ->
-            db.facturaQueries.addFactura(factura)
+            db.facturaQueries.transaction {
+                facturas.forEach { factura ->
+                    db.facturaQueries.addFactura(factura)
+                }
+            }
         }
     }.await()
 }

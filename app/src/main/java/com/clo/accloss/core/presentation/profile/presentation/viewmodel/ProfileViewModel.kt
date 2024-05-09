@@ -10,11 +10,8 @@ import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.session.domain.repository.SessionRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 

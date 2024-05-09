@@ -90,9 +90,7 @@ class PedidoRepository(
                                 )
                             }
                             is RequestState.Success -> {
-                                result.data.forEach { pedido ->
-                                    addPedido(pedido)
-                                }
+                                addPedido(result.data)
                             }
                             else -> emit(RequestState.Loading)
                         }
@@ -124,6 +122,10 @@ class PedidoRepository(
             }
     }.flowOn(Dispatchers.IO)
 
-    private suspend fun addPedido(pedido: Pedido) =
-        pedidoLocalSource.addPedido(pedido = pedido.toDatabase())
+    private suspend fun addPedido(pedidos: List<Pedido>) =
+        pedidoLocalSource.addPedido(
+            pedidos = pedidos.map { pedido ->
+                pedido.toDatabase()
+            }
+        )
 }

@@ -1,13 +1,20 @@
 package com.clo.accloss.core.presentation.profile.presentation.navigation.screen
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -18,21 +25,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.clo.accloss.R
+import com.clo.accloss.core.common.Constants.profileMenu
 import com.clo.accloss.core.presentation.auth.login.presentation.viewmodel.LoginViewModel
 import com.clo.accloss.core.presentation.components.AddAccountDialog
+import com.clo.accloss.core.presentation.components.CustomClickableCard
 import com.clo.accloss.core.presentation.components.CustomText
 import com.clo.accloss.core.presentation.components.ErrorComponent
 import com.clo.accloss.core.presentation.components.LoadingComponent
+import com.clo.accloss.core.presentation.profile.presentation.components.ProfileMenu
 import com.clo.accloss.core.presentation.profile.presentation.viewmodel.ProfileViewModel
 import com.clo.accloss.session.presentation.components.SessionsBody
 
@@ -54,7 +64,6 @@ class ProfileScreen : Screen {
         val loginState by loginViewModel.state.collectAsState()
 
         newSession?.let { session ->
-
             if (showDialog) {
                 AddAccountDialog(
                     showChanged = { newValue ->
@@ -71,7 +80,7 @@ class ProfileScreen : Screen {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
+                verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 state.sessions.DisplayResult(
@@ -98,77 +107,173 @@ class ProfileScreen : Screen {
                     },
                 )
 
-                HorizontalDivider()
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    CustomText(text = "TODO: Estadisticas generales")
-                }
-
-                HorizontalDivider()
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable {
-                            // TODO: NAVIGATE TO PROMOCIONES
-                        }
-                        .padding(horizontal = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.Start)
+                        .padding(horizontal = 20.dp),
                 ) {
-                    Icon(painter = painterResource(R.drawable.ic_shopping_bag_24px), contentDescription = "Offers")
                     CustomText(
-                        text = "Promociones",
+                        text = "Finanzas Gerencia: ${session.user}",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
                         fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize
                     )
                 }
 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable {
-                            // TODO: NAVIGATE TO ESTADISTICAS
-                        }
+                        .height(100.dp)
                         .padding(horizontal = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.Start)
-                ) {
-                    Icon(painter = painterResource(R.drawable.ic_shopping_bag_24px), contentDescription = "Offers")
-                    CustomText(
-                        text = "Estadísticas",
-                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize
-                    )
-                }
-
-                HorizontalDivider()
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            viewModel.endSession()
-                        }
-                        .padding(horizontal = 30.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        15.dp,
+                        Alignment.CenterHorizontally
+                    ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CustomText(
-                        text = "Log out",
-                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                        maxLines = 1,
-                        softWrap = false,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Icon(painter = painterResource(id = R.drawable.ic_logout_24px), contentDescription = "Log out")
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f)
+                            .background(
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                shape = RoundedCornerShape(25)
+                            )
+                            .clip(RoundedCornerShape(25)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.SpaceEvenly,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CustomText(text = "Deudas",)
+                            CustomText(
+                                text = "$ 2312312",
+                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                fontWeight = MaterialTheme.typography.bodySmall.fontWeight
+                            )
+                        }
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f)
+                            .background(
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                shape = RoundedCornerShape(25)
+                            )
+                            .clip(RoundedCornerShape(25)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.SpaceEvenly,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CustomText(text = "Vencido",)
+                            CustomText(
+                                text = "$ 23124213",
+                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                fontWeight = MaterialTheme.typography.bodySmall.fontWeight
+                            )
+                        }
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f)
+                            .background(
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                shape = RoundedCornerShape(25)
+                            )
+                            .clip(RoundedCornerShape(25)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.SpaceEvenly,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CustomText(text = "Cobrado",)
+                            CustomText(
+                                text = "$ 12421124",
+                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                fontWeight = MaterialTheme.typography.bodySmall.fontWeight
+                            )
+                        }
+                    }
+                }
+
+                CustomClickableCard(
+                    shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                ) {
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(15.dp),
+                        columns = GridCells.Adaptive(100.dp),
+                        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
+                        horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally)
+                    ) {
+                        items(
+                            items = profileMenu,
+                            key = { item -> item.name }
+                        ) { menu ->
+                            Box {
+                                CustomClickableCard(
+                                    modifier = Modifier.clip(CircleShape),
+                                    onClick = when (menu) {
+                                        is ProfileMenu.LogOut -> {
+                                            { viewModel.endSession() }
+                                        }
+
+                                        is ProfileMenu.Promotions -> {
+                                            { }
+                                        }
+
+                                        is ProfileMenu.Statistics -> {
+                                            { }
+                                        }
+
+                                        else -> null
+                                    },
+                                    shape = CircleShape,
+                                    colors = CardDefaults.cardColors().copy(
+                                        containerColor = MaterialTheme.colorScheme.surfaceBright
+                                    )
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .padding(20.dp),
+                                        verticalArrangement = Arrangement.SpaceEvenly,
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Icon(painter = painterResource(id = menu.icon), contentDescription = menu.name)
+                                        CustomText(
+                                            text = menu.name
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
+        }
+    }
+    private fun handleMenuClick(menu: ProfileMenu, navigator: Navigator, viewModel: ProfileViewModel): (() -> Unit)? {
+        return when (menu) {
+            is ProfileMenu.LogOut -> {
+                { viewModel.endSession() }
+            }
+            is ProfileMenu.Promotions -> {
+                { }
+            }
+            is ProfileMenu.Statistics -> {
+                { }
+            }
+            else -> null
         }
     }
 }

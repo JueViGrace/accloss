@@ -1,11 +1,15 @@
 package com.clo.accloss.core.presentation.auth.login.presentation.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -33,26 +37,26 @@ fun LoginContent(
         }
     }
 
-    BoxWithConstraints(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .paint(
                 painter = painterResource(R.drawable.login_background),
                 contentScale = ContentScale.FillBounds,
             ),
-        contentAlignment = Alignment.TopCenter
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            modifier = Modifier.size(250.dp).align(Alignment.TopCenter),
+            modifier = Modifier
+                .size(200.dp),
             painter = painterResource(R.drawable.ic_login),
             contentScale = ContentScale.Fit,
             contentDescription = "Login icon"
         )
 
         LoginCardComponent(
-            modifier = Modifier
-                .size(width = maxWidth, height = maxHeight / 1.5f)
-                .align(Alignment.BottomCenter),
+            modifier = Modifier.fillMaxHeight(),
             shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp),
             editEmpresa = editEmpresa ?: "",
             editLogin = editLogin,

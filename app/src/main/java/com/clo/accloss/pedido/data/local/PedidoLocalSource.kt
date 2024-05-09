@@ -5,8 +5,10 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import com.clo.accloss.Pedido as PedidoEntity
 
 class PedidoLocalSource(
@@ -21,7 +23,7 @@ class PedidoLocalSource(
                 )
                 .asFlow()
                 .mapToList(scope.coroutineContext)
-        }
+        }.flowOn(Dispatchers.IO)
     }.await()
 
     suspend fun getPedido(
@@ -36,18 +38,16 @@ class PedidoLocalSource(
                 )
                 .asFlow()
                 .mapToOne(scope.coroutineContext)
-        }
+        }.flowOn(Dispatchers.IO)
     }.await()
 
-    suspend fun addPedido(pedido: PedidoEntity) = scope.async {
+    suspend fun addPedido(pedidos: List<PedidoEntity>) = scope.async {
         dbHelper.withDatabase { db ->
-            db.pedidoQueries.addPedido(pedido)
-        }
-    }.await()
-
-    suspend fun deletePedidos(empresa: String) = scope.async {
-        dbHelper.withDatabase { db ->
-            db.pedidoQueries.deletePedidos(empresa)
+            db.pedidoQueries.transaction {
+                pedidos.forEach { pedido ->
+                    db.pedidoQueries.addPedido(pedido)
+                }
+            }
         }
     }.await()
 }

@@ -9,11 +9,9 @@ val sessionModule = module {
     single {
         SessionLocalSource(get(), get())
     }
-
     single {
         SessionRepository(get())
     }
-
     single {
         GetSession(get())
     }

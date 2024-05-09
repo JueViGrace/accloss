@@ -19,7 +19,7 @@ fun CustomText(
     fontWeight: FontWeight? = MaterialTheme.typography.bodyLarge.fontWeight,
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = 1,
-    color: Color = MaterialTheme.colorScheme.onSurface,
+    color: Color = Color.Unspecified,
     textDecoration: TextDecoration = TextDecoration.None,
     softWrap: Boolean = false,
     overflow: TextOverflow = TextOverflow.Clip

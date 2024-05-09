@@ -32,7 +32,7 @@ class EstadisticaRepository(
                 user = user
             )
 
-        when(apiOperation) {
+        when (apiOperation) {
             is ApiOperation.Failure -> {
                 emit(
                     RequestState.Error(
@@ -90,9 +90,7 @@ class EstadisticaRepository(
                                 )
                             }
                             is RequestState.Success -> {
-                                result.data.forEach { estadistica ->
-                                    addEstadistica(estadistica)
-                                }
+                                addEstadistica(result.data)
                             }
                             else -> emit(RequestState.Loading)
                         }
@@ -102,6 +100,10 @@ class EstadisticaRepository(
             }
     }.flowOn(Dispatchers.IO)
 
-    private suspend fun addEstadistica(estadistica: Estadistica) =
-        estadisticaLocalSource.addEstadistica(estadistica = estadistica.toDatabase())
+    private suspend fun addEstadistica(estadisticas: List<Estadistica>) =
+        estadisticaLocalSource.addEstadistica(
+            estadisticas = estadisticas.map { estadistica ->
+                estadistica.toDatabase()
+            }
+        )
 }

@@ -90,9 +90,7 @@ class ClienteRepository(
                                 )
                             }
                             is RequestState.Success -> {
-                                result.data.forEach { cliente ->
-                                    addCliente(cliente)
-                                }
+                                addCliente(result.data)
                             }
                             else -> emit(RequestState.Loading)
                         }
@@ -124,6 +122,10 @@ class ClienteRepository(
             }
     }.flowOn(Dispatchers.IO)
 
-    private suspend fun addCliente(cliente: Cliente) =
-        clienteLocalSource.addCliente(cliente.toDatabase())
+    private suspend fun addCliente(clientes: List<Cliente>) =
+        clienteLocalSource.addCliente(
+            clientes = clientes.map { cliente ->
+                cliente.toDatabase()
+            }
+        )
 }

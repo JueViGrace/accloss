@@ -8,10 +8,10 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 fun Date.toStringFormat(): String =
-    SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.getDefault()).format(this)
+    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(this)
 
 fun String.toDate(): Date =
-    SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.getDefault()).parse(this) as Date
+    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(this) as Date
 
 fun Double.roundFormat(format: Int): String {
     val num = (this * HUNDRED_DOUBLE).roundToInt() / HUNDRED_DOUBLE

@@ -91,9 +91,7 @@ class FacturaRepository(
                                     )
                                 }
                                 is RequestState.Success -> {
-                                    result.data.forEach { factura: Factura ->
-                                        addFactura(factura)
-                                    }
+                                    addFactura(result.data)
                                 }
                                 else -> emit(RequestState.Loading)
                             }
@@ -103,6 +101,10 @@ class FacturaRepository(
             }
     }.flowOn(Dispatchers.IO)
 
-    private suspend fun addFactura(factura: Factura) =
-        facturaLocalSource.addFactura(factura = factura.toDatabase())
+    private suspend fun addFactura(facturas: List<Factura>) =
+        facturaLocalSource.addFactura(
+            facturas = facturas.map { factura ->
+                factura.toDatabase()
+            }
+        )
 }

@@ -5,7 +5,6 @@ import com.clo.accloss.core.data.network.ApiOperation
 import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.lineasfactura.domain.mappers.toDatabase
 import com.clo.accloss.lineasfactura.domain.mappers.toDomain
-import com.clo.accloss.lineasfactura.domain.model.LineasFactura
 import com.clo.accloss.lineaspedido.data.local.LineasPedidoLocalSource
 import com.clo.accloss.lineaspedido.data.remote.source.LineasPedidoRemoteSource
 import com.clo.accloss.lineaspedido.domain.mappers.toDatabase
@@ -96,9 +95,7 @@ class LineasPedidoRepository(
                                     )
                                 }
                                 is RequestState.Success -> {
-                                    result.data.forEach { lineasPedido ->
-                                        addLineasPedido(lineasPedido)
-                                    }
+                                    addLineasPedido(result.data)
                                 }
                                 else -> emit(RequestState.Loading)
                             }
@@ -108,6 +105,10 @@ class LineasPedidoRepository(
             }
     }.flowOn(Dispatchers.IO)
 
-    private suspend fun addLineasPedido(lineasPedido: LineasPedido) =
-        lineasPedidoLocalSource.addLineasPedido(lineasPedido = lineasPedido.toDatabase())
+    private suspend fun addLineasPedido(lineasPedido: List<LineasPedido>) =
+        lineasPedidoLocalSource.addLineasPedido(
+            lineasPedido = lineasPedido.map { linea ->
+                linea.toDatabase()
+            }
+        )
 }

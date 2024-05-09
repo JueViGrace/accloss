@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.clo.accloss.R
@@ -136,6 +138,8 @@ fun LoginCardComponent(
     }
 }
 
+// TODO: TEXTFIELD COLORS
+
 @Composable
 fun LoginForm(
     editEmpresa: String?,
@@ -146,10 +150,20 @@ fun LoginForm(
     visible: Boolean,
     isVisible: (Boolean) -> Unit
 ) {
+    var passwordVisibility by remember {
+        mutableStateOf(false)
+    }
+
     Column(
-        modifier = Modifier
-            .padding(15.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
+        modifier = if (!isDialog) {
+            Modifier
+                .fillMaxSize()
+                .padding(15.dp)
+        } else {
+            Modifier
+                .padding(15.dp)
+        },
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (!isDialog) {
@@ -165,7 +179,7 @@ fun LoginForm(
                 onEvent(LoginEvents.OnEmpresaChanged(newValue))
             },
             label = "Empresa",
-            icon = R.drawable.ic_corporate_fare_24px,
+            leadingIcon = R.drawable.ic_corporate_fare_24px,
             supportingText = state.empresaError,
             errorStatus = state.empresaError?.isNotEmpty() ?: false,
             keyboardOptions = KeyboardOptions(
@@ -198,7 +212,7 @@ fun LoginForm(
                 onEvent(LoginEvents.OnUsernameChanged(newValue))
             },
             label = "Username",
-            icon = R.drawable.ic_account_circle_24px,
+            leadingIcon = R.drawable.ic_account_circle_24px,
             supportingText = state.usernameError,
             errorStatus = state.usernameError?.isNotEmpty() == true,
             keyboardOptions = KeyboardOptions(
@@ -214,20 +228,42 @@ fun LoginForm(
                 onEvent(LoginEvents.OnPasswordChanged(newValue))
             },
             label = "Password",
-            icon = R.drawable.ic_lock_24px,
+            leadingIcon = R.drawable.ic_lock_24px,
+            trailingIcon = if (passwordVisibility) {
+                R.drawable.ic_visibility_off_24px
+            } else {
+                R.drawable.ic_visibility_24px
+            },
+            onTrailingIconClick = {
+                passwordVisibility = !passwordVisibility
+            },
             supportingText = state.passwordError,
             errorStatus = state.passwordError?.isNotEmpty() == true,
             keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
             enabled = state.canLogin,
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = if (passwordVisibility) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            }
         )
+
+        if (state.errorMessage?.isNotEmpty() == true) {
+            CustomText(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = state.errorMessage,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
 
         ElevatedButton(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
+                .fillMaxWidth(),
             onClick = {
                 onEvent(LoginEvents.OnLoginClicked)
             },
@@ -252,16 +288,6 @@ fun LoginForm(
             }
         }
 
-        if (state.errorMessage?.isNotEmpty() == true) {
-            CustomText(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                text = state.errorMessage,
-                textAlign = TextAlign.Center
-            )
-        }
-
         if (!isDialog) {
             CustomText(text = "Desarrollado por:")
             Image(
@@ -282,6 +308,7 @@ fun SignUpWithSession(
 ) {
     Column(
         modifier = Modifier
+            .fillMaxSize()
             .padding(15.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
         horizontalAlignment = Alignment.CenterHorizontally

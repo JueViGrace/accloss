@@ -2,6 +2,7 @@ package com.clo.accloss.core.common
 
 import cafe.adriel.voyager.navigator.tab.Tab
 import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeTabs
+import com.clo.accloss.core.presentation.profile.presentation.components.ProfileMenu
 
 object Constants {
     const val APP_VERSION: String = "1.0.0"
@@ -34,5 +35,11 @@ object Constants {
         "G97",
         "G98",
         "G99",
+    )
+
+    val profileMenu = listOf(
+        ProfileMenu.Statistics,
+        ProfileMenu.Promotions,
+        ProfileMenu.LogOut
     )
 }

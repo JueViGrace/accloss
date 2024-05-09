@@ -3,19 +3,15 @@ package com.clo.accloss.core.presentation.contact.presentation.navigation.screen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.clo.accloss.core.presentation.app.navigation.screen.AppScreen
 import com.clo.accloss.core.presentation.components.ErrorScreen
 import com.clo.accloss.core.presentation.components.LoadingScreen
 import com.clo.accloss.core.presentation.contact.presentation.components.ContactsContent
 import com.clo.accloss.core.presentation.contact.presentation.viewmodel.ContactViewModel
-import com.clo.accloss.vendedor.domain.model.Vendedor
 import com.clo.accloss.vendedor.presentation.screens.VendedorDetailScreen
 
 class ContactScreen : Screen {
@@ -24,8 +20,6 @@ class ContactScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinScreenModel<ContactViewModel>()
         val state by viewModel.state.collectAsState()
-
-        println(navigator.items)
 
         state.vendedores.DisplayResult(
             onLoading = {
@@ -37,7 +31,7 @@ class ContactScreen : Screen {
             onSuccess = { vendedores ->
                 ContactsContent(
                     vendedores = vendedores,
-                    isRefreshing = state.reload ?: false,
+                    isRefreshing = state.reload == true,
                     onRefresh = {
                         viewModel.onRefresh()
                     },
@@ -47,7 +41,5 @@ class ContactScreen : Screen {
                 )
             },
         )
-
-
     }
 }

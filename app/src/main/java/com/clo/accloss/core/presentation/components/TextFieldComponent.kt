@@ -3,6 +3,7 @@ package com.clo.accloss.core.presentation.components
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -24,7 +25,9 @@ fun TextFieldComponent(
         imeAction = ImeAction.Done,
         keyboardType = KeyboardType.Text
     ),
-    icon: Int,
+    leadingIcon: Int,
+    trailingIcon: Int? = null,
+    onTrailingIconClick: (() -> Unit)? = null,
     errorStatus: Boolean = false,
     readOnly: Boolean = false,
     enabled: Boolean = true,
@@ -54,10 +57,25 @@ fun TextFieldComponent(
         keyboardActions = KeyboardActions(
             onNext = {
                 focus.moveFocus(FocusDirection.Down)
+            },
+            onDone = {
+                focus.clearFocus()
             }
         ),
         leadingIcon = {
-            Icon(painter = painterResource(icon), contentDescription = null)
+            Icon(painter = painterResource(leadingIcon), contentDescription = null)
+        },
+        trailingIcon = if (trailingIcon != null) {
+            {
+                IconButton(
+                    onClick = { onTrailingIconClick?.invoke() },
+                    enabled = enabled
+                ) {
+                    Icon(painter = painterResource(trailingIcon), contentDescription = null)
+                }
+            }
+        } else {
+            null
         },
         isError = errorStatus,
         visualTransformation = visualTransformation

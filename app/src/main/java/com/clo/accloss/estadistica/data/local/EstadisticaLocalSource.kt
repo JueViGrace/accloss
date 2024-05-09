@@ -5,8 +5,10 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import com.clo.accloss.Estadistica as EstadisticaEntity
 
 class EstadisticaLocalSource(
@@ -21,7 +23,7 @@ class EstadisticaLocalSource(
                 )
                 .asFlow()
                 .mapToList(scope.coroutineContext)
-        }
+        }.flowOn(Dispatchers.IO)
     }.await()
 
     suspend fun getEstadisitica(
@@ -36,18 +38,16 @@ class EstadisticaLocalSource(
                 )
                 .asFlow()
                 .mapToOne(scope.coroutineContext)
-        }
+        }.flowOn(Dispatchers.IO)
     }.await()
 
-    suspend fun addEstadistica(estadistica: EstadisticaEntity) = scope.async {
+    suspend fun addEstadistica(estadisticas: List<EstadisticaEntity>) = scope.async {
         dbHelper.withDatabase { db ->
-            db.estadisticaQueries.addEstadistica(estadistica)
-        }
-    }.await()
-
-    suspend fun deleteEstadisitcas(empresa: String) = scope.async {
-        dbHelper.withDatabase { db ->
-            db.estadisticaQueries.deleteEstadisticas(empresa)
+            db.estadisticaQueries.transaction {
+                estadisticas.forEach { estadistica ->
+                    db.estadisticaQueries.addEstadistica(estadistica)
+                }
+            }
         }
     }.await()
 }

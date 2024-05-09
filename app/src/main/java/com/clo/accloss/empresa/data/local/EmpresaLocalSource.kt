@@ -6,8 +6,10 @@ import app.cash.sqldelight.coroutines.mapToOne
 import com.clo.accloss.Empresa
 import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 
 class EmpresaLocalSource(
     private val dbHelper: DbHelper,
@@ -19,7 +21,7 @@ class EmpresaLocalSource(
                 .getEmpresas()
                 .asFlow()
                 .mapToList(scope.coroutineContext)
-        }
+        }.flowOn(Dispatchers.IO)
     }.await()
 
     suspend fun getEmpresa(codigo: String): Flow<Empresa> = scope.async {
@@ -28,7 +30,7 @@ class EmpresaLocalSource(
                 .getEmpresa(codigoEmpresa = codigo)
                 .asFlow()
                 .mapToOne(scope.coroutineContext)
-        }
+        }.flowOn(Dispatchers.IO)
     }.await()
 
     suspend fun addEmpresa(empresa: Empresa) = scope.async {

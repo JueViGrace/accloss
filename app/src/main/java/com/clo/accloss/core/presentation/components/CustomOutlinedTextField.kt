@@ -2,6 +2,7 @@ package com.clo.accloss.core.presentation.components
 
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
@@ -28,7 +29,9 @@ fun CustomOutlinedTextField(
         imeAction = ImeAction.Done,
         keyboardType = KeyboardType.Text
     ),
-    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(
+        focusedLeadingIconColor = MaterialTheme.colorScheme.primary
+    ),
     isError: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions(),

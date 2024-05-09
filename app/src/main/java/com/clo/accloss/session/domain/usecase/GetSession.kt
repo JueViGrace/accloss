@@ -32,16 +32,17 @@ class GetSession(
                         )
                     }
 
-                    RequestState.Loading -> {
-                        emit(RequestState.Loading)
+                    is RequestState.Error -> {
+                        emit(
+                            RequestState.Error(
+                                message = result.message
+                            )
+                        )
+
                     }
 
                     else -> {
-                        emit(
-                            RequestState.Error(
-                                message = DB_ERROR_MESSAGE
-                            )
-                        )
+                        emit(RequestState.Loading)
                     }
                 }
             }

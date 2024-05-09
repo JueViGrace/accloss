@@ -118,9 +118,7 @@ class VendedorRepository(
                             )
                         }
                         is RequestState.Success -> {
-                            result.data.forEach { vendedor ->
-                                addVendedor(vendedor)
-                            }
+                            addVendedor(result.data)
                         }
                         else -> emit(RequestState.Loading)
                     }
@@ -140,9 +138,7 @@ class VendedorRepository(
                                 )
                             }
                             is RequestState.Success -> {
-                                result.data.forEach { vendedor ->
-                                    addVendedor(vendedor)
-                                }
+                                addVendedor(result.data)
                             }
                             else -> emit(RequestState.Loading)
                         }
@@ -153,6 +149,10 @@ class VendedorRepository(
         }
     }.flowOn(Dispatchers.IO)
 
-    private suspend fun addVendedor(vendedor: Vendedor) =
-        vendedorLocalSource.addVendedor(vendedor = vendedor.toDatabase())
+    private suspend fun addVendedor(vendedores: List<Vendedor>) =
+        vendedorLocalSource.addVendedor(
+            vendedores = vendedores.map { vendedor ->
+                vendedor.toDatabase()
+            }
+        )
 }

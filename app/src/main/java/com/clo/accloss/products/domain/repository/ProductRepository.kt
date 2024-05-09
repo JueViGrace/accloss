@@ -91,7 +91,6 @@ class ProductRepository(
                 emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
             }
             .collect { cachedList ->
-
                 if (cachedList.isNotEmpty() && !reload) {
                     emit(
                         RequestState.Success(
@@ -114,9 +113,7 @@ class ProductRepository(
                                 )
                             }
                             is RequestState.Success -> {
-                                result.data.forEach { product ->
-                                    addProduct(product)
-                                }
+                                addProduct(result.data)
                             }
                             else -> emit(RequestState.Loading)
                         }
@@ -144,6 +141,10 @@ class ProductRepository(
             }
     }.flowOn(Dispatchers.IO)
 
-    private suspend fun addProduct(product: Product) =
-        productLocalSource.addProduct(product = product.toDatabase())
+    private suspend fun addProduct(products: List<Product>) =
+        productLocalSource.addProduct(
+            products = products.map { product ->
+                product.toDatabase()
+            }
+        )
 }

@@ -42,11 +42,7 @@ class GerenciaRepository(
                 val list = apiOperation.data.map { gerenciaResponse ->
                     gerenciaResponse.toDomain().copy(empresa = empresa)
                 }
-
-                list.forEach { gerencia ->
-                    addGerencia(gerencia)
-                }
-
+                addGerencia(list)
                 emit(
                     RequestState.Success(
                         data = list
@@ -56,6 +52,10 @@ class GerenciaRepository(
         }
     }.flowOn(Dispatchers.IO)
 
-    private suspend fun addGerencia(gerencia: Gerencia) =
-        gerenciaLocalSource.addGerencias(gerencia = gerencia.toDatabase())
+    private suspend fun addGerencia(gerencias: List<Gerencia>) =
+        gerenciaLocalSource.addGerencias(
+            gerencias = gerencias.map { gerencia ->
+                gerencia.toDatabase()
+            }
+        )
 }

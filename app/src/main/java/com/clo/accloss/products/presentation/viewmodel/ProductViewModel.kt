@@ -1,85 +1,58 @@
 package com.clo.accloss.products.presentation.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.clo.accloss.core.presentation.state.RequestState
-import com.clo.accloss.products.domain.repository.ProductRepository
+import com.clo.accloss.products.domain.usecase.GetProducts
 import com.clo.accloss.products.presentation.state.ProductState
-import com.clo.accloss.session.domain.usecase.GetSession
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ProductViewModel(
-    private val getSession: GetSession,
-    private val productRepository: ProductRepository
+    private val getProducts: GetProducts,
 ) : ScreenModel {
     private var _state: MutableStateFlow<ProductState> = MutableStateFlow(ProductState())
-    val state: StateFlow<ProductState> = _state.asStateFlow()
-
-    init {
+    val state = combine(
+        _state,
         getProducts()
+    ) { state, result ->
+        state.copy(
+            products = result
+        )
     }
+        .flowOn(Dispatchers.IO)
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(5L),
+            ProductState()
+        )
 
-    private fun getProducts() {
-        screenModelScope.launch(Dispatchers.IO) {
-            getSession.invoke().collect { result ->
-                when (result) {
-                    is RequestState.Error -> {
-                        _state.update { productState ->
-                            productState.copy(
-                                products = result
-                            )
-                        }
-                    }
-
-                    RequestState.Idle -> {
-                        _state.update { productState ->
-                            productState.copy(
-                                products = RequestState.Idle
-                            )
-                        }
-                    }
-
-                    RequestState.Loading -> {
-                        _state.update { productState ->
-                            productState.copy(
-                                products = RequestState.Loading
-                            )
-                        }
-                    }
-
-                    is RequestState.Success -> {
-                        productRepository.getProducts(
-                            empresa = result.data.empresa,
-                            baseUrl = result.data.enlaceEmpresa,
-                            forceReload = _state.value.reload == true
-                        ).collect { productResult ->
-                            _state.update { productState ->
-                                productState.copy(
-                                    products = productResult,
-                                    reload = false
-                                )
-                            }
-                        }
-                    }
-                }
+    private suspend fun updateProducts() {
+        getProducts().collect { result ->
+            _state.update { productState ->
+                productState.copy(
+                    products = result,
+                    reload = null
+                )
             }
         }
     }
 
     fun onRefresh() {
-        _state.update { productState ->
-            productState.copy(
-                reload = true
-            )
+        screenModelScope.launch {
+            _state.update { productState ->
+                productState.copy(
+                    reload = true
+                )
+            }
+            delay(500)
+            updateProducts()
         }
-
-        getProducts()
     }
 }

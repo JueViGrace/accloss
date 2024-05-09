@@ -4,7 +4,6 @@ import com.clo.accloss.core.common.Constants
 import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import com.clo.accloss.core.data.network.ApiOperation
 import com.clo.accloss.core.presentation.state.RequestState
-import com.clo.accloss.factura.domain.model.Factura
 import com.clo.accloss.lineasfactura.data.local.LineasFacturaLocalSource
 import com.clo.accloss.lineasfactura.data.remote.source.LineasFacturaRemoteSource
 import com.clo.accloss.lineasfactura.domain.mappers.toDatabase
@@ -95,9 +94,7 @@ class LineasFacturaRepository(
                                     )
                                 }
                                 is RequestState.Success -> {
-                                    result.data.forEach { lineasFactura ->
-                                        addLineasFactura(lineasFactura)
-                                    }
+                                    addLineasFactura(result.data)
                                 }
                                 else -> emit(RequestState.Loading)
                             }
@@ -107,6 +104,10 @@ class LineasFacturaRepository(
             }
     }.flowOn(Dispatchers.IO)
 
-    private suspend fun addLineasFactura(lineasFactura: LineasFactura) =
-        lineasFacturaLocalSource.addLineasFactura(lineasFactura = lineasFactura.toDatabase())
+    private suspend fun addLineasFactura(lineasFactura: List<LineasFactura>) =
+        lineasFacturaLocalSource.addLineasFactura(
+            lineasFactura = lineasFactura.map { linea ->
+                linea.toDatabase()
+            }
+        )
 }
