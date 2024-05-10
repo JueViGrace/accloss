@@ -24,10 +24,10 @@ class LoginScreen : Screen {
         val viewModel = koinScreenModel<LoginViewModel>()
         val state by viewModel.state.collectAsState()
         val editLogin = viewModel.newLogin
-        val editEmpresa = viewModel.newEmpresa
+        val editCompany = viewModel.newCompany
 
         LoginContent(
-            editEmpresa = editEmpresa,
+            editCompany = editCompany,
             editLogin = editLogin,
             state = state,
             onEvent = viewModel::onEvent,

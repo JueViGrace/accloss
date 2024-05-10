@@ -22,24 +22,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.clo.accloss.R
 import com.clo.accloss.core.presentation.components.CustomText
 import com.clo.accloss.core.presentation.components.ListFooter
 import com.clo.accloss.core.presentation.components.ListHeader
 import com.clo.accloss.core.presentation.components.PullToRefreshLazyColumn
-import com.clo.accloss.vendedor.domain.model.Vendedor
+import com.clo.accloss.salesman.domain.model.Salesman
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 @Composable
 fun ContactsContent(
-    vendedores: List<Vendedor>,
+    sellers: List<Salesman>,
     isRefreshing: Boolean,
     onSelect: ((String) -> Unit)? = null,
     onRefresh: () -> Unit
 ) {
     val headers = remember {
-        vendedores.map { it.nombre.first().uppercase() }.toSet().toList()
+        sellers.map { it.nombre.first().uppercase() }.toSet().toList()
     }
     val listState = rememberLazyListState()
 
@@ -47,21 +49,21 @@ fun ContactsContent(
         PullToRefreshLazyColumn(
             modifier = Modifier.weight(1f),
             lazyListState = listState,
-            items = vendedores,
-            grouped = vendedores.groupBy { it.nombre.first() },
+            items = sellers,
+            grouped = sellers.groupBy { it.nombre.first() },
             header = {
                 ListHeader(
                     text = it.toString()
                 )
             },
-            content = { vendedor ->
+            content = { seller ->
                 AnimatedContent(
-                    targetState = vendedor,
-                    label = "vendedor"
+                    targetState = seller,
+                    label = stringResource(R.string.salesman)
                 ) {
                     ContactsComponent(
                         modifier = Modifier.padding(horizontal = 5.dp),
-                        vendedor = it,
+                        seller = it,
                         onSelect = { onSelect?.invoke(it) }
                     )
                 }
@@ -88,7 +90,7 @@ fun ContactsContent(
                 ?.key ?: return
             if (selectedHeaderIndex == index) return
             selectedHeaderIndex = index
-            val selectedItemIndex = vendedores.indexOfFirst {
+            val selectedItemIndex = sellers.indexOfFirst {
                 it.nombre.first().uppercase() == headers[selectedHeaderIndex]
             }
             scope.launch {

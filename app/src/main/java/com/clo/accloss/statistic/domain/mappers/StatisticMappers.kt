@@ -1,0 +1,102 @@
+package com.clo.accloss.statistic.domain.mappers
+
+import com.clo.accloss.GetProfileStatistics
+import com.clo.accloss.core.presentation.profile.presentation.model.ProfileStatisticsModel
+import com.clo.accloss.statistic.data.remote.model.StatisticResponse
+import com.clo.accloss.statistic.domain.model.Statistic
+import com.clo.accloss.Estadistica as StatisticEntity
+
+fun StatisticEntity.toDomain(): Statistic = Statistic(
+    clivisit = clivisit,
+    cntclientes = cntclientes,
+    cntfacturas = cntfacturas,
+    cntpedidos = cntpedidos,
+    cntrecl = cntrecl,
+    codcoord = codcoord,
+    defdolTotneto = defdolTotneto,
+    devdolTotneto = devdolTotneto,
+    fechaEstad = fechaEstad,
+    lomMontovtas = lomMontovtas,
+    lomPrcvisit = lomPrcvisit,
+    lomPrcvtas = lomPrcvtas,
+    mtofacturas = mtofacturas,
+    mtopedidos = mtopedidos,
+    mtorecl = mtorecl,
+    metavend = metavend,
+    nombrevend = nombrevend,
+    nomcoord = nomcoord,
+    ppgdolTotneto = ppgdolTotneto,
+    prcmeta = prcmeta,
+    prcvisitas = prcvisitas,
+    rlomMontovtas = rlomMontovtas,
+    rlomPrcvisit = rlomPrcvisit,
+    rlomPrcvtas = rlomPrcvtas,
+    totdolcob = totdolcob,
+    vendedor = vendedor,
+    empresa = empresa
+)
+
+fun Statistic.toDatabase(): StatisticEntity = StatisticEntity(
+    clivisit = clivisit,
+    cntclientes = cntclientes,
+    cntfacturas = cntfacturas,
+    cntpedidos = cntpedidos,
+    cntrecl = cntrecl,
+    codcoord = codcoord,
+    defdolTotneto = defdolTotneto,
+    devdolTotneto = devdolTotneto,
+    fechaEstad = fechaEstad,
+    lomMontovtas = lomMontovtas,
+    lomPrcvisit = lomPrcvisit,
+    lomPrcvtas = lomPrcvtas,
+    mtofacturas = mtofacturas,
+    mtopedidos = mtopedidos,
+    mtorecl = mtorecl,
+    metavend = metavend,
+    nombrevend = nombrevend,
+    nomcoord = nomcoord,
+    ppgdolTotneto = ppgdolTotneto,
+    prcmeta = prcmeta,
+    prcvisitas = prcvisitas,
+    rlomMontovtas = rlomMontovtas,
+    rlomPrcvisit = rlomPrcvisit,
+    rlomPrcvtas = rlomPrcvtas,
+    totdolcob = totdolcob,
+    vendedor = vendedor,
+    empresa = empresa
+)
+
+fun StatisticResponse.toDomain(): Statistic = Statistic(
+    clivisit = clivisit ?: 0.0,
+    cntclientes = cntclientes ?: 0.0,
+    cntfacturas = cntfacturas ?: 0.0,
+    cntpedidos = cntpedidos ?: 0.0,
+    cntrecl = cntrecl ?: 0.0,
+    codcoord = codcoord ?: "",
+    defdolTotneto = defdolTotneto ?: 0.0,
+    devdolTotneto = devdolTotneto ?: 0.0,
+    fechaEstad = fechaEstad ?: "",
+    lomMontovtas = lomMontovtas ?: 0.0,
+    lomPrcvisit = lomPrcvisit ?: 0.0,
+    lomPrcvtas = lomPrcvtas ?: 0.0,
+    metavend = metavend ?: 0.0,
+    mtofacturas = mtofacturas ?: 0.0,
+    mtopedidos = mtopedidos ?: 0.0,
+    mtorecl = mtorecl ?: 0.0,
+    nombrevend = nombrevend ?: "",
+    nomcoord = nomcoord ?: "",
+    ppgdolTotneto = ppgdolTotneto ?: 0.0,
+    prcmeta = prcmeta ?: 0.0,
+    prcvisitas = prcvisitas ?: 0.0,
+    rlomMontovtas = rlomMontovtas ?: 0.0,
+    rlomPrcvisit = rlomPrcvisit ?: 0.0,
+    rlomPrcvtas = rlomPrcvtas ?: 0.0,
+    totdolcob = totdolcob ?: 0.0,
+    vendedor = vendedor ?: ""
+)
+
+fun GetProfileStatistics.toUiModel(): ProfileStatisticsModel = ProfileStatisticsModel(
+    debts = debts ?: 0.0,
+    paid = paid ?: 0.0,
+    expired = expired ?: 0.0
+)

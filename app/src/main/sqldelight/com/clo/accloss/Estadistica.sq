@@ -42,6 +42,24 @@ vendedor == :vendedor
 AND
 empresa == :empresa;
 
+getProfileStatistics:
+SELECT
+    (
+        SELECT SUM(factura.dtotalfinal - factura.dtotpagos)
+        FROM factura
+        WHERE factura.vence < DATE('now') AND factura.empresa = :empresa
+    ) AS expired,
+    (
+        SELECT SUM(dtotalfinal - dtotpagos)
+        FROM factura
+        WHERE factura.empresa = :empresa
+    ) AS debts,
+    (
+        SELECT SUM(estadistica.totdolcob)
+        FROM estadistica
+        WHERE estadistica.empresa = :empresa
+    ) AS paid;
+
 addEstadistica:
 INSERT OR REPLACE
 INTO estadistica (

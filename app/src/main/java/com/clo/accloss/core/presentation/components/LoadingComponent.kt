@@ -6,20 +6,16 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun LoadingComponent(
-    modifier: Modifier = Modifier,
-    progressModifier: Modifier = Modifier
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier,
+        modifier = modifier.size(50.dp),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator(
-            modifier = progressModifier.size(50.dp)
-        )
+        CircularProgressIndicator()
     }
 }

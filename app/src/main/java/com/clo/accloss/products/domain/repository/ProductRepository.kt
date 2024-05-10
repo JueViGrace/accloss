@@ -45,7 +45,7 @@ class ProductRepository(
 
     private fun getRemoteProducts(
         baseUrl: String,
-        empresa: String
+        company: String
     ): Flow<RequestState<List<Product>>> = flow {
         emit(RequestState.Loading)
 
@@ -68,7 +68,7 @@ class ProductRepository(
                         data = apiOperation.data.product.map { productResponseItem ->
                             productResponseItem.toDomain().copy(
                                 url = """$baseUrl/img/${productResponseItem.codigo}.jpg""",
-                                empresa = empresa
+                                empresa = company
                             )
                         }
                     )
@@ -78,7 +78,7 @@ class ProductRepository(
     }.flowOn(Dispatchers.IO)
 
     fun getProducts(
-        empresa: String,
+        company: String,
         baseUrl: String,
         forceReload: Boolean = false
     ): Flow<RequestState<List<Product>>> = flow {
@@ -86,7 +86,7 @@ class ProductRepository(
 
         var reload = forceReload
 
-        productLocalSource.getProducts(empresa)
+        productLocalSource.getProducts(company)
             .catch { e ->
                 emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
             }
@@ -102,7 +102,7 @@ class ProductRepository(
                 } else {
                     getRemoteProducts(
                         baseUrl = baseUrl,
-                        empresa = empresa
+                        company = company
                     ).collect { result ->
                         when (result) {
                             is RequestState.Error -> {
@@ -124,14 +124,14 @@ class ProductRepository(
     }.flowOn(Dispatchers.IO)
 
     suspend fun getProduct(
-        empresa: String,
+        company: String,
         user: String
     ): Flow<RequestState<Product>> = flow {
         emit(RequestState.Loading)
 
         productLocalSource.getProduct(
-            codigo = user,
-            empresa = empresa
+            code = user,
+            company = company
         )
             .catch { e ->
                 emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))

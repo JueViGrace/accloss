@@ -1,6 +1,7 @@
 package com.clo.accloss.core.common
 
 import cafe.adriel.voyager.navigator.tab.Tab
+import com.clo.accloss.core.presentation.dashboard.presentation.components.DashboardMenu
 import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeTabs
 import com.clo.accloss.core.presentation.profile.presentation.components.ProfileMenu
 
@@ -12,10 +13,6 @@ object Constants {
     const val DB_ERROR_MESSAGE = "Database is not available"
 
     const val BASE_URL: String = "https://cloccidental.com"
-
-    const val HOME: String = "Home"
-    const val PROFILE: String = "Profile"
-    const val CONTACT: String = "Contacts"
 
     const val HUNDRED_DOUBLE: Double = 100.00
 
@@ -29,7 +26,7 @@ object Constants {
         HomeTabs.Profile.tab
     )
 
-    val GERENCIAS = listOf(
+    val MASTERS = listOf(
         "G95",
         "G96",
         "G97",
@@ -37,9 +34,21 @@ object Constants {
         "G99",
     )
 
+    val dashboardOptionsMenu = listOf(
+        DashboardMenu.Catalogue,
+        DashboardMenu.Offers,
+    )
+
+    val dashboardStatisticsMenu = listOf(
+        DashboardMenu.Managements,
+        DashboardMenu.Salesmen,
+        DashboardMenu.Customers,
+        DashboardMenu.Orders,
+        DashboardMenu.Bills,
+    )
+
     val profileMenu = listOf(
         ProfileMenu.Statistics,
-        ProfileMenu.Promotions,
         ProfileMenu.LogOut
     )
 }

@@ -3,6 +3,7 @@ package com.clo.accloss.core.presentation.dashboard.presentation.navigation.tab
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.Navigator
@@ -21,10 +22,11 @@ object DashboardTab : Tab {
         @Composable
         get() {
             val icon = painterResource(id = HomeTabs.Dashboard.icon)
+            val title = stringResource(HomeTabs.Dashboard.title)
             return remember {
                 TabOptions(
                     index = HomeTabs.Dashboard.index,
-                    title = HomeTabs.Dashboard.title,
+                    title = title,
                     icon = icon
                 )
             }

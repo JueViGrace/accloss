@@ -4,7 +4,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.presentation.contact.presentation.state.ContactState
 import com.clo.accloss.core.presentation.state.RequestState
-import com.clo.accloss.vendedor.domain.usecase.GetVendedores
+import com.clo.accloss.salesman.domain.usecase.GetSellers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,15 +16,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ContactViewModel(
-    private val getVendedores: GetVendedores
+    private val getSellers: GetSellers
 ) : ScreenModel {
     private var _state: MutableStateFlow<ContactState> = MutableStateFlow(ContactState())
     val state = combine(
         _state,
-        getVendedores(true)
+        getSellers(true)
     ) { state, result ->
         state.copy(
-            vendedores = result,
+            sellers = result,
         )
     }
         .flowOn(Dispatchers.IO)
@@ -34,13 +34,13 @@ class ContactViewModel(
             ContactState()
         )
 
-    private suspend fun updateVendedores() {
-        getVendedores(
+    private suspend fun updateSellers() {
+        getSellers(
             forceReload = _state.value.reload == true
         ).collect { result ->
             _state.update { contactState ->
                 contactState.copy(
-                    vendedores = result,
+                    sellers = result,
                     reload = null
                 )
             }
@@ -51,12 +51,12 @@ class ContactViewModel(
         screenModelScope.launch {
             _state.update { contactState ->
                 contactState.copy(
-                    vendedores = RequestState.Loading,
+                    sellers = RequestState.Loading,
                     reload = true
                 )
             }
             delay(500)
-            updateVendedores()
+            updateSellers()
         }
     }
 }

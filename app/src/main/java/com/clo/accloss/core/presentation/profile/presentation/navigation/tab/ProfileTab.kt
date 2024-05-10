@@ -3,6 +3,7 @@ package com.clo.accloss.core.presentation.profile.presentation.navigation.tab
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.Navigator
@@ -14,7 +15,7 @@ import com.clo.accloss.core.presentation.home.presentation.navigation.routes.Hom
 import com.clo.accloss.core.presentation.profile.presentation.navigation.screen.ProfileScreen
 
 object ProfileTab : Tab {
-    private fun readResolve(): Any = DashboardTab
+    private fun readResolve(): Any = ProfileTab
 
     override val key: ScreenKey = uniqueScreenKey
 
@@ -22,10 +23,11 @@ object ProfileTab : Tab {
         @Composable
         get() {
             val icon = painterResource(id = HomeTabs.Profile.icon)
+            val title = stringResource(id = HomeTabs.Profile.title)
             return remember {
                 TabOptions(
                     index = HomeTabs.Profile.index,
-                    title = HomeTabs.Profile.title,
+                    title = title,
                     icon = icon
                 )
             }

@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -23,7 +21,7 @@ import com.clo.accloss.core.presentation.auth.login.presentation.state.LoginStat
 
 @Composable
 fun LoginContent(
-    editEmpresa: String?,
+    editCompany: String?,
     editLogin: Login?,
     state: LoginState,
     onEvent: (LoginEvents) -> Unit,
@@ -58,7 +56,7 @@ fun LoginContent(
         LoginCardComponent(
             modifier = Modifier.fillMaxHeight(),
             shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp),
-            editEmpresa = editEmpresa ?: "",
+            editCompany = editCompany ?: "",
             editLogin = editLogin,
             onEvent = onEvent,
             state = state,

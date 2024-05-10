@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -54,7 +55,7 @@ import com.clo.accloss.session.presentation.components.SessionsDropdown
 fun LoginCardComponent(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(5),
-    editEmpresa: String?,
+    editCompany: String?,
     editLogin: Login?,
     onEvent: (LoginEvents) -> Unit,
     state: LoginState,
@@ -122,7 +123,7 @@ fun LoginCardComponent(
                     }
                 ) {
                     LoginForm(
-                        editEmpresa = editEmpresa,
+                        editCompany = editCompany,
                         editLogin = editLogin,
                         onEvent = onEvent,
                         state = state,
@@ -138,11 +139,9 @@ fun LoginCardComponent(
     }
 }
 
-// TODO: TEXTFIELD COLORS
-
 @Composable
 fun LoginForm(
-    editEmpresa: String?,
+    editCompany: String?,
     editLogin: Login?,
     onEvent: (LoginEvents) -> Unit,
     state: LoginState,
@@ -174,14 +173,14 @@ fun LoginForm(
         }
         TextFieldComponent(
             modifier = Modifier.fillMaxWidth(),
-            value = editEmpresa ?: "",
+            value = editCompany ?: "",
             onChange = { newValue ->
-                onEvent(LoginEvents.OnEmpresaChanged(newValue))
+                onEvent(LoginEvents.OnCompanyChanged(newValue))
             },
-            label = "Empresa",
+            label = stringResource(R.string.company),
             leadingIcon = R.drawable.ic_corporate_fare_24px,
-            supportingText = state.empresaError,
-            errorStatus = state.empresaError?.isNotEmpty() ?: false,
+            supportingText = state.companyError?.let { stringResource(it) },
+            errorStatus = state.companyError != null,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
             )
@@ -190,18 +189,18 @@ fun LoginForm(
         ElevatedButton(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                onEvent(LoginEvents.OnEmpresaClicked)
+                onEvent(LoginEvents.OnCompanyClicked)
             },
             colors = ButtonDefaults.elevatedButtonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer
             )
         ) {
-            if (state.loadingEmpresa) {
+            if (state.loadingCompany) {
                 LoadingComponent(
-                    progressModifier = Modifier.size(25.dp)
+                    modifier = Modifier.size(25.dp)
                 )
             } else {
-                CustomText(text = "Validar")
+                CustomText(text = stringResource(R.string.validate))
             }
         }
 
@@ -211,10 +210,10 @@ fun LoginForm(
             onChange = { newValue ->
                 onEvent(LoginEvents.OnUsernameChanged(newValue))
             },
-            label = "Username",
+            label = stringResource(R.string.username),
             leadingIcon = R.drawable.ic_account_circle_24px,
-            supportingText = state.usernameError,
-            errorStatus = state.usernameError?.isNotEmpty() == true,
+            supportingText = state.usernameError?.let { stringResource(it) },
+            errorStatus = state.usernameError != null,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next
             ),
@@ -227,7 +226,7 @@ fun LoginForm(
             onChange = { newValue ->
                 onEvent(LoginEvents.OnPasswordChanged(newValue))
             },
-            label = "Password",
+            label = stringResource(R.string.password),
             leadingIcon = R.drawable.ic_lock_24px,
             trailingIcon = if (passwordVisibility) {
                 R.drawable.ic_visibility_off_24px
@@ -237,8 +236,8 @@ fun LoginForm(
             onTrailingIconClick = {
                 passwordVisibility = !passwordVisibility
             },
-            supportingText = state.passwordError,
-            errorStatus = state.passwordError?.isNotEmpty() == true,
+            supportingText = state.passwordError?.let { stringResource(it) },
+            errorStatus = state.passwordError != null,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
@@ -281,15 +280,15 @@ fun LoginForm(
         ) {
             if (state.loadingUser) {
                 LoadingComponent(
-                    progressModifier = Modifier.size(25.dp)
+                    modifier = Modifier.size(25.dp)
                 )
             } else {
-                CustomText(text = "Log in")
+                CustomText(text = stringResource(R.string.sign_in))
             }
         }
 
         if (!isDialog) {
-            CustomText(text = "Desarrollado por:")
+            CustomText(text = stringResource(R.string.developed_by))
             Image(
                 painter = painterResource(R.drawable.ic_clossnegrosss),
                 contentDescription = "CLOSS"
@@ -323,9 +322,9 @@ fun SignUpWithSession(
                 .fillMaxWidth()
                 .padding(5.dp),
             sessions = state.sessions,
-            label = "Sesiones",
+            label = stringResource(R.string.sessions),
             painter = painterResource(id = R.drawable.ic_account_circle_24px),
-            placeholder = "Seleccione una sesion",
+            placeholder = stringResource(R.string.select_account),
             onSessionSelected = { newSession ->
                 onEvent(LoginEvents.OnSessionSelected(newSession))
             }
@@ -365,9 +364,9 @@ fun LoginNavigationBox(
                     painter = painterResource(
                         R.drawable.ic_left_24px
                     ),
-                    contentDescription = "Log in"
+                    contentDescription = stringResource(id = R.string.sign_in)
                 )
-                CustomText(text = "Log In")
+                CustomText(text = stringResource(id = R.string.sign_in))
             }
         }
     }
@@ -392,12 +391,12 @@ fun LoginNavigationBox(
                 horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                CustomText(text = "Sesiones")
+                CustomText(text = stringResource(id = R.string.sessions))
                 Icon(
                     painter = painterResource(
                         R.drawable.ic_right_24px
                     ),
-                    contentDescription = "Sessions"
+                    contentDescription = stringResource(id = R.string.sessions)
                 )
             }
         }

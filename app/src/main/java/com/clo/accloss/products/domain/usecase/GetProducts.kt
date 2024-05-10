@@ -27,7 +27,7 @@ class GetProducts(
                 is RequestState.Success -> {
                     productRepository.getProducts(
                         baseUrl = sessionResult.data.enlaceEmpresa,
-                        empresa = sessionResult.data.empresa,
+                        company = sessionResult.data.empresa,
                         forceReload = forceReload
                     )
                         .catch { e ->

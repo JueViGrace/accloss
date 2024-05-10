@@ -3,7 +3,6 @@ package com.clo.accloss.core.presentation.contact.presentation.navigation.screen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -12,7 +11,7 @@ import com.clo.accloss.core.presentation.components.ErrorScreen
 import com.clo.accloss.core.presentation.components.LoadingScreen
 import com.clo.accloss.core.presentation.contact.presentation.components.ContactsContent
 import com.clo.accloss.core.presentation.contact.presentation.viewmodel.ContactViewModel
-import com.clo.accloss.vendedor.presentation.screens.VendedorDetailScreen
+import com.clo.accloss.salesman.presentation.screens.SalesmanDetailScreen
 
 class ContactScreen : Screen {
     @Composable
@@ -21,22 +20,22 @@ class ContactScreen : Screen {
         val viewModel = koinScreenModel<ContactViewModel>()
         val state by viewModel.state.collectAsState()
 
-        state.vendedores.DisplayResult(
+        state.sellers.DisplayResult(
             onLoading = {
                 LoadingScreen()
             },
             onError = {
                 ErrorScreen(it)
             },
-            onSuccess = { vendedores ->
+            onSuccess = { sellers ->
                 ContactsContent(
-                    vendedores = vendedores,
+                    sellers = sellers,
                     isRefreshing = state.reload == true,
                     onRefresh = {
                         viewModel.onRefresh()
                     },
-                    onSelect = { vendedor ->
-                        navigator.parent?.parent?.push(VendedorDetailScreen(vendedor))
+                    onSelect = { seller ->
+                        navigator.parent?.parent?.push(SalesmanDetailScreen(seller))
                     }
                 )
             },

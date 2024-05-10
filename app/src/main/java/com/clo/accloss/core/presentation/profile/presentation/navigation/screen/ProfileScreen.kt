@@ -12,10 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
@@ -35,13 +33,16 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.clo.accloss.R
 import com.clo.accloss.core.common.Constants.profileMenu
+import com.clo.accloss.core.common.roundFormat
+import com.clo.accloss.core.presentation.auth.login.presentation.components.AddAccountDialog
 import com.clo.accloss.core.presentation.auth.login.presentation.viewmodel.LoginViewModel
-import com.clo.accloss.core.presentation.components.AddAccountDialog
 import com.clo.accloss.core.presentation.components.CustomClickableCard
 import com.clo.accloss.core.presentation.components.CustomText
 import com.clo.accloss.core.presentation.components.ErrorComponent
 import com.clo.accloss.core.presentation.components.LoadingComponent
+import com.clo.accloss.core.presentation.components.MenuItem
 import com.clo.accloss.core.presentation.profile.presentation.components.ProfileMenu
 import com.clo.accloss.core.presentation.profile.presentation.viewmodel.ProfileViewModel
 import com.clo.accloss.session.presentation.components.SessionsBody
@@ -69,7 +70,7 @@ class ProfileScreen : Screen {
                     showChanged = { newValue ->
                         showDialog = newValue
                     },
-                    editEmpresa = loginViewModel.newEmpresa,
+                    editCompany = loginViewModel.newCompany,
                     editLogin = loginViewModel.newLogin,
                     onEvent = loginViewModel::onEvent,
                     state = loginState,
@@ -113,96 +114,104 @@ class ProfileScreen : Screen {
                         .padding(horizontal = 20.dp),
                 ) {
                     CustomText(
-                        text = "Finanzas Gerencia: ${session.user}",
+                        text = "${stringResource(R.string.management_finances)}: ${session.user}",
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
                         fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                     )
                 }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(100.dp)
-                        .padding(horizontal = 10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(
-                        15.dp,
-                        Alignment.CenterHorizontally
-                    ),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f)
-                            .background(
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                shape = RoundedCornerShape(25)
-                            )
-                            .clip(RoundedCornerShape(25)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.SpaceEvenly,
-                            horizontalAlignment = Alignment.CenterHorizontally
+                state.profileStatistics.DisplayResult(
+                    onLoading = { LoadingComponent() },
+                    onError = {
+                        ErrorComponent(it)
+                    },
+                    onSuccess = { statistics ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(100.dp)
+                                .padding(horizontal = 10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                15.dp,
+                                Alignment.CenterHorizontally
+                            ),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            CustomText(text = "Deudas",)
-                            CustomText(
-                                text = "$ 2312312",
-                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                                fontWeight = MaterialTheme.typography.bodySmall.fontWeight
-                            )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .weight(1f)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.primaryContainer,
+                                        shape = RoundedCornerShape(25)
+                                    )
+                                    .clip(RoundedCornerShape(25)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalArrangement = Arrangement.SpaceEvenly,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    CustomText(text = stringResource(R.string.debts))
+                                    CustomText(
+                                        text = "$ ${statistics.debts.roundFormat()}",
+                                        fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                        fontWeight = MaterialTheme.typography.bodySmall.fontWeight
+                                    )
+                                }
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .weight(1f)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.primaryContainer,
+                                        shape = RoundedCornerShape(25)
+                                    )
+                                    .clip(RoundedCornerShape(25)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalArrangement = Arrangement.SpaceEvenly,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    CustomText(text = stringResource(R.string.expired))
+                                    CustomText(
+                                        text = "$ ${statistics.expired.roundFormat()}",
+                                        fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                        fontWeight = MaterialTheme.typography.bodySmall.fontWeight
+                                    )
+                                }
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .weight(1f)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.primaryContainer,
+                                        shape = RoundedCornerShape(25)
+                                    )
+                                    .clip(RoundedCornerShape(25)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalArrangement = Arrangement.SpaceEvenly,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    CustomText(text = stringResource(R.string.paid))
+                                    CustomText(
+                                        text = "$ ${statistics.paid.roundFormat()}",
+                                        fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                        fontWeight = MaterialTheme.typography.bodySmall.fontWeight
+                                    )
+                                }
+                            }
                         }
-                    }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f)
-                            .background(
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                shape = RoundedCornerShape(25)
-                            )
-                            .clip(RoundedCornerShape(25)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.SpaceEvenly,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            CustomText(text = "Vencido",)
-                            CustomText(
-                                text = "$ 23124213",
-                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                                fontWeight = MaterialTheme.typography.bodySmall.fontWeight
-                            )
-                        }
-                    }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f)
-                            .background(
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                shape = RoundedCornerShape(25)
-                            )
-                            .clip(RoundedCornerShape(25)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.SpaceEvenly,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            CustomText(text = "Cobrado",)
-                            CustomText(
-                                text = "$ 12421124",
-                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                                fontWeight = MaterialTheme.typography.bodySmall.fontWeight
-                            )
-                        }
-                    }
-                }
+                    },
+                )
 
                 CustomClickableCard(
                     shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
@@ -211,7 +220,7 @@ class ProfileScreen : Screen {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(15.dp),
-                        columns = GridCells.Adaptive(100.dp),
+                        columns = GridCells.Adaptive(150.dp),
                         verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
                         horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally)
                     ) {
@@ -219,61 +228,26 @@ class ProfileScreen : Screen {
                             items = profileMenu,
                             key = { item -> item.name }
                         ) { menu ->
-                            Box {
-                                CustomClickableCard(
-                                    modifier = Modifier.clip(CircleShape),
-                                    onClick = when (menu) {
-                                        is ProfileMenu.LogOut -> {
-                                            { viewModel.endSession() }
-                                        }
-
-                                        is ProfileMenu.Promotions -> {
-                                            { }
-                                        }
-
-                                        is ProfileMenu.Statistics -> {
-                                            { }
-                                        }
-
-                                        else -> null
-                                    },
-                                    shape = CircleShape,
-                                    colors = CardDefaults.cardColors().copy(
-                                        containerColor = MaterialTheme.colorScheme.surfaceBright
-                                    )
-                                ) {
-                                    Column(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .padding(20.dp),
-                                        verticalArrangement = Arrangement.SpaceEvenly,
-                                        horizontalAlignment = Alignment.CenterHorizontally
-                                    ) {
-                                        Icon(painter = painterResource(id = menu.icon), contentDescription = menu.name)
-                                        CustomText(
-                                            text = menu.name
-                                        )
-                                    }
-                                }
-                            }
+                            MenuItem(
+                                name = stringResource(menu.name),
+                                icon = painterResource(id = menu.icon),
+                                onClick = handleMenuClick(menu, navigator, viewModel)
+                            )
                         }
                     }
                 }
             }
         }
     }
-    private fun handleMenuClick(menu: ProfileMenu, navigator: Navigator, viewModel: ProfileViewModel): (() -> Unit)? {
+
+    private fun handleMenuClick(menu: ProfileMenu, navigator: Navigator, viewModel: ProfileViewModel): () -> Unit {
         return when (menu) {
             is ProfileMenu.LogOut -> {
                 { viewModel.endSession() }
             }
-            is ProfileMenu.Promotions -> {
-                { }
-            }
             is ProfileMenu.Statistics -> {
                 { }
             }
-            else -> null
         }
     }
 }

@@ -44,23 +44,23 @@ class ProductLocalSource(
         )
     }*/
 
-    suspend fun getProducts(empresa: String): Flow<List<ProductEntity>> = scope.async {
+    suspend fun getProducts(company: String): Flow<List<ProductEntity>> = scope.async {
         dbHelper.withDatabase { db ->
             db.productQueries
                 .getProducts(
-                    empresa = empresa
+                    empresa = company
                 )
                 .asFlow()
                 .mapToList(scope.coroutineContext)
         }.flowOn(Dispatchers.IO)
     }.await()
 
-    suspend fun getProduct(codigo: String, empresa: String): Flow<ProductEntity> = scope.async {
+    suspend fun getProduct(code: String, company: String): Flow<ProductEntity> = scope.async {
         dbHelper.withDatabase { db ->
             db.productQueries
                 .getProduct(
-                    codigo = codigo,
-                    empresa = empresa
+                    codigo = code,
+                    empresa = company
                 )
                 .asFlow()
                 .mapToOne(scope.coroutineContext)

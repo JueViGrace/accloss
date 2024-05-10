@@ -5,7 +5,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import com.clo.accloss.R
 
 @Composable
 fun ListFooter(
@@ -16,7 +18,7 @@ fun ListFooter(
         contentAlignment = Alignment.Center
     ) {
         CustomText(
-            text = "Fin de la lista",
+            text = stringResource(R.string.end_of_list),
             textAlign = TextAlign.Center,
             fontSize = MaterialTheme.typography.bodySmall.fontSize,
             fontWeight = MaterialTheme.typography.bodySmall.fontWeight,

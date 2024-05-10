@@ -3,7 +3,6 @@ package com.clo.accloss.core.presentation.home.presentation.navigation.screen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
@@ -41,7 +40,7 @@ class HomeScreen : Screen {
                     )
                 )
             },
-            onSuccess = { session ->
+            onSuccess = { _ ->
                 TabNavigator(
                     tab = HomeTabs.Dashboard.tab,
                     disposeNestedNavigators = true,
