@@ -1,7 +1,10 @@
 package com.clo.accloss.core.data.network
 
 import com.clo.accloss.core.common.Constants.BASE_URL
+import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import io.ktor.client.HttpClient
+import io.ktor.client.call.NoTransformationFoundException
+import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -46,7 +49,18 @@ class KtorClient {
         return try {
             ApiOperation.Success(data = apiCall())
         } catch (e: Exception) {
-            ApiOperation.Failure(error = e)
+            ApiOperation.Failure(error = when (e) {
+                is NoTransformationFoundException -> {
+                    "Invalid response body, try again later."
+                }
+                is SocketTimeoutException -> {
+                    "Server took too long to answer."
+                }
+                else -> {
+                    SERVER_ERROR
+                }
+            }
+            )
         }
     }
 }

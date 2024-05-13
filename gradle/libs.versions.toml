@@ -17,6 +17,7 @@ voyager = "1.1.0-alpha04"
 sqldelight = "2.0.2"
 paging = "3.2.1"
 ktor = "2.3.10"
+dokka = "1.9.20"
 
 [libraries]
 # [ANDROID]
@@ -76,9 +77,12 @@ sqldelight-paging-extensions = { group = "app.cash.sqldelight", name = "androidx
 paging-runtime = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 
+# [DOCUMENTATION: DOKKA]
+android-dokka = { module = "org.jetbrains.dokka:android-documentation-plugin", version.ref = "dokka" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sqldelight = { id = "app.cash.sqldelight", version.ref  = "sqldelight" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }

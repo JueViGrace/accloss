@@ -36,7 +36,7 @@ class BillLinesRepository(
             is ApiOperation.Failure -> {
                 emit(
                     RequestState.Error(
-                        message = apiOperation.error.message ?: SERVER_ERROR
+                        message = apiOperation.error
                     )
                 )
             }

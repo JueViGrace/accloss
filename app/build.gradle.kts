@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.dokka)
 }
 
 android {
@@ -43,7 +44,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.12"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
     packaging {
         resources {
@@ -126,6 +127,9 @@ dependencies {
     implementation(libs.paging.compose)
 
     implementation(kotlin("reflect"))
+
+    // Dokka
+    dokkaPlugin(libs.android.dokka)
 }
 
 sqldelight {
