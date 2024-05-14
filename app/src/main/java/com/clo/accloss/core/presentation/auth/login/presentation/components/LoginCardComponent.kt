@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -152,6 +153,7 @@ fun LoginForm(
     var passwordVisibility by remember {
         mutableStateOf(false)
     }
+    var focusManager = LocalFocusManager.current
 
     Column(
         modifier = if (!isDialog) {
@@ -264,6 +266,7 @@ fun LoginForm(
             modifier = Modifier
                 .fillMaxWidth(),
             onClick = {
+                focusManager.clearFocus()
                 onEvent(LoginEvents.OnLoginClicked)
             },
             enabled = editLogin?.username?.isNotEmpty() == true && editLogin.password.isNotEmpty(),
@@ -293,7 +296,7 @@ fun LoginForm(
                 painter = painterResource(R.drawable.ic_clossnegrosss),
                 contentDescription = "CLOSS"
             )
-            CustomText(text = "Ver. $APP_VERSION")
+            CustomText(text = APP_VERSION)
         }
     }
 }

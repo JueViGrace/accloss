@@ -42,9 +42,14 @@ class SessionLocalSource(
 
     suspend fun updateSession(session: SessionEntity) = scope.async {
         dbHelper.withDatabase { db ->
-            db.sessionQueries.updateSessions(
-                empresa = session.empresa
-            )
+            db.transaction {
+                db.sessionQueries.activateSession(
+                    empresa = session.empresa
+                )
+                db.sessionQueries.inactiveSessions(
+                    empresa = session.empresa
+                )
+            }
         }
     }.await()
 

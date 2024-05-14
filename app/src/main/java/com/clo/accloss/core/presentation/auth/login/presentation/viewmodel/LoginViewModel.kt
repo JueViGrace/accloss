@@ -183,7 +183,7 @@ class LoginViewModel(
                                                     empresa = company.codigoEmpresa,
                                                     enlaceEmpresa = "https://${company.enlaceEmpresa}",
                                                     enlaceEmpresaPost = "http://${company.enlaceEmpresa}:5001",
-                                                    active = true
+                                                    active = false
                                                 )
 
                                                 companyRepository.addCompany(

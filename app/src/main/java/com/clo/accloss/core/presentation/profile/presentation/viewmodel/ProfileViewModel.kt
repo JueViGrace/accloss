@@ -76,7 +76,6 @@ class ProfileViewModel(
     fun changeSession(session: Session) {
         screenModelScope.launch {
             sessionRepository.updateSession(session)
-            sessionRepository.addSession(session.copy(active = true))
         }
     }
 

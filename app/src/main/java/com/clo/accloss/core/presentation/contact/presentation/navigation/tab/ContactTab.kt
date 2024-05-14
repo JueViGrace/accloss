@@ -7,6 +7,7 @@ import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.SlideTransition
@@ -36,7 +37,9 @@ object ContactTab : Tab {
     override fun Content() {
         Navigator(
             screen = ContactScreen(),
-            key = key
+            disposeBehavior = NavigatorDisposeBehavior(
+                disposeNestedNavigators = true
+            )
         ) { navigator ->
             SlideTransition(navigator = navigator)
         }

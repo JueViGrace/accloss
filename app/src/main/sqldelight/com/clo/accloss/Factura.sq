@@ -46,7 +46,8 @@ CREATE TABLE IF NOT EXISTS factura (
     tipoprecio REAL NOT NULL DEFAULT 0.0,
     vence TEXT NOT NULL DEFAULT '',
     vendedor TEXT NOT NULL DEFAULT '',
-    empresa TEXT NOT NULL DEFAULT ''
+    empresa TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY (documento, empresa)
 );
 
 getFacturas:

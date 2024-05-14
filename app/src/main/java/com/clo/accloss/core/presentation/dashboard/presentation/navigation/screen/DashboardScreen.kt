@@ -49,7 +49,6 @@ import coil.request.ImageRequest
 import com.clo.accloss.R
 import com.clo.accloss.core.common.Constants.dashboardOptionsMenu
 import com.clo.accloss.core.common.Constants.dashboardStatisticsMenu
-import com.clo.accloss.core.common.levelPush
 import com.clo.accloss.core.common.roundFormat
 import com.clo.accloss.core.presentation.components.CustomClickableCard
 import com.clo.accloss.core.presentation.components.CustomText
@@ -320,7 +319,7 @@ class DashboardScreen : Screen {
     private fun handleMenuClick(menu: DashboardMenu, navigator: Navigator): () -> Unit {
         return when (menu) {
             is DashboardMenu.Managements -> {
-                { navigator.levelPush(ManagementScreen()) }
+                { navigator.parent?.parent?.push(ManagementScreen()) }
             }
             is DashboardMenu.Salesmen -> {
                 { }
@@ -332,7 +331,7 @@ class DashboardScreen : Screen {
                 { }
             }
             DashboardMenu.Catalogue -> {
-                { navigator.levelPush(ProductsScreen) }
+                { navigator.parent?.parent?.push(ProductsScreen) }
             }
             is DashboardMenu.Orders -> {
                 { }

@@ -46,8 +46,7 @@ class HomeScreen : Screen {
                     disposeNestedNavigators = true,
                     tabDisposable = { tabNavigator ->
                         TabDisposable(navigator = tabNavigator, tabs = homeTabs)
-                    },
-                    key = key
+                    }
                 ) {
                     HomeContent(
                         currentScreen = {

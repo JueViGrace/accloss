@@ -7,7 +7,6 @@ import com.clo.accloss.bills.domain.mappers.toDatabase
 import com.clo.accloss.bills.domain.mappers.toDomain
 import com.clo.accloss.bills.domain.model.Bill
 import com.clo.accloss.core.common.Constants
-import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import com.clo.accloss.core.data.network.ApiOperation
 import com.clo.accloss.core.presentation.state.RequestState
 import kotlinx.coroutines.Dispatchers

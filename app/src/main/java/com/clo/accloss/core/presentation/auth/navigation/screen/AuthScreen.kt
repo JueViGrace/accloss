@@ -19,7 +19,6 @@ class AuthScreen : Screen {
             disposeBehavior = NavigatorDisposeBehavior(
                 disposeNestedNavigators = true
             ),
-            key = key
         ) { navigator ->
             CustomScreenTransition(navigator = navigator)
         }

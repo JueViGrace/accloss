@@ -1,12 +1,13 @@
 package com.clo.accloss.core.common
 
 import cafe.adriel.voyager.navigator.tab.Tab
+import com.clo.accloss.BuildConfig
 import com.clo.accloss.core.presentation.dashboard.presentation.components.DashboardMenu
 import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeTabs
 import com.clo.accloss.core.presentation.profile.presentation.components.ProfileMenu
 
 object Constants {
-    const val APP_VERSION: String = "1.0.0"
+    const val APP_VERSION: String = "${BuildConfig.BUILD_TYPE} ${BuildConfig.VERSION_NAME}"
 
     const val SERVER_ERROR = "Internal Server Error"
 

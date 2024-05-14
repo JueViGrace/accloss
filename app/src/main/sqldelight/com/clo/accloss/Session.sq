@@ -40,7 +40,12 @@ active
 )
 VALUES ?;
 
-updateSessions:
+activateSession:
+UPDATE session
+SET active = 1
+WHERE empresa == :empresa;
+
+inactiveSessions:
 UPDATE session
 SET active = 0
 WHERE
