@@ -1,4 +1,4 @@
-package com.clo.accloss.core.presentation.auth.login.presentation.events
+package com.clo.accloss.login.presentation.events
 
 import com.clo.accloss.session.domain.model.Session
 

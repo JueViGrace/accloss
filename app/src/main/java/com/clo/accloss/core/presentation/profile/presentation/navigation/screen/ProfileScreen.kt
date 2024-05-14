@@ -36,8 +36,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.R
 import com.clo.accloss.core.common.Constants.profileMenu
 import com.clo.accloss.core.common.roundFormat
-import com.clo.accloss.core.presentation.auth.login.presentation.components.AddAccountDialog
-import com.clo.accloss.core.presentation.auth.login.presentation.viewmodel.LoginViewModel
 import com.clo.accloss.core.presentation.components.CustomClickableCard
 import com.clo.accloss.core.presentation.components.CustomText
 import com.clo.accloss.core.presentation.components.ErrorComponent
@@ -45,6 +43,8 @@ import com.clo.accloss.core.presentation.components.LoadingComponent
 import com.clo.accloss.core.presentation.components.MenuItem
 import com.clo.accloss.core.presentation.profile.presentation.components.ProfileMenu
 import com.clo.accloss.core.presentation.profile.presentation.viewmodel.ProfileViewModel
+import com.clo.accloss.login.presentation.components.AddAccountDialog
+import com.clo.accloss.login.presentation.viewmodel.LoginViewModel
 import com.clo.accloss.session.presentation.components.SessionsBody
 
 class ProfileScreen : Screen {

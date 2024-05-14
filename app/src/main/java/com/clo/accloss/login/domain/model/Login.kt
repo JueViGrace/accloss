@@ -1,4 +1,4 @@
-package com.clo.accloss.core.presentation.auth.login.domain.model
+package com.clo.accloss.login.domain.model
 
 data class Login(
     val baseUrl: String = "",

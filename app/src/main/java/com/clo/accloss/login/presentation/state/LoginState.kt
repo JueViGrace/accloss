@@ -1,4 +1,4 @@
-package com.clo.accloss.core.presentation.auth.login.presentation.state
+package com.clo.accloss.login.presentation.state
 
 import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.company.domain.model.Company

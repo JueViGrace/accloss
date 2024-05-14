@@ -36,10 +36,7 @@ object ContactTab : Tab {
     @Composable
     override fun Content() {
         Navigator(
-            screen = ContactScreen(),
-            disposeBehavior = NavigatorDisposeBehavior(
-                disposeNestedNavigators = true
-            )
+            screen = ContactScreen()
         ) { navigator ->
             SlideTransition(navigator = navigator)
         }

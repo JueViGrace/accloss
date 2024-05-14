@@ -1,4 +1,4 @@
-package com.clo.accloss.core.presentation.auth.login.presentation.components
+package com.clo.accloss.login.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -15,9 +15,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.clo.accloss.R
-import com.clo.accloss.core.presentation.auth.login.domain.model.Login
-import com.clo.accloss.core.presentation.auth.login.presentation.events.LoginEvents
-import com.clo.accloss.core.presentation.auth.login.presentation.state.LoginState
+import com.clo.accloss.login.domain.model.Login
+import com.clo.accloss.login.presentation.events.LoginEvents
+import com.clo.accloss.login.presentation.state.LoginState
 
 @Composable
 fun LoginContent(

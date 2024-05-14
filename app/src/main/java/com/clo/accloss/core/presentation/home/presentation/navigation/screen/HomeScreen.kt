@@ -14,7 +14,7 @@ import cafe.adriel.voyager.navigator.tab.TabDisposable
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.clo.accloss.core.common.Constants.homeTabs
 import com.clo.accloss.core.presentation.app.navigation.screen.AppScreen
-import com.clo.accloss.core.presentation.auth.navigation.screen.AuthScreen
+import com.clo.accloss.login.presentation.screen.LoginScreen
 import com.clo.accloss.core.presentation.components.LoadingScreen
 import com.clo.accloss.core.presentation.home.presentation.components.HomeContent
 import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeTabs
@@ -36,7 +36,7 @@ class HomeScreen : Screen {
             onError = {
                 navigator.replaceAll(
                     AppScreen(
-                        initialScreen = AuthScreen()
+                        initialScreen = LoginScreen()
                     )
                 )
             },

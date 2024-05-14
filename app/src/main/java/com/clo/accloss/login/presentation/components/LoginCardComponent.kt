@@ -1,4 +1,4 @@
-package com.clo.accloss.core.presentation.auth.login.presentation.components
+package com.clo.accloss.login.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -43,9 +43,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.clo.accloss.R
 import com.clo.accloss.core.common.Constants.APP_VERSION
-import com.clo.accloss.core.presentation.auth.login.domain.model.Login
-import com.clo.accloss.core.presentation.auth.login.presentation.events.LoginEvents
-import com.clo.accloss.core.presentation.auth.login.presentation.state.LoginState
+import com.clo.accloss.login.domain.model.Login
+import com.clo.accloss.login.presentation.events.LoginEvents
+import com.clo.accloss.login.presentation.state.LoginState
 import com.clo.accloss.core.presentation.components.CustomClickableCard
 import com.clo.accloss.core.presentation.components.CustomText
 import com.clo.accloss.core.presentation.components.LoadingComponent

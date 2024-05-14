@@ -1,4 +1,4 @@
-package com.clo.accloss.core.presentation.auth.login.presentation.viewmodel
+package com.clo.accloss.login.presentation.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,10 +8,10 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.R
 import com.clo.accloss.company.domain.repository.CompanyRepository
 import com.clo.accloss.company.domain.rules.CompanyValidator
-import com.clo.accloss.core.presentation.auth.login.domain.model.Login
-import com.clo.accloss.core.presentation.auth.login.domain.rules.LoginValidator
-import com.clo.accloss.core.presentation.auth.login.presentation.events.LoginEvents
-import com.clo.accloss.core.presentation.auth.login.presentation.state.LoginState
+import com.clo.accloss.login.domain.model.Login
+import com.clo.accloss.login.domain.rules.LoginValidator
+import com.clo.accloss.login.presentation.events.LoginEvents
+import com.clo.accloss.login.presentation.state.LoginState
 import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.session.domain.repository.SessionRepository

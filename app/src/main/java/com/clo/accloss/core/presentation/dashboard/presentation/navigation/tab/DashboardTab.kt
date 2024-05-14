@@ -37,9 +37,6 @@ object DashboardTab : Tab {
     override fun Content() {
         Navigator(
             screen = DashboardScreen(),
-            disposeBehavior = NavigatorDisposeBehavior(
-                disposeNestedNavigators = true
-            ),
         ) { navigator ->
             SlideTransition(navigator = navigator)
         }

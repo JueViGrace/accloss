@@ -31,7 +31,7 @@ class GetProducts(
                         forceReload = forceReload
                     )
                         .catch { e ->
-                            emit(RequestState.Error(message = e.message ?: "Get vendedores went wrong"))
+                            emit(RequestState.Error(message = e.message ?: "Get Products went wrong"))
                         }
                         .collect { result ->
                             when (result) {

@@ -29,12 +29,12 @@ class ProductViewModel(
         .flowOn(Dispatchers.IO)
         .stateIn(
             screenModelScope,
-            SharingStarted.WhileSubscribed(5L),
+            SharingStarted.WhileSubscribed(5000L),
             ProductState()
         )
 
     private suspend fun updateProducts() {
-        getProducts().collect { result ->
+        getProducts(_state.value.reload == true).collect { result ->
             _state.update { productState ->
                 productState.copy(
                     products = result,

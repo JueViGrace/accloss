@@ -89,5 +89,23 @@ data class ProductResponseItem(
     val fechamodifi: String? = null,
 
     @SerialName("referencia")
-    val referencia: String? = null
+    val referencia: String? = null,
+
+    @SerialName("costo_prom")
+    val costoProm: Double? = null,
+
+    @SerialName("util1")
+    val util1: Double? = null,
+
+    @SerialName("util2")
+    val util2: Double? = null,
+
+    @SerialName("util3")
+    val util3: Double? = null,
+
+    @SerialName("fchUltComp")
+    val fchUltComp: String? = null,
+
+    @SerialName("qtyUltComp")
+    val qtyUltComp: Double? = null,
 )

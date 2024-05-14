@@ -1,4 +1,4 @@
-package com.clo.accloss.core.presentation.auth.login.domain.rules
+package com.clo.accloss.login.domain.rules
 
 import com.clo.accloss.R
 

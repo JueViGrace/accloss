@@ -21,9 +21,6 @@ fun App() {
                 screen = AppScreen(
                     initialScreen = HomeScreen()
                 ),
-                disposeBehavior = NavigatorDisposeBehavior(
-                    disposeNestedNavigators = true
-                )
             ) { navigator ->
                 CustomScreenTransition(navigator = navigator)
             }

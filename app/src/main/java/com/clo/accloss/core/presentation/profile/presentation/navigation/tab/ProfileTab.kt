@@ -37,9 +37,6 @@ object ProfileTab : Tab {
     override fun Content() {
         Navigator(
             screen = ProfileScreen(),
-            disposeBehavior = NavigatorDisposeBehavior(
-                disposeNestedNavigators = true
-            ),
         ) { navigator ->
             SlideTransition(navigator = navigator)
         }

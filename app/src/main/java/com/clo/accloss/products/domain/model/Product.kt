@@ -26,6 +26,12 @@ data class Product(
     val vtaMinenx: Double = 0.0,
     val vtaSolofac: Int = 0,
     val vtaSolone: Int = 0,
+    val costoProm: Double = 0.0,
+    val util1: Double = 0.0,
+    val util2: Double = 0.0,
+    val util3: Double = 0.0,
+    val fchUltComp: String = "",
+    val qtyUltComp: Double = 0.0,
     val url: String = "",
-    val empresa: String = ""
+    val empresa: String = "",
 )
