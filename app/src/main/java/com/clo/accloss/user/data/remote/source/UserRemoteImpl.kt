@@ -6,10 +6,10 @@ import com.clo.accloss.user.data.remote.model.UserResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-class UserRemoteDataSource(
+class UserRemoteImpl(
     private val ktorClient: KtorClient
-) {
-    suspend fun getSafeUser(
+) : UserRemote {
+    override suspend fun getSafeUser(
         baseUrl: String,
         username: String,
         password: String

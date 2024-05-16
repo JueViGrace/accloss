@@ -50,12 +50,14 @@ class GetRemoteData(
                         Log.i("Get Managements", "Managements: ${it.getSuccessDataOrNull()}")
                     }
 
-                    salesmanRepository.getRemoteSalesman(
+                    val salesmanResult = salesmanRepository.getRemoteSalesman(
                         baseUrl = sessionResult.data.enlaceEmpresa,
                         user = sessionResult.data.user,
                         company = sessionResult.data.empresa
-                    ).collect {
-                        Log.i("Get Salesmen", "Salesmen: ${it.getSuccessDataOrNull()} ")
+                    )
+
+                    if (salesmanResult.isSuccess()) {
+                        Log.i("Get Salesmen", "Salesmen: ${salesmanResult.getSuccessData()}")
                     }
 
                     statisticRepository.getRemoteStatistics(
@@ -66,12 +68,14 @@ class GetRemoteData(
                         Log.i("Get Statistics", "Statistics: ${it.getSuccessDataOrNull()} ")
                     }
 
-                    customerRepository.getRemoteCustomer(
+                    val customerResult = customerRepository.getRemoteCustomer(
                         baseUrl = sessionResult.data.enlaceEmpresa,
                         user = sessionResult.data.user,
                         company = sessionResult.data.empresa,
-                    ).collect {
-                        Log.i("Get Customers", "Customers: ${it.getSuccessDataOrNull()} ")
+                    )
+
+                    if (customerResult.isSuccess()) {
+                        Log.i("Get Customers", "Customers: ${customerResult.getSuccessData()} ")
                     }
 
                     orderRepository.getRemoteOrders(

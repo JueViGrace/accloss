@@ -6,7 +6,6 @@ import com.clo.accloss.products.domain.repository.ProductRepository
 import com.clo.accloss.session.domain.usecase.GetSession
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
@@ -17,7 +16,7 @@ class GetProducts(
     operator fun invoke(
         forceReload: Boolean = false
     ): Flow<RequestState<List<Product>>> = flow {
-        emit(RequestState.Loading)
+        var reload = forceReload
 
         getSession().collect { sessionResult ->
             when (sessionResult) {
@@ -29,23 +28,34 @@ class GetProducts(
                         baseUrl = sessionResult.data.enlaceEmpresa,
                         company = sessionResult.data.empresa,
                         forceReload = forceReload
-                    )
-                        .catch { e ->
-                            emit(RequestState.Error(message = e.message ?: "Get Products went wrong"))
-                        }
-                        .collect { result ->
-                            when (result) {
-                                is RequestState.Error -> {
-                                    emit(RequestState.Error(result.message))
-                                }
-                                is RequestState.Success -> {
+                    ).collect { result ->
+                        when (result) {
+                            is RequestState.Error -> {
+                                emit(RequestState.Error(result.message))
+                            }
+                            is RequestState.Success -> {
+                                if (result.data.isNotEmpty() && !reload) {
                                     emit(RequestState.Success(data = result.data))
-                                }
-                                else -> {
-                                    emit(RequestState.Loading)
+                                } else {
+                                    val apiResult = productRepository.getRemoteProducts(
+                                        baseUrl = sessionResult.data.enlaceEmpresa,
+                                        company = sessionResult.data.empresa
+                                    )
+
+                                    when (apiResult) {
+                                        is RequestState.Error -> {
+                                            emit(RequestState.Error(message = apiResult.message))
+                                        }
+                                        is RequestState.Success -> {
+                                            reload = false
+                                        }
+                                        else -> emit(RequestState.Loading)
+                                    }
                                 }
                             }
+                            else -> emit(RequestState.Loading)
                         }
+                    }
                 }
                 else -> emit(RequestState.Loading)
             }

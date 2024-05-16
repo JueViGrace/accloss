@@ -1,9 +1,10 @@
-package com.clo.accloss.session.data
+package com.clo.accloss.session.data.local
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import com.clo.accloss.core.data.database.helper.DbHelper
+import com.clo.accloss.session.data.source.SessionDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -11,11 +12,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import com.clo.accloss.Session as SessionEntity
 
-class SessionLocalSource(
+class SessionLocalSourceImpl(
     private val dbHelper: DbHelper,
     private val scope: CoroutineScope
-) {
-    suspend fun getCurrentUser(): Flow<SessionEntity> = scope.async {
+) : SessionDataSource {
+
+    override suspend fun getCurrentUser(): Flow<SessionEntity> = scope.async {
         dbHelper.withDatabase { db ->
             db.sessionQueries
                 .getCurrentUser()
@@ -24,7 +26,7 @@ class SessionLocalSource(
         }.flowOn(Dispatchers.IO)
     }.await()
 
-    suspend fun getSessions(): Flow<List<SessionEntity>> = scope.async {
+    override suspend fun getSessions(): Flow<List<SessionEntity>> = scope.async {
         dbHelper.withDatabase { db ->
             db.sessionQueries
                 .getSessions()
@@ -33,14 +35,14 @@ class SessionLocalSource(
         }.flowOn(Dispatchers.IO)
     }.await()
 
-    suspend fun addSession(session: SessionEntity) = scope.async {
+    override suspend fun addSession(session: SessionEntity) = scope.async {
         dbHelper.withDatabase { db ->
             db.sessionQueries
                 .addSession(session)
         }
     }.await()
 
-    suspend fun updateSession(session: SessionEntity) = scope.async {
+    override suspend fun updateSession(session: SessionEntity) = scope.async {
         dbHelper.withDatabase { db ->
             db.transaction {
                 db.sessionQueries.activateSession(
@@ -53,7 +55,7 @@ class SessionLocalSource(
         }
     }.await()
 
-    suspend fun deleteSession(session: SessionEntity) = scope.async {
+    override suspend fun deleteSession(session: SessionEntity) = scope.async {
         dbHelper.withDatabase { db ->
             db.transaction {
                 db.productQueries.deleteProducts(session.empresa)

@@ -45,21 +45,23 @@ class KtorClient {
         }
     }.flowOn(Dispatchers.Default)*/
 
+    // TODO: MESSAGE AS R
     suspend inline fun <T> safeApiCall(crossinline apiCall: suspend () -> T): ApiOperation<T> {
         return try {
             ApiOperation.Success(data = apiCall())
         } catch (e: Exception) {
-            ApiOperation.Failure(error = when (e) {
-                is NoTransformationFoundException -> {
-                    "Invalid response body, try again later."
+            ApiOperation.Failure(
+                error = when (e) {
+                    is NoTransformationFoundException -> {
+                        "Invalid response body, try again later."
+                    }
+                    is SocketTimeoutException -> {
+                        "Server took too long to answer."
+                    }
+                    else -> {
+                        SERVER_ERROR
+                    }
                 }
-                is SocketTimeoutException -> {
-                    "Server took too long to answer."
-                }
-                else -> {
-                    SERVER_ERROR
-                }
-            }
             )
         }
     }

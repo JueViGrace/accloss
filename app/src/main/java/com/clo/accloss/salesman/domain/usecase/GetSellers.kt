@@ -6,7 +6,6 @@ import com.clo.accloss.salesman.domain.repository.SalesmanRepository
 import com.clo.accloss.session.domain.usecase.GetSession
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
@@ -19,6 +18,8 @@ class GetSellers(
     ): Flow<RequestState<List<Salesman>>> = flow {
         emit(RequestState.Loading)
 
+        var reload = forceReload
+
         getSession().collect { sessionResult ->
             when (sessionResult) {
                 is RequestState.Error -> {
@@ -29,24 +30,60 @@ class GetSellers(
                         baseUrl = sessionResult.data.enlaceEmpresa,
                         user = sessionResult.data.user,
                         company = sessionResult.data.empresa,
-                        forceReload = forceReload
-                    )
-                        .catch { e ->
-                            emit(RequestState.Error(message = e.message ?: "Get vendedores went wrong"))
-                        }
-                        .collect { result ->
-                            when (result) {
-                                is RequestState.Error -> {
-                                    emit(RequestState.Error(result.message))
-                                }
-                                is RequestState.Success -> {
+                    ).collect { result ->
+                        when (result) {
+                            is RequestState.Error -> {
+                                emit(RequestState.Error(result.message))
+                            }
+                            is RequestState.Success -> {
+                                if (result.data.isNotEmpty() && !reload) {
                                     emit(RequestState.Success(data = result.data))
-                                }
-                                else -> {
-                                    emit(RequestState.Loading)
+                                } else {
+                                    val apiResult = salesmanRepository.getRemoteSalesman(
+                                        baseUrl = sessionResult.data.enlaceEmpresa,
+                                        user = sessionResult.data.user,
+                                        company = sessionResult.data.empresa,
+                                    )
+
+                                    when (apiResult) {
+                                        is RequestState.Error -> {
+                                            emit(
+                                                RequestState.Error(
+                                                    message = apiResult.message
+                                                )
+                                            )
+                                        }
+                                        is RequestState.Success -> {
+                                            reload = false
+                                        }
+                                        else -> emit(RequestState.Loading)
+                                    }
+
+                                    // TODO: DOWNLOAD CONFIG
+                                    val mastersResult = salesmanRepository.getRemoteMasters(
+                                        baseUrl = sessionResult.data.enlaceEmpresa,
+                                        user = sessionResult.data.user,
+                                        company = sessionResult.data.empresa,
+                                    )
+
+                                    when (mastersResult) {
+                                        is RequestState.Error -> {
+                                            emit(
+                                                RequestState.Error(
+                                                    message = mastersResult.message
+                                                )
+                                            )
+                                        }
+                                        is RequestState.Success -> {
+                                            reload = false
+                                        }
+                                        else -> emit(RequestState.Loading)
+                                    }
                                 }
                             }
+                            else -> emit(RequestState.Loading)
                         }
+                    }
                 }
                 else -> emit(RequestState.Loading)
             }

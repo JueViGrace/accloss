@@ -1,4 +1,4 @@
-package com.clo.accloss.customer.data.local
+package com.clo.accloss.user.data.local
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
@@ -9,40 +9,34 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import com.clo.accloss.Cliente as CustomerEntity
+import com.clo.accloss.User as UserEntity
 
-class CustomerLocalSource(
+class UserLocalImpl(
     private val dbHelper: DbHelper,
     private val scope: CoroutineScope
-) {
-    suspend fun getCustomers(company: String): Flow<List<CustomerEntity>> = scope.async {
+) : UserLocal {
+
+    override suspend fun getUsers(): Flow<List<UserEntity>> = scope.async {
         dbHelper.withDatabase { db ->
-            db.clienteQueries
-                .getClientes(empresa = company)
+            db.userQueries
+                .getUsers()
                 .asFlow()
                 .mapToList(scope.coroutineContext)
         }.flowOn(Dispatchers.IO)
     }.await()
 
-    suspend fun getCustomer(code: String, company: String): Flow<CustomerEntity> = scope.async {
+    override suspend fun getUser(code: String, company: String): Flow<UserEntity> = scope.async {
         dbHelper.withDatabase { db ->
-            db.clienteQueries
-                .getCliente(
-                    codigo = code,
-                    empresa = company
-                )
+            db.userQueries
+                .getUser(vendedor = code, empresa = company)
                 .asFlow()
                 .mapToOne(scope.coroutineContext)
         }.flowOn(Dispatchers.IO)
     }.await()
 
-    suspend fun addCustomer(customers: List<CustomerEntity>) = scope.async {
+    override suspend fun addUser(user: UserEntity) = scope.async {
         dbHelper.withDatabase { db ->
-            db.clienteQueries.transaction {
-                customers.forEach { customer ->
-                    db.clienteQueries.addCliente(customer)
-                }
-            }
+            db.userQueries.addUser(user = user)
         }
     }.await()
 }

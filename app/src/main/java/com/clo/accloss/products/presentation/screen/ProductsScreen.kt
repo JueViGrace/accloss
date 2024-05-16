@@ -33,7 +33,7 @@ object ProductsScreen : Screen {
             onSuccess = { list ->
                 ProductContent(
                     products = list,
-                    isRefreshing = state.reload ?: false,
+                    isRefreshing = state.reload,
                     onSelect = { codigo ->
                     },
                     onRefresh = {

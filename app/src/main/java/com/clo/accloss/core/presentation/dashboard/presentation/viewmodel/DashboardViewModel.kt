@@ -33,7 +33,7 @@ class DashboardViewModel(
         .flowOn(Dispatchers.IO)
         .stateIn(
             screenModelScope,
-            SharingStarted.WhileSubscribed(5000L),
+            SharingStarted.WhileSubscribed(5L),
             DashboardState()
         )
 

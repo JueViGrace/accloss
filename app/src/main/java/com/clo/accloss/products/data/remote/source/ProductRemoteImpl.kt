@@ -1,19 +1,17 @@
 package com.clo.accloss.products.data.remote.source
 
-import com.clo.accloss.core.common.toStringFormat
 import com.clo.accloss.core.data.network.ApiOperation
 import com.clo.accloss.core.data.network.KtorClient
 import com.clo.accloss.products.data.remote.model.ProductResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import java.util.Date
 
-class ProductRemoteSource(
+class ProductRemoteImpl(
     private val ktorClient: KtorClient
-) {
-    suspend fun getSafeProducts(
+) : ProductRemote {
+    override suspend fun getSafeProducts(
         baseUrl: String,
-        lastSync: String = Date().toStringFormat()
+        lastSync: String
     ): ApiOperation<ProductResponse> = ktorClient.safeApiCall {
         ktorClient
             .client(baseUrl = baseUrl)

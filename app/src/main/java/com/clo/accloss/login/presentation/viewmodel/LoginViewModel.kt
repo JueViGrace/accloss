@@ -8,11 +8,11 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.R
 import com.clo.accloss.company.domain.repository.CompanyRepository
 import com.clo.accloss.company.domain.rules.CompanyValidator
+import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.login.domain.model.Login
 import com.clo.accloss.login.domain.rules.LoginValidator
 import com.clo.accloss.login.presentation.events.LoginEvents
 import com.clo.accloss.login.presentation.state.LoginState
-import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.session.domain.repository.SessionRepository
 import com.clo.accloss.user.domain.repository.UserRepository
@@ -160,75 +160,74 @@ class LoginViewModel(
                     if (errors.isEmpty()) {
                         screenModelScope.launch {
                             _state.value.company?.let { company ->
-                                userRepository.getRemoteUser(
+                                val apiResult = userRepository.getRemoteUser(
                                     login.copy(
                                         baseUrl = "https://${company.enlaceEmpresa}"
                                     )
-                                ).collect { result ->
-                                    when (result) {
-                                        is RequestState.Error -> {
+                                )
+                                when (apiResult) {
+                                    is RequestState.Error -> {
+                                        _state.update { loginState ->
+                                            loginState.copy(
+                                                errorMessage = apiResult.message,
+                                                loadingUser = false
+                                            )
+                                        }
+                                    }
+                                    is RequestState.Success -> {
+                                        if (apiResult.data.username.isNotEmpty()) {
+                                            val session = Session(
+                                                nombre = apiResult.data.nombre,
+                                                nombreEmpresa = company.nombreEmpresa,
+                                                user = apiResult.data.vendedor,
+                                                empresa = company.codigoEmpresa,
+                                                enlaceEmpresa = "https://${company.enlaceEmpresa}",
+                                                enlaceEmpresaPost = "http://${company.enlaceEmpresa}:5001",
+                                                active = false
+                                            )
+
+                                            companyRepository.addCompany(
+                                                company = company.copy(
+                                                    enlaceEmpresa = "https://${company.enlaceEmpresa}/webservice",
+                                                    enlaceEmpresaPost = "http://${company.enlaceEmpresa}:5001"
+                                                )
+                                            )
+
+                                            userRepository.addUser(
+                                                apiResult.data.copy(
+                                                    empresa = company.codigoEmpresa,
+                                                )
+                                            )
+
+                                            sessionRepository.addSession(session)
+
+                                            sessionRepository.updateSession(session)
+
                                             _state.update { loginState ->
                                                 loginState.copy(
-                                                    errorMessage = result.message,
+                                                    user = apiResult.data,
+                                                    errorMessage = null,
+                                                    usernameError = null,
+                                                    passwordError = null,
+                                                    loadingUser = false
+                                                )
+                                            }
+                                            checkSession()
+                                        } else {
+                                            _state.update { loginState ->
+                                                loginState.copy(
+                                                    passwordError = R.string.incorrect_credentials,
                                                     loadingUser = false
                                                 )
                                             }
                                         }
-                                        is RequestState.Success -> {
-                                            if (result.data.username.isNotEmpty()) {
-                                                val session = Session(
-                                                    nombre = result.data.nombre,
-                                                    nombreEmpresa = company.nombreEmpresa,
-                                                    user = result.data.vendedor,
-                                                    empresa = company.codigoEmpresa,
-                                                    enlaceEmpresa = "https://${company.enlaceEmpresa}",
-                                                    enlaceEmpresaPost = "http://${company.enlaceEmpresa}:5001",
-                                                    active = false
-                                                )
-
-                                                companyRepository.addCompany(
-                                                    company = company.copy(
-                                                        enlaceEmpresa = "https://${company.enlaceEmpresa}/webservice",
-                                                        enlaceEmpresaPost = "http://${company.enlaceEmpresa}:5001"
-                                                    )
-                                                )
-
-                                                userRepository.addUser(
-                                                    result.data.copy(
-                                                        empresa = company.codigoEmpresa,
-                                                    )
-                                                )
-
-                                                sessionRepository.addSession(session)
-
-                                                sessionRepository.updateSession(session)
-
-                                                _state.update { loginState ->
-                                                    loginState.copy(
-                                                        user = result.data,
-                                                        errorMessage = null,
-                                                        usernameError = null,
-                                                        passwordError = null,
-                                                        loadingUser = false
-                                                    )
-                                                }
-                                                checkSession()
-                                            } else {
-                                                _state.update { loginState ->
-                                                    loginState.copy(
-                                                        passwordError = R.string.incorrect_credentials,
-                                                        loadingUser = false
-                                                    )
-                                                }
-                                            }
-                                        }
-                                        else -> {
-                                            _state.update { loginState ->
-                                                loginState.copy(
-                                                    errorMessage = null,
-                                                    loadingUser = true
-                                                )
-                                            }
+                                    }
+                                    else -> {
+                                        _state.update { loginState ->
+                                            loginState.copy(
+                                                errorMessage = null,
+                                                loadingUser = true
+                                            )
                                         }
                                     }
                                 }
@@ -258,7 +257,7 @@ class LoginViewModel(
 
     private fun checkSession() {
         screenModelScope.launch {
-            sessionRepository.getCurrentUser().collect { result ->
+            sessionRepository.getCurrentUser.collect { result ->
                 _state.update { loginState ->
                     loginState.copy(
                         currentSession = result
@@ -268,7 +267,7 @@ class LoginViewModel(
         }
 
         screenModelScope.launch {
-            sessionRepository.getSessions().collect { result ->
+            sessionRepository.getSessions.collect { result ->
                 _state.update { loginState ->
                     loginState.copy(
                         sessions = result

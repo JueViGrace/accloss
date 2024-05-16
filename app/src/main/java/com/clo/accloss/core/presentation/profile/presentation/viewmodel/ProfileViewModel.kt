@@ -52,7 +52,7 @@ class ProfileViewModel(
             )
         }
         screenModelScope.launch {
-            sessionRepository.getCurrentUser().collect { result ->
+            sessionRepository.getCurrentUser.collect { result ->
                 _state.update { profileState ->
                     profileState.copy(
                         currentSession = result
@@ -63,7 +63,7 @@ class ProfileViewModel(
         }
 
         screenModelScope.launch {
-            sessionRepository.getSessions().collect { result ->
+            sessionRepository.getSessions.collect { result ->
                 _state.update { profileState ->
                     profileState.copy(
                         sessions = result

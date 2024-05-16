@@ -6,10 +6,10 @@ import com.clo.accloss.customer.data.remote.model.CustomerResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-class CustomerRemoteSource(
+class CustomerRemoteImpl(
     private val ktorClient: KtorClient
-) {
-    suspend fun getSafeCustomers(
+) : CustomerRemote {
+    override suspend fun getSafeCustomers(
         baseUrl: String,
         user: String
     ): ApiOperation<CustomerResponse> = ktorClient.safeApiCall {

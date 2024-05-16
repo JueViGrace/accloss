@@ -1,4 +1,4 @@
-package com.clo.accloss.salesman.data.local
+package com.clo.accloss.products.data.local
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
@@ -9,16 +9,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import com.clo.accloss.Vendedor as SalesmenEntity
+import com.clo.accloss.Product as ProductEntity
 
-class SalesmanLocalSource(
+class ProductLocalImpl(
     private val dbHelper: DbHelper,
     private val scope: CoroutineScope
-) {
-    suspend fun getSalesmen(company: String): Flow<List<SalesmenEntity>> = scope.async {
+) : ProductLocal {
+    override suspend fun getProducts(company: String): Flow<List<ProductEntity>> = scope.async {
         dbHelper.withDatabase { db ->
-            db.vendedorQueries
-                .getVendedores(
+            db.productQueries
+                .getProducts(
                     empresa = company
                 )
                 .asFlow()
@@ -26,14 +26,11 @@ class SalesmanLocalSource(
         }.flowOn(Dispatchers.IO)
     }.await()
 
-    suspend fun getSalesman(
-        salesman: String,
-        company: String
-    ): Flow<SalesmenEntity> = scope.async {
+    override suspend fun getProduct(code: String, company: String): Flow<ProductEntity> = scope.async {
         dbHelper.withDatabase { db ->
-            db.vendedorQueries
-                .getVendedor(
-                    vendedor = salesman,
+            db.productQueries
+                .getProduct(
+                    codigo = code,
                     empresa = company
                 )
                 .asFlow()
@@ -41,11 +38,11 @@ class SalesmanLocalSource(
         }.flowOn(Dispatchers.IO)
     }.await()
 
-    suspend fun addSalesmen(salesmen: List<SalesmenEntity>) = scope.async {
+    override suspend fun addProducts(products: List<ProductEntity>) = scope.async {
         dbHelper.withDatabase { db ->
-            db.vendedorQueries.transaction {
-                salesmen.forEach { salesman ->
-                    db.vendedorQueries.addVendedor(vendedor = salesman)
+            db.productQueries.transaction {
+                products.forEach { product ->
+                    db.productQueries.addProducts(product)
                 }
             }
         }

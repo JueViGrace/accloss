@@ -14,7 +14,7 @@ class GetSession(
     private val sessionRepository: SessionRepository
 ) {
     operator fun invoke(): Flow<RequestState<Session>> = flow {
-        sessionRepository.getCurrentUser()
+        sessionRepository.getCurrentUser
             .catch { e ->
                 emit(
                     RequestState.Error(

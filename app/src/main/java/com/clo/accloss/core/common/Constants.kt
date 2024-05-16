@@ -27,14 +27,6 @@ object Constants {
         HomeTabs.Profile.tab
     )
 
-    val MASTERS = listOf(
-        "G95",
-        "G96",
-        "G97",
-        "G98",
-        "G99",
-    )
-
     val dashboardOptionsMenu = listOf(
         DashboardMenu.Catalogue,
         DashboardMenu.Offers,

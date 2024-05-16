@@ -5,7 +5,6 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.products.domain.usecase.GetProducts
 import com.clo.accloss.products.presentation.state.ProductState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -20,7 +19,7 @@ class ProductViewModel(
     private var _state: MutableStateFlow<ProductState> = MutableStateFlow(ProductState())
     val state = combine(
         _state,
-        getProducts()
+        getProducts(),
     ) { state, result ->
         state.copy(
             products = result
@@ -33,26 +32,28 @@ class ProductViewModel(
             ProductState()
         )
 
-    private suspend fun updateProducts() {
-        getProducts(_state.value.reload == true).collect { result ->
-            _state.update { productState ->
-                productState.copy(
-                    products = result,
-                    reload = null
-                )
+    // TODO: CHECK FOR RELOAD
+
+    private fun updateProducts() {
+        screenModelScope.launch(Dispatchers.IO) {
+            getProducts(_state.value.reload).collect { result ->
+                _state.update { productState ->
+                    productState.copy(
+                        products = result,
+                        reload = false
+                    )
+                }
             }
         }
     }
 
     fun onRefresh() {
-        screenModelScope.launch {
-            _state.update { productState ->
-                productState.copy(
-                    reload = true
-                )
-            }
-            delay(500)
-            updateProducts()
+        _state.update { productState ->
+            productState.copy(
+                reload = true
+            )
         }
+
+        updateProducts()
     }
 }

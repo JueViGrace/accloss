@@ -43,7 +43,6 @@ class HomeScreen : Screen {
             onSuccess = { _ ->
                 TabNavigator(
                     tab = HomeTabs.Dashboard.tab,
-                    disposeNestedNavigators = true,
                     tabDisposable = { tabNavigator ->
                         TabDisposable(navigator = tabNavigator, tabs = homeTabs)
                     }

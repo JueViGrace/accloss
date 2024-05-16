@@ -1,5 +1,6 @@
 package com.clo.accloss.core.common
 
+import android.util.Log
 import com.clo.accloss.core.common.Constants.HUNDRED_DOUBLE
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -22,3 +23,12 @@ fun Double.roundFormat(format: Int? = null): String {
         else -> DecimalFormat("#,##0.00").format(num)
     }
 }
+
+fun Throwable.log(tag: String) =
+    Log.e(
+        tag,
+        """
+            Message: ${this.message}\n
+            Localized Message: ${this.localizedMessage}
+        """.trimIndent()
+    )

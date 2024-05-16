@@ -6,10 +6,10 @@ import com.clo.accloss.salesman.data.remote.model.SalesmanResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-class SalesmanRemoteSource(
+class SalesmanRemoteImpl(
     private val ktorClient: KtorClient
-) {
-    suspend fun getSafeSalesman(
+) : SalesmanRemote {
+    override suspend fun getSafeSalesman(
         baseUrl: String,
         user: String
     ): ApiOperation<List<SalesmanResponse>> = ktorClient.safeApiCall {
@@ -23,7 +23,7 @@ class SalesmanRemoteSource(
             .body<List<SalesmanResponse>>()
     }
 
-    suspend fun getSafeMasters(
+    override suspend fun getSafeMasters(
         baseUrl: String,
         user: String
     ): ApiOperation<List<SalesmanResponse>> = ktorClient.safeApiCall {

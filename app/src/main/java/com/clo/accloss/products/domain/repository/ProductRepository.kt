@@ -1,150 +1,28 @@
 package com.clo.accloss.products.domain.repository
 
-import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
-import com.clo.accloss.core.common.Constants.SERVER_ERROR
-import com.clo.accloss.core.data.network.ApiOperation
 import com.clo.accloss.core.presentation.state.RequestState
-import com.clo.accloss.products.data.local.ProductLocalSource
-import com.clo.accloss.products.data.remote.source.ProductRemoteSource
-import com.clo.accloss.products.domain.mappers.toDatabase
-import com.clo.accloss.products.domain.mappers.toDomain
+import com.clo.accloss.products.data.source.ProductDataSource
 import com.clo.accloss.products.domain.model.Product
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
-class ProductRepository(
-    private val productRemoteSource: ProductRemoteSource,
-    private val productLocalSource: ProductLocalSource
-) {
-    /*private fun getRemoteProducts(
-        baseUrl: String,
-        empresa: String
-    ): Flow<List<Product>> = flow<List<Product>> {
-        productRemoteSource
-            .getSafeProducts(
-                baseUrl = baseUrl
-            )
-            .collect { apiOperation ->
-                when (apiOperation) {
-                    is ApiOperation.Failure -> emit(emptyList())
-                    is ApiOperation.Loading -> emit(emptyList())
-                    is ApiOperation.Success -> emit(
-                        apiOperation.data.product.map { productResponseItem ->
-                            productResponseItem.toDomain().copy(
-                                url = """$baseUrl/img/${productResponseItem.codigo}.jpg""",
-                                empresa = empresa
-                            )
-                        }
-                    )
-                }
-            }
-    }.flowOn(Dispatchers.IO)*/
+interface ProductRepository {
+    val productDataSource: ProductDataSource
 
-    private fun getRemoteProducts(
+    suspend fun getRemoteProducts(
         baseUrl: String,
         company: String
-    ): Flow<RequestState<List<Product>>> = flow {
-        emit(RequestState.Loading)
-
-        val apiOperation = productRemoteSource
-            .getSafeProducts(
-                baseUrl = baseUrl
-            )
-
-        when (apiOperation) {
-            is ApiOperation.Failure -> {
-                emit(
-                    RequestState.Error(
-                        message = apiOperation.error
-                    )
-                )
-            }
-            is ApiOperation.Success -> {
-                emit(
-                    RequestState.Success(
-                        data = apiOperation.data.product.map { productResponseItem ->
-                            productResponseItem.toDomain().copy(
-                                url = """$baseUrl/img/${productResponseItem.codigo}.jpg""",
-                                empresa = company
-                            )
-                        }
-                    )
-                )
-            }
-        }
-    }.flowOn(Dispatchers.IO)
+    ): RequestState<List<Product>>
 
     fun getProducts(
         company: String,
         baseUrl: String,
         forceReload: Boolean = false
-    ): Flow<RequestState<List<Product>>> = flow {
-        emit(RequestState.Loading)
+    ): Flow<RequestState<List<Product>>>
 
-        var reload = forceReload
-
-        productLocalSource.getProducts(company)
-            .catch { e ->
-                emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
-            }
-            .collect { cachedList ->
-                if (cachedList.isNotEmpty() && !reload) {
-                    emit(
-                        RequestState.Success(
-                            data = cachedList.map { productEntity ->
-                                productEntity.toDomain()
-                            }
-                        )
-                    )
-                } else {
-                    getRemoteProducts(
-                        baseUrl = baseUrl,
-                        company = company
-                    ).collect { result ->
-                        when (result) {
-                            is RequestState.Error -> {
-                                emit(
-                                    RequestState.Error(
-                                        message = result.message
-                                    )
-                                )
-                            }
-                            is RequestState.Success -> {
-                                addProduct(result.data)
-                            }
-                            else -> emit(RequestState.Loading)
-                        }
-                    }
-                    reload = false
-                }
-            }
-    }.flowOn(Dispatchers.IO)
-
-    suspend fun getProduct(
+    fun getProduct(
         company: String,
         user: String
-    ): Flow<RequestState<Product>> = flow {
-        emit(RequestState.Loading)
+    ): Flow<RequestState<Product>>
 
-        productLocalSource.getProduct(
-            code = user,
-            company = company
-        )
-            .catch { e ->
-                emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
-            }
-            .collect { productEntity ->
-                emit(RequestState.Success(data = productEntity.toDomain()))
-            }
-    }.flowOn(Dispatchers.IO)
-
-    private suspend fun addProduct(products: List<Product>) =
-        productLocalSource.addProduct(
-            products = products.map { product ->
-                product.toDatabase()
-            }
-        )
+    suspend fun addProducts(products: List<Product>)
 }
