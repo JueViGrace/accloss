@@ -7,5 +7,7 @@ data class Rate(
     val ip: String = "",
     val usuario: String = "",
     val id: String = "",
-    val tasa: Double = 0.0
+    val tasa: Double = 0.0,
+    val tasaib: String = "",
+    val empresa: String = ""
 )

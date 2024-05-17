@@ -1,0 +1,40 @@
+CREATE TABLE tasas (
+    id TEXT NOT NULL DEFAULT '',
+    fecha TEXT NOT NULL DEFAULT '',
+    tasa REAL NOT NULL DEFAULT 0.0,
+    usuario TEXT NOT NULL DEFAULT '',
+    ip TEXT NOT NULL DEFAULT '',
+    fchyhora TEXT NOT NULL DEFAULT '',
+    fechamodifi TEXT NOT NULL DEFAULT '',
+    tasaib TEXT NOT NULL DEFAULT '',
+    empresa TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY (id, empresa)
+);
+
+getTasa:
+SELECT *
+FROM tasas
+WHERE
+empresa = :empresa
+ORDER BY fchyhora DESC
+LIMIT 1;
+
+addTasa:
+INSERT OR REPLACE
+INTO tasas (
+id,
+fecha,
+tasa,
+usuario,
+ip,
+fchyhora,
+fechamodifi,
+tasaib,
+empresa
+)
+VALUES ?;
+
+deleteTasas:
+DELETE FROM tasas
+WHERE
+empresa = :empresa;

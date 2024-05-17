@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
@@ -28,6 +27,7 @@ import com.clo.accloss.R
 import com.clo.accloss.core.presentation.components.CustomText
 import com.clo.accloss.core.presentation.components.ListFooter
 import com.clo.accloss.core.presentation.components.ListHeader
+import com.clo.accloss.core.presentation.components.ListStickyHeader
 import com.clo.accloss.core.presentation.components.PullToRefreshLazyColumn
 import com.clo.accloss.salesman.domain.model.Salesman
 import kotlinx.coroutines.launch
@@ -35,13 +35,13 @@ import kotlin.math.abs
 
 @Composable
 fun ContactsContent(
-    sellers: List<Salesman>,
+    salesmen: List<Salesman>,
     isRefreshing: Boolean,
     onSelect: ((String) -> Unit)? = null,
     onRefresh: () -> Unit
 ) {
     val headers = remember {
-        sellers.map { it.nombre.first().uppercase() }.toSet().toList()
+        salesmen.map { it.nombre.first().uppercase() }.toSet().toList()
     }
     val listState = rememberLazyListState()
 
@@ -49,12 +49,17 @@ fun ContactsContent(
         PullToRefreshLazyColumn(
             modifier = Modifier.weight(1f),
             lazyListState = listState,
-            items = sellers,
-            grouped = sellers.groupBy { it.nombre.first() },
+            items = salesmen,
+            grouped = salesmen.groupBy { it.nombre.first() },
             header = {
-                ListHeader(
-                    text = it.toString()
-                )
+                ListHeader(text = R.string.salesmen)
+            },
+            stickyHeader = { char ->
+                char?.let {
+                    ListStickyHeader(
+                        text = it.toString()
+                    )
+                }
             },
             content = { seller ->
                 AnimatedContent(
@@ -69,11 +74,7 @@ fun ContactsContent(
                 }
             },
             footer = {
-                ListFooter(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 30.dp)
-                )
+                ListFooter()
             },
             isRefreshing = isRefreshing,
             onRefresh = onRefresh
@@ -90,7 +91,7 @@ fun ContactsContent(
                 ?.key ?: return
             if (selectedHeaderIndex == index) return
             selectedHeaderIndex = index
-            val selectedItemIndex = sellers.indexOfFirst {
+            val selectedItemIndex = salesmen.indexOfFirst {
                 it.nombre.first().uppercase() == headers[selectedHeaderIndex]
             }
             scope.launch {

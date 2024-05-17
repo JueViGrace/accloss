@@ -5,6 +5,8 @@ import com.clo.accloss.BuildConfig
 import com.clo.accloss.core.presentation.dashboard.presentation.components.DashboardMenu
 import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeTabs
 import com.clo.accloss.core.presentation.profile.presentation.components.ProfileMenu
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.WhileSubscribed
 
 object Constants {
     const val APP_VERSION: String = "${BuildConfig.BUILD_TYPE} ${BuildConfig.VERSION_NAME}"
@@ -20,6 +22,10 @@ object Constants {
     const val MIN_PAGE: Int = 20
 
     const val PREFETCH: Int = 10
+
+    private const val STOP_TIME_MILLIS: Long = 5000L
+
+    val SHARING_STARTED = SharingStarted.WhileSubscribed(STOP_TIME_MILLIS)
 
     val homeTabs: List<Tab> = listOf(
         HomeTabs.Dashboard.tab,
@@ -41,7 +47,6 @@ object Constants {
     )
 
     val profileMenu = listOf(
-        ProfileMenu.Statistics,
         ProfileMenu.LogOut
     )
 }

@@ -3,9 +3,10 @@ package com.clo.accloss.core.presentation.app
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import com.clo.accloss.core.presentation.app.navigation.screen.AppScreen
 import com.clo.accloss.core.presentation.components.CustomScreenTransition
 import com.clo.accloss.core.presentation.home.presentation.navigation.screen.HomeScreen
@@ -17,12 +18,16 @@ fun App() {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            Navigator(
-                screen = AppScreen(
-                    initialScreen = HomeScreen()
-                ),
-            ) { navigator ->
-                CustomScreenTransition(navigator = navigator)
+            CompositionLocalProvider(
+                LocalLifecycleOwner provides androidx.compose.ui.platform.LocalLifecycleOwner.current
+            ) {
+                Navigator(
+                    screen = AppScreen(
+                        initialScreen = HomeScreen()
+                    ),
+                ) { navigator ->
+                    CustomScreenTransition(navigator = navigator)
+                }
             }
         }
     }

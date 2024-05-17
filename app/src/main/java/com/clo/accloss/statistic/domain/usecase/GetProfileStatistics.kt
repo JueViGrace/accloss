@@ -17,7 +17,7 @@ class GetProfileStatistics(
         emit(RequestState.Loading)
 
         getSession().collect { sessionResult ->
-            when(sessionResult) {
+            when (sessionResult) {
                 is RequestState.Error -> {
                     emit(
                         RequestState.Error(

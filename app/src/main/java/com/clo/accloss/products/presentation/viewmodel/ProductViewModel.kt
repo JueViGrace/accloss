@@ -2,13 +2,12 @@ package com.clo.accloss.products.presentation.viewmodel
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.clo.accloss.core.common.Constants.SHARING_STARTED
 import com.clo.accloss.products.domain.usecase.GetProducts
 import com.clo.accloss.products.presentation.state.ProductState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,13 +23,11 @@ class ProductViewModel(
         state.copy(
             products = result
         )
-    }
-        .flowOn(Dispatchers.IO)
-        .stateIn(
-            screenModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            ProductState()
-        )
+    }.stateIn(
+        screenModelScope,
+        SHARING_STARTED,
+        ProductState()
+    )
 
     // TODO: CHECK FOR RELOAD
 

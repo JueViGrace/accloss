@@ -1,42 +1,34 @@
 package com.clo.accloss.core.presentation.components
 
-import androidx.compose.foundation.background
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.clo.accloss.R
 
 @Composable
 fun ListHeader(
     modifier: Modifier = Modifier,
-    text: String
+    @StringRes text: Int
 ) {
-    Column(
+    Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                color = MaterialTheme.colorScheme.surface
-            ),
-        verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
-        horizontalAlignment = Alignment.Start
+            .padding(top = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
-        Box(
-            modifier = Modifier.width(60.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            CustomText(
-                text = text,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-            )
-        }
-        HorizontalDivider()
+        CustomText(
+            text = stringResource(id = text),
+            fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+            fontSize = MaterialTheme.typography.titleLarge.fontSize
+        )
     }
 }

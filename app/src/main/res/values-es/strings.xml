@@ -35,4 +35,6 @@
     <string name="debts">Deudas</string>
     <string name="expired">Vencido</string>
     <string name="paid">Cobrado</string>
+    <string name="goal">Meta</string>
+    <string name="goal_percentage">Porcentaje de meta</string>
 </resources>

@@ -58,6 +58,7 @@ class SessionLocalSourceImpl(
     override suspend fun deleteSession(session: SessionEntity) = scope.async {
         dbHelper.withDatabase { db ->
             db.transaction {
+                db.tasasQueries.deleteTasas(session.empresa)
                 db.productQueries.deleteProducts(session.empresa)
                 db.lineasFacturaQueries.deleteLineasFactura(session.empresa)
                 db.lineasPedidoQueries.deleteLineasPedido(session.empresa)

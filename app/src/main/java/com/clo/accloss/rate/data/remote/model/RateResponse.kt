@@ -24,5 +24,8 @@ data class RateResponse(
     val id: String? = null,
 
     @SerialName("tasa")
-    val tasa: Double? = null
+    val tasa: Double? = null,
+
+    @SerialName("tasaib")
+    val tasaib: String? = null
 )

@@ -5,16 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.clo.accloss.core.common.Constants.SHARING_STARTED
 import com.clo.accloss.core.presentation.profile.presentation.state.ProfileState
 import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.session.domain.repository.SessionRepository
 import com.clo.accloss.statistic.domain.usecase.GetProfileStatistics
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,8 +22,6 @@ class ProfileViewModel(
     private val getProfileStatistics: GetProfileStatistics
 ) : ScreenModel {
     private var _state: MutableStateFlow<ProfileState> = MutableStateFlow(ProfileState())
-
-//    val state: StateFlow<ProfileState> = _state.asStateFlow()
     val state = combine(
         _state,
         getProfileStatistics()
@@ -33,13 +29,11 @@ class ProfileViewModel(
         state.copy(
             profileStatistics = profileStatistics
         )
-    }
-        .flowOn(Dispatchers.IO)
-        .stateIn(
-            screenModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            ProfileState()
-        )
+    }.stateIn(
+        screenModelScope,
+        SHARING_STARTED,
+        ProfileState()
+    )
 
     var newSession: Session? by mutableStateOf(null)
         private set

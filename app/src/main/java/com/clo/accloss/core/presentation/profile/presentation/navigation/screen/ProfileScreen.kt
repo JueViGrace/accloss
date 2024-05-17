@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
@@ -54,7 +54,7 @@ class ProfileScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinScreenModel<ProfileViewModel>()
-        val state by viewModel.state.collectAsState()
+        val state by viewModel.state.collectAsStateWithLifecycle()
         val newSession = viewModel.newSession
 
         var showDialog by remember {
@@ -62,7 +62,7 @@ class ProfileScreen : Screen {
         }
 
         val loginViewModel = koinScreenModel<LoginViewModel>()
-        val loginState by loginViewModel.state.collectAsState()
+        val loginState by loginViewModel.state.collectAsStateWithLifecycle()
 
         newSession?.let { session ->
             if (showDialog) {

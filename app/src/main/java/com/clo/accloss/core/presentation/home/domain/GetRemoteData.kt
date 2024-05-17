@@ -5,7 +5,9 @@ import com.clo.accloss.bills.domain.repository.BillRepository
 import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.customer.domain.repository.CustomerRepository
 import com.clo.accloss.management.domain.repository.ManagementRepository
+import com.clo.accloss.order.data.repository.OrderRepositoryImpl
 import com.clo.accloss.order.domain.repository.OrderRepository
+import com.clo.accloss.rate.domain.repository.RateRepository
 import com.clo.accloss.salesman.domain.repository.SalesmanRepository
 import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.session.domain.usecase.GetSession
@@ -17,6 +19,7 @@ import kotlinx.coroutines.flow.flowOn
 
 class GetRemoteData(
     private val getSession: GetSession,
+    private val rateRepository: RateRepository,
     private val managementRepository: ManagementRepository,
     private val salesmanRepository: SalesmanRepository,
     private val statisticRepository: StatisticRepository,
@@ -42,12 +45,23 @@ class GetRemoteData(
                         )
                     )
 
-                    managementRepository.getRemoteGerencia(
+                    val rateResult = rateRepository.getRemoteRate(
+                        baseUrl = sessionResult.data.enlaceEmpresa,
+                        company = sessionResult.data.empresa,
+                    )
+
+                    if (rateResult.isSuccess()) {
+                        Log.i("Get Rate", "Rate: ${rateResult.getSuccessData()}")
+                    }
+
+                    val managementResult = managementRepository.getRemoteManagements(
                         baseUrl = sessionResult.data.enlaceEmpresa,
                         user = sessionResult.data.user,
                         company = sessionResult.data.empresa,
-                    ).collect {
-                        Log.i("Get Managements", "Managements: ${it.getSuccessDataOrNull()}")
+                    )
+
+                    if (managementResult.isSuccess()){
+                        Log.i("Get Managements", "Managements: ${managementResult.getSuccessData()}")
                     }
 
                     val salesmanResult = salesmanRepository.getRemoteSalesman(
@@ -60,12 +74,14 @@ class GetRemoteData(
                         Log.i("Get Salesmen", "Salesmen: ${salesmanResult.getSuccessData()}")
                     }
 
-                    statisticRepository.getRemoteStatistics(
+                    val statisticResult = statisticRepository.getRemoteStatistics(
                         baseUrl = sessionResult.data.enlaceEmpresa,
                         user = sessionResult.data.user,
                         company = sessionResult.data.empresa,
-                    ).collect {
-                        Log.i("Get Statistics", "Statistics: ${it.getSuccessDataOrNull()} ")
+                    )
+
+                    if (statisticResult.isSuccess()){
+                        Log.i("Get Statistics", "Statistics: ${statisticResult.getSuccessData()} ")
                     }
 
                     val customerResult = customerRepository.getRemoteCustomer(
@@ -78,20 +94,23 @@ class GetRemoteData(
                         Log.i("Get Customers", "Customers: ${customerResult.getSuccessData()} ")
                     }
 
-                    orderRepository.getRemoteOrders(
+                    val orderResult = orderRepository.getRemoteOrders(
                         baseUrl = sessionResult.data.enlaceEmpresa,
                         user = sessionResult.data.user,
                         company = sessionResult.data.empresa,
-                    ).collect {
-                        Log.i("Get Orders", "Orders: ${it.getSuccessDataOrNull()} ")
+                    )
+                    if (orderResult.isSuccess()){
+                        Log.i("Get Orders", "Orders: ${orderResult.getSuccessData()} ")
                     }
 
-                    billRepository.getRemoteBills(
+                    val billResult = billRepository.getRemoteBills(
                         baseUrl = sessionResult.data.enlaceEmpresa,
                         user = sessionResult.data.user,
                         company = sessionResult.data.empresa,
-                    ).collect {
-                        Log.i("Get Bills", "Bills: ${it.getSuccessDataOrNull()} ")
+                    )
+
+                    if (billResult.isSuccess()){
+                        Log.i("Get Bills", "Bills: ${billResult.getSuccessData()} ")
                     }
                 }
                 else -> emit(RequestState.Loading)

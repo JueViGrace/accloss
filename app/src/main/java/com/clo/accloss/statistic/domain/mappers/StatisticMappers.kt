@@ -1,7 +1,10 @@
 package com.clo.accloss.statistic.domain.mappers
 
+import com.clo.accloss.GetManagementStatistics
+import com.clo.accloss.GetManagementsStatistics
 import com.clo.accloss.GetProfileStatistics
 import com.clo.accloss.core.presentation.profile.presentation.model.ProfileStatisticsModel
+import com.clo.accloss.management.presentation.model.ManagementsUi
 import com.clo.accloss.statistic.data.remote.model.StatisticResponse
 import com.clo.accloss.statistic.domain.model.Statistic
 import com.clo.accloss.Estadistica as StatisticEntity
@@ -95,8 +98,40 @@ fun StatisticResponse.toDomain(): Statistic = Statistic(
     vendedor = vendedor ?: ""
 )
 
-fun GetProfileStatistics.toUiModel(): ProfileStatisticsModel = ProfileStatisticsModel(
+fun GetProfileStatistics.toUi(): ProfileStatisticsModel = ProfileStatisticsModel(
     debts = debts ?: 0.0,
     paid = paid ?: 0.0,
     expired = expired ?: 0.0
+)
+
+fun GetManagementsStatistics.toUi(): ManagementsUi = ManagementsUi(
+    prcmeta = prcmeta ?: 0.0,
+    mtofactneto = mtofactneto ?: 0.0,
+    cantped = cantped ?: 0.0,
+    meta = meta ?: 0.0,
+    mtocob = mtocob ?: 0.0,
+    deuda = deuda ?: 0.0,
+    vencido = vencido ?: 0.0,
+    promdiasvta = promdiasvta ?: 0.0,
+    cantdocs = cantdocs ?: 0.0,
+    totmtodocs = totmtodocs ?: 0.0,
+    prommtopordoc = prommtopordoc ?: 0.0,
+    nombre = nombre,
+    codigo = codigo,
+)
+
+fun GetManagementStatistics.toUi(): ManagementsUi = ManagementsUi(
+    prcmeta = prcmeta ?: 0.0,
+    mtofactneto = mtofactneto ?: 0.0,
+    cantped = cantped ?: 0.0,
+    meta = meta ?: 0.0,
+    mtocob = mtocob ?: 0.0,
+    deuda = deuda ?: 0.0,
+    vencido = vencido ?: 0.0,
+    promdiasvta = promdiasvta ?: 0.0,
+    cantdocs = cantdocs ?: 0.0,
+    totmtodocs = totmtodocs ?: 0.0,
+    prommtopordoc = prommtopordoc ?: 0.0,
+    nombre = nombre,
+    codigo = codigo,
 )

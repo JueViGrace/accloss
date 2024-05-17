@@ -56,51 +56,50 @@ class LoginViewModel(
 
                     if (errors.isEmpty()) {
                         screenModelScope.launch {
-                            companyRepository.getRemoteCompany(
+                            val apiResult = companyRepository.getRemoteCompany(
                                 code = company
-                            ).collect { result ->
-                                when (result) {
-                                    is RequestState.Error -> {
-                                        _state.update { loginState ->
-                                            loginState.copy(
-                                                errorMessage = result.message,
-                                                loadingCompany = false
-                                            )
-                                        }
+                            )
+                            when (apiResult) {
+                                is RequestState.Error -> {
+                                    _state.update { loginState ->
+                                        loginState.copy(
+                                            errorMessage = apiResult.message,
+                                            loadingCompany = false
+                                        )
                                     }
-                                    RequestState.Idle -> {}
-                                    RequestState.Loading -> {
+                                }
+                                RequestState.Idle -> {}
+                                RequestState.Loading -> {
+                                    _state.update { loginState ->
+                                        loginState.copy(
+                                            errorMessage = null,
+                                            loadingCompany = true
+                                        )
+                                    }
+                                }
+                                is RequestState.Success -> {
+                                    if (apiResult.data.codigoEmpresa.isNotEmpty()) {
                                         _state.update { loginState ->
                                             loginState.copy(
+                                                company = apiResult.data,
                                                 errorMessage = null,
-                                                loadingCompany = true
+                                                loadingCompany = false,
+                                                canLogin = true,
+                                                companyError = null
                                             )
                                         }
-                                    }
-                                    is RequestState.Success -> {
-                                        if (result.data.codigoEmpresa.isNotEmpty()) {
-                                            _state.update { loginState ->
-                                                loginState.copy(
-                                                    company = result.data,
-                                                    errorMessage = null,
-                                                    loadingCompany = false,
-                                                    canLogin = true,
-                                                    companyError = null
-                                                )
-                                            }
-                                            newLogin = Login()
-                                        } else {
-                                            _state.update { loginState ->
-                                                loginState.copy(
-                                                    company = null,
-                                                    canLogin = false,
-                                                    errorMessage = null,
-                                                    loadingCompany = false,
-                                                    companyError = R.string.incorrect_credentials,
-                                                )
-                                            }
-                                            newLogin = null
+                                        newLogin = Login()
+                                    } else {
+                                        _state.update { loginState ->
+                                            loginState.copy(
+                                                company = null,
+                                                canLogin = false,
+                                                errorMessage = null,
+                                                loadingCompany = false,
+                                                companyError = R.string.incorrect_credentials,
+                                            )
                                         }
+                                        newLogin = null
                                     }
                                 }
                             }

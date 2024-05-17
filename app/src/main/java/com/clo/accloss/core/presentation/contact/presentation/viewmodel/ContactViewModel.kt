@@ -2,15 +2,13 @@ package com.clo.accloss.core.presentation.contact.presentation.viewmodel
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.clo.accloss.core.common.Constants.SHARING_STARTED
 import com.clo.accloss.core.presentation.contact.presentation.state.ContactState
 import com.clo.accloss.core.presentation.state.RequestState
 import com.clo.accloss.salesman.domain.usecase.GetSellers
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -26,13 +24,11 @@ class ContactViewModel(
         state.copy(
             sellers = result,
         )
-    }
-        .flowOn(Dispatchers.IO)
-        .stateIn(
-            screenModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            ContactState()
-        )
+    }.stateIn(
+        screenModelScope,
+        SHARING_STARTED,
+        ContactState()
+    )
 
     private suspend fun updateSellers() {
         getSellers(

@@ -2,13 +2,11 @@ package com.clo.accloss.core.presentation.home.presentation.viewmodel
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.clo.accloss.core.common.Constants.SHARING_STARTED
 import com.clo.accloss.core.presentation.home.domain.GetRemoteData
 import com.clo.accloss.core.presentation.home.presentation.state.HomeState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 
 class HomeViewModel(
@@ -22,11 +20,9 @@ class HomeViewModel(
         state.copy(
             currentSession = session
         )
-    }
-        .flowOn(Dispatchers.IO)
-        .stateIn(
-            screenModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            HomeState()
-        )
+    }.stateIn(
+        screenModelScope,
+        SHARING_STARTED,
+        HomeState()
+    )
 }

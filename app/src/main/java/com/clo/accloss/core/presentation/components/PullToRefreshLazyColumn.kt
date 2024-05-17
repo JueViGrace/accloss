@@ -25,7 +25,8 @@ fun <T> PullToRefreshLazyColumn(
     modifier: Modifier = Modifier,
     items: List<T>,
     grouped: Map<Char, List<T>>? = null,
-    header: (@Composable (Char) -> Unit)? = null,
+    header: (@Composable () -> Unit)? = null,
+    stickyHeader: (@Composable (Char?) -> Unit)? = null,
     content: @Composable (T) -> Unit,
     footer: @Composable () -> Unit,
     isRefreshing: Boolean,
@@ -45,10 +46,15 @@ fun <T> PullToRefreshLazyColumn(
             verticalArrangement = Arrangement.spacedBy(15.dp, Alignment.Top)
         ) {
             if (grouped != null) {
+                if (header != null){
+                    item {
+                        header()
+                    }
+                }
                 grouped.forEach { (initial, contactsForInitial) ->
-                    if (header != null) {
+                    if (stickyHeader != null) {
                         stickyHeader {
-                            header(initial)
+                            stickyHeader(initial)
                         }
                     }
 
@@ -59,6 +65,12 @@ fun <T> PullToRefreshLazyColumn(
                     }
                 }
             } else {
+                if (header != null) {
+                    item {
+                        header()
+                    }
+                }
+
                 items(
                     items
                 ) {

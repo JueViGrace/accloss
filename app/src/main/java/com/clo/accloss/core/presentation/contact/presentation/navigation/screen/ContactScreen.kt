@@ -1,8 +1,8 @@
 package com.clo.accloss.core.presentation.contact.presentation.navigation.screen
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -18,7 +18,7 @@ class ContactScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinScreenModel<ContactViewModel>()
-        val state by viewModel.state.collectAsState()
+        val state by viewModel.state.collectAsStateWithLifecycle()
 
         state.sellers.DisplayResult(
             onLoading = {
@@ -29,7 +29,7 @@ class ContactScreen : Screen {
             },
             onSuccess = { sellers ->
                 ContactsContent(
-                    sellers = sellers,
+                    salesmen = sellers,
                     isRefreshing = state.reload == true,
                     onRefresh = {
                         viewModel.onRefresh()
