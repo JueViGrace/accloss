@@ -2,11 +2,10 @@ package com.clo.accloss.core.common
 
 import cafe.adriel.voyager.navigator.tab.Tab
 import com.clo.accloss.BuildConfig
-import com.clo.accloss.core.presentation.dashboard.presentation.components.DashboardMenu
-import com.clo.accloss.core.presentation.home.presentation.navigation.routes.HomeTabs
-import com.clo.accloss.core.presentation.profile.presentation.components.ProfileMenu
+import com.clo.accloss.core.modules.dashboard.presentation.components.DashboardMenu
+import com.clo.accloss.core.modules.home.presentation.navigation.routes.HomeTabs
+import com.clo.accloss.core.modules.profile.presentation.components.ProfileMenu
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.WhileSubscribed
 
 object Constants {
     const val APP_VERSION: String = "${BuildConfig.BUILD_TYPE} ${BuildConfig.VERSION_NAME}"
@@ -47,6 +46,7 @@ object Constants {
     )
 
     val profileMenu = listOf(
+        ProfileMenu.Synchronize,
         ProfileMenu.LogOut
     )
 }

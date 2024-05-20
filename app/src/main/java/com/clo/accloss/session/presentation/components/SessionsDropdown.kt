@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,7 +14,6 @@ import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,7 +34,7 @@ import com.clo.accloss.R
 import com.clo.accloss.core.presentation.components.CustomOutlinedTextField
 import com.clo.accloss.core.presentation.components.CustomText
 import com.clo.accloss.core.presentation.components.LoadingComponent
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 
 @Composable

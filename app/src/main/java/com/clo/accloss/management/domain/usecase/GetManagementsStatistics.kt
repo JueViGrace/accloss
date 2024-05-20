@@ -1,16 +1,16 @@
 package com.clo.accloss.management.domain.usecase
 
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.management.domain.repository.ManagementRepository
 import com.clo.accloss.management.presentation.model.ManagementsUi
-import com.clo.accloss.session.domain.usecase.GetSession
+import com.clo.accloss.session.domain.usecase.GetCurrentUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class GetManagementsStatistics(
-    private val getSession: GetSession,
+    private val getSession: GetCurrentUser,
     private val managementRepository: ManagementRepository
 ) {
     operator fun invoke(): Flow<RequestState<List<ManagementsUi>>> = flow {

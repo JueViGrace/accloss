@@ -52,6 +52,11 @@ empresa
 )
 VALUES ?;
 
+updateFechaSinc:
+UPDATE user
+SET ultSinc = :ultSinc
+WHERE empresa = :empresa;
+
 deleteUser:
 DELETE FROM user
 WHERE

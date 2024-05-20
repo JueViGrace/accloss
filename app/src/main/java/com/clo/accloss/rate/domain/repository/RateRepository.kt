@@ -1,6 +1,6 @@
 package com.clo.accloss.rate.domain.repository
 
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.rate.data.source.RateDataSource
 import com.clo.accloss.rate.domain.model.Rate
 import kotlinx.coroutines.flow.Flow

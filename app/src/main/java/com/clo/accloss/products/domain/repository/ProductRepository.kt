@@ -1,6 +1,6 @@
 package com.clo.accloss.products.domain.repository
 
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.products.data.source.ProductDataSource
 import com.clo.accloss.products.domain.model.Product
 import kotlinx.coroutines.flow.Flow
@@ -10,6 +10,7 @@ interface ProductRepository {
 
     suspend fun getRemoteProducts(
         baseUrl: String,
+        lastSync: String,
         company: String
     ): RequestState<List<Product>>
 

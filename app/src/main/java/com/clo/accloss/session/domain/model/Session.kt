@@ -7,5 +7,6 @@ data class Session(
     val empresa: String = "",
     val enlaceEmpresa: String = "",
     val enlaceEmpresaPost: String = "",
-    val active: Boolean = true
+    val active: Boolean = true,
+    val lastSync: String = "",
 )

@@ -10,7 +10,8 @@ fun SessionEntity.toDomain(): Session = Session(
     empresa = empresa,
     enlaceEmpresa = enlaceEmpresa,
     enlaceEmpresaPost = enlaceEmpresaPost,
-    active = active
+    active = active,
+    lastSync = lastSync
 )
 
 fun Session.toDatabase(): SessionEntity = SessionEntity(
@@ -20,5 +21,6 @@ fun Session.toDatabase(): SessionEntity = SessionEntity(
     empresa = empresa,
     enlaceEmpresa = enlaceEmpresa,
     enlaceEmpresaPost = enlaceEmpresaPost,
-    active = active
+    active = active,
+    lastSync = lastSync
 )

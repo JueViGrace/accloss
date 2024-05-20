@@ -2,7 +2,7 @@ package com.clo.accloss.company.domain.repository
 
 import com.clo.accloss.company.data.source.CompanyDataSource
 import com.clo.accloss.company.domain.model.Company
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
 import kotlinx.coroutines.flow.Flow
 
 interface CompanyRepository {

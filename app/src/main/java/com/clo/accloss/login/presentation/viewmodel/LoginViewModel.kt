@@ -5,10 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import cafe.adriel.voyager.navigator.Navigator
 import com.clo.accloss.R
 import com.clo.accloss.company.domain.repository.CompanyRepository
 import com.clo.accloss.company.domain.rules.CompanyValidator
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.common.toStringFormat
+import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.login.domain.model.Login
 import com.clo.accloss.login.domain.rules.LoginValidator
 import com.clo.accloss.login.presentation.events.LoginEvents
@@ -21,11 +23,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class LoginViewModel(
     private val companyRepository: CompanyRepository,
     private val userRepository: UserRepository,
-    private val sessionRepository: SessionRepository
+    private val sessionRepository: SessionRepository,
 ) : ScreenModel {
     private var _state: MutableStateFlow<LoginState> = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state.asStateFlow()
@@ -182,7 +185,8 @@ class LoginViewModel(
                                                 empresa = company.codigoEmpresa,
                                                 enlaceEmpresa = "https://${company.enlaceEmpresa}",
                                                 enlaceEmpresaPost = "http://${company.enlaceEmpresa}:5001",
-                                                active = false
+                                                active = false,
+                                                lastSync = Date().toStringFormat()
                                             )
 
                                             companyRepository.addCompany(
@@ -211,6 +215,7 @@ class LoginViewModel(
                                                     loadingUser = false
                                                 )
                                             }
+
                                             checkSession()
                                         } else {
                                             _state.update { loginState ->
@@ -256,20 +261,20 @@ class LoginViewModel(
 
     private fun checkSession() {
         screenModelScope.launch {
-            sessionRepository.getCurrentUser.collect { result ->
+            sessionRepository.getSessions.collect { result ->
                 _state.update { loginState ->
                     loginState.copy(
-                        currentSession = result
+                        sessions = result
                     )
                 }
             }
         }
 
         screenModelScope.launch {
-            sessionRepository.getSessions.collect { result ->
+            sessionRepository.getCurrentUser.collect { result ->
                 _state.update { loginState ->
                     loginState.copy(
-                        sessions = result
+                        currentSession = result
                     )
                 }
             }

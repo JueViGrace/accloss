@@ -37,4 +37,8 @@
     <string name="paid">Cobrado</string>
     <string name="goal">Meta</string>
     <string name="goal_percentage">Porcentaje de meta</string>
+    <string name="synchronize">Sincronizar</string>
+    <string name="synchronize_all_your_data">Sincroniza tus datos</string>
+    <string name="loading">Cargando</string>
+    <string name="products">Productos</string>
 </resources>

@@ -1,6 +1,6 @@
 package com.clo.accloss.orderlines.domain.repository
 
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.orderlines.data.source.OrderLinesDataSource
 import com.clo.accloss.orderlines.domain.model.OrderLines
 import kotlinx.coroutines.flow.Flow

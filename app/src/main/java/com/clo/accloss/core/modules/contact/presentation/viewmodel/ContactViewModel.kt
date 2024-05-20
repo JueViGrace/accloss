@@ -1,0 +1,58 @@
+package com.clo.accloss.core.modules.contact.presentation.viewmodel
+
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
+import com.clo.accloss.core.common.Constants.SHARING_STARTED
+import com.clo.accloss.core.modules.contact.presentation.state.ContactState
+import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.salesman.domain.usecase.GetSellers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
+class ContactViewModel(
+    private val getSellers: GetSellers
+) : ScreenModel {
+    private var _state: MutableStateFlow<ContactState> = MutableStateFlow(ContactState())
+    val state = combine(
+        _state,
+        getSellers(true)
+    ) { state, result ->
+        state.copy(
+            sellers = result,
+        )
+    }.stateIn(
+        screenModelScope,
+        SHARING_STARTED,
+        ContactState()
+    )
+
+    private suspend fun updateSellers() {
+        getSellers(
+            forceReload = _state.value.reload == true
+        ).collect { result ->
+            _state.update { contactState ->
+                contactState.copy(
+                    sellers = result,
+                    reload = null
+                )
+            }
+        }
+    }
+
+    fun onRefresh() {
+        screenModelScope.launch {
+            _state.update { contactState ->
+                contactState.copy(
+                    sellers = RequestState.Loading,
+                    reload = true
+                )
+            }
+            delay(500)
+            updateSellers()
+        }
+    }
+}

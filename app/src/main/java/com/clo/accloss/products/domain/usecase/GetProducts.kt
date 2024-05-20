@@ -1,16 +1,16 @@
 package com.clo.accloss.products.domain.usecase
 
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.products.domain.model.Product
 import com.clo.accloss.products.domain.repository.ProductRepository
-import com.clo.accloss.session.domain.usecase.GetSession
+import com.clo.accloss.session.domain.usecase.GetCurrentUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class GetProducts(
-    private val getSession: GetSession,
+    private val getSession: GetCurrentUser,
     private val productRepository: ProductRepository
 ) {
     operator fun invoke(
@@ -39,7 +39,8 @@ class GetProducts(
                                 } else {
                                     val apiResult = productRepository.getRemoteProducts(
                                         baseUrl = sessionResult.data.enlaceEmpresa,
-                                        company = sessionResult.data.empresa
+                                        company = sessionResult.data.empresa,
+                                        lastSync = sessionResult.data.lastSync
                                     )
 
                                     when (apiResult) {

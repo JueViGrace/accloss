@@ -3,7 +3,7 @@ package com.clo.accloss.statistic.domain.mappers
 import com.clo.accloss.GetManagementStatistics
 import com.clo.accloss.GetManagementsStatistics
 import com.clo.accloss.GetProfileStatistics
-import com.clo.accloss.core.presentation.profile.presentation.model.ProfileStatisticsModel
+import com.clo.accloss.core.modules.profile.presentation.model.ProfileStatisticsModel
 import com.clo.accloss.management.presentation.model.ManagementsUi
 import com.clo.accloss.statistic.data.remote.model.StatisticResponse
 import com.clo.accloss.statistic.domain.model.Statistic

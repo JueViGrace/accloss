@@ -3,7 +3,7 @@ package com.clo.accloss.customer.data.repository
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.log
 import com.clo.accloss.core.data.network.ApiOperation
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.customer.data.source.CustomerDataSource
 import com.clo.accloss.customer.domain.mappers.toDatabase
 import com.clo.accloss.customer.domain.mappers.toDomain

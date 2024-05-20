@@ -9,4 +9,6 @@ interface UserLocal {
     suspend fun getUser(code: String, company: String): Flow<User>
 
     suspend fun addUser(user: User)
+
+    suspend fun updateSyncDate(lastSync: String, company: String)
 }

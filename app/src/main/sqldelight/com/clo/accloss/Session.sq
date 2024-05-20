@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS session (
     enlaceEmpresa TEXT NOT NULL,
     enlaceEmpresaPost TEXT NOT NULL,
     active INTEGER AS Boolean NOT NULL DEFAULT 1,
+    lastSync TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(empresa)
 );
 
@@ -36,13 +37,20 @@ user,
 empresa,
 enlaceEmpresa,
 enlaceEmpresaPost,
-active
+active,
+lastSync
 )
 VALUES ?;
 
+updateLastSync:
+UPDATE session
+SET lastSync = :lastSync
+WHERE empresa == :empresa;
+
 activateSession:
 UPDATE session
-SET active = 1
+SET active = 1,
+    lastSync = :lastSync
 WHERE empresa == :empresa;
 
 inactiveSessions:

@@ -2,7 +2,7 @@ package com.clo.accloss.billlines.domain.repository
 
 import com.clo.accloss.billlines.data.source.BillLinesDataSource
 import com.clo.accloss.billlines.domain.model.BillLines
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
 import kotlinx.coroutines.flow.Flow
 
 interface BillLinesRepository {

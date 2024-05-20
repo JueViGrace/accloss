@@ -39,4 +39,13 @@ class UserLocalImpl(
             db.userQueries.addUser(user = user)
         }
     }.await()
+
+    override suspend fun updateSyncDate(
+        lastSync: String,
+        company: String
+    ) = scope.async {
+        dbHelper.withDatabase { db ->
+            db.userQueries.updateFechaSinc(ultSinc = lastSync, empresa = company)
+        }
+    }.await()
 }

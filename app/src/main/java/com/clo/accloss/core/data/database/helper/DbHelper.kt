@@ -6,11 +6,12 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class DbHelper(private val driverFactory: DriverFactory) {
+
     private var db: ACCLOSSDB? = null
 
     private val mutex = Mutex()
 
-    suspend fun <Result : Any> withDatabase(block: suspend (ACCLOSSDB) -> Result): Result = mutex.withLock {
+    suspend fun <Result : Any?> withDatabase(block: suspend (ACCLOSSDB) -> Result): Result = mutex.withLock {
         if (db == null) {
             db = createDb(driverFactory)
         }

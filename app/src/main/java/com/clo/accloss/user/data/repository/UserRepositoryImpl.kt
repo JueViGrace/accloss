@@ -3,7 +3,10 @@ package com.clo.accloss.user.data.repository
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.log
 import com.clo.accloss.core.data.network.ApiOperation
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.modules.syncronize.presentation.model.Estado
+import com.clo.accloss.core.modules.syncronize.presentation.model.SyncBody
+import com.clo.accloss.core.modules.syncronize.presentation.model.Synchronization
 import com.clo.accloss.login.domain.model.Login
 import com.clo.accloss.user.data.source.UserDataSource
 import com.clo.accloss.user.domain.mappers.toDatabase
@@ -91,4 +94,33 @@ class UserRepositoryImpl(
         withContext(Dispatchers.IO) {
             userDataSource.userLocal.addUser(user = user.toDatabase())
         }
+
+    override suspend fun updateSyncDate(lastSync: String, company: String) =
+        withContext(Dispatchers.IO) {
+            userDataSource.userLocal.updateSyncDate(lastSync, company)
+        }
+
+    override suspend fun synchronize(
+        baseUrl: String,
+        sync: Synchronization
+    ): RequestState<Estado> {
+        return withContext(Dispatchers.IO) {
+            when (
+                val apiOperation = userDataSource.userRemote.synchronize(
+                    baseUrl = baseUrl,
+                    syncBody = SyncBody(sync)
+                )
+            ) {
+                is ApiOperation.Failure -> {
+                    RequestState.Error(message = apiOperation.error)
+                }
+
+                is ApiOperation.Success -> {
+                    RequestState.Success(
+                        data = apiOperation.data
+                    )
+                }
+            }
+        }
+    }
 }

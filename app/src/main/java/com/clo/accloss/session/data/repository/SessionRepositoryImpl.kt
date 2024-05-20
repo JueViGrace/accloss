@@ -1,7 +1,7 @@
 package com.clo.accloss.session.data.repository
 
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.session.data.source.SessionDataSource
 import com.clo.accloss.session.domain.mappers.toDatabase
 import com.clo.accloss.session.domain.mappers.toDomain
@@ -12,14 +12,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
 class SessionRepositoryImpl(
-    private val sessionLocalSource: SessionDataSource
+    private val sessionDataSource: SessionDataSource
 ) : SessionRepository {
     override val getCurrentUser: Flow<RequestState<Session>> = flow {
         emit(RequestState.Loading)
 
-        sessionLocalSource.getCurrentUser()
+        sessionDataSource.getCurrentUser()
             .catch { e ->
                 emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
             }
@@ -28,14 +29,28 @@ class SessionRepositoryImpl(
             }
     }.flowOn(Dispatchers.IO)
 
-    override val getSessions: Flow<RequestState<List<Session>>> = flow<RequestState<List<Session>>> {
+    override val getCurrentSession: Flow<RequestState<Session>> = flow {
         emit(RequestState.Loading)
 
-        sessionLocalSource.getSessions()
-            .catch { e ->
-                emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
+        try {
+            val session = sessionDataSource.getCurrentSession()
+
+            if (session != null) {
+                emit(RequestState.Success(data = session.toDomain()))
+            } else {
+                emit(RequestState.Error(message = "Session is not available"))
             }
-            .collect { list ->
+        } catch (e: Exception) {
+            emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override val getSessions: Flow<RequestState<List<Session>>> = flow {
+        emit(RequestState.Loading)
+
+        try {
+            val list = sessionDataSource.getSessions()
+            if (list.isNotEmpty()) {
                 emit(
                     RequestState.Success(
                         data = list.map { session ->
@@ -43,15 +58,27 @@ class SessionRepositoryImpl(
                         }
                     )
                 )
+            } else {
+                emit(RequestState.Success(data = emptyList()))
             }
+        } catch (e: Exception) {
+            emit(RequestState.Error(message = e.message ?: DB_ERROR_MESSAGE))
+        }
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun addSession(session: Session) =
-        sessionLocalSource.addSession(session.toDatabase())
+    override suspend fun addSession(session: Session) = withContext(Dispatchers.IO) {
+        sessionDataSource.addSession(session.toDatabase())
+    }
 
-    override suspend fun updateSession(session: Session) =
-        sessionLocalSource.updateSession(session.toDatabase())
+    override suspend fun updateSession(session: Session) = withContext(Dispatchers.IO) {
+        sessionDataSource.updateSession(session.toDatabase())
+    }
 
-    override suspend fun deleteSession(session: Session) =
-        sessionLocalSource.deleteSession(session.toDatabase())
+    override suspend fun updateLastSync(lastSync: String, company: String) = withContext(Dispatchers.IO) {
+        sessionDataSource.updateLastSync(lastSync, company)
+    }
+
+    override suspend fun deleteSession(session: Session) = withContext(Dispatchers.IO) {
+        sessionDataSource.deleteSession(session.toDatabase())
+    }
 }

@@ -1,6 +1,6 @@
 package com.clo.accloss.salesman.domain.repository
 
-import com.clo.accloss.core.presentation.state.RequestState
+import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.salesman.data.source.SalesmanDataSource
 import com.clo.accloss.salesman.domain.model.Salesman
 import kotlinx.coroutines.flow.Flow
