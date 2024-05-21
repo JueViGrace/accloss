@@ -26,5 +26,10 @@ interface SalesmanRepository {
         company: String,
     ): Flow<RequestState<List<Salesman>>>
 
+    fun getSalesman(
+        salesman: String,
+        company: String
+    ): Flow<RequestState<Salesman>>
+
     suspend fun addSalesmen(salesmen: List<Salesman>)
 }

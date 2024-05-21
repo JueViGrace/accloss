@@ -5,7 +5,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.common.Constants.SHARING_STARTED
 import com.clo.accloss.core.modules.contact.presentation.state.ContactState
 import com.clo.accloss.core.domain.state.RequestState
-import com.clo.accloss.salesman.domain.usecase.GetSellers
+import com.clo.accloss.salesman.domain.usecase.GetSalesmen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ContactViewModel(
-    private val getSellers: GetSellers
+    private val getSellers: GetSalesmen
 ) : ScreenModel {
     private var _state: MutableStateFlow<ContactState> = MutableStateFlow(ContactState())
     val state = combine(

@@ -57,7 +57,7 @@ import com.clo.accloss.core.presentation.components.LoadingComponent
 import com.clo.accloss.core.presentation.components.MenuItem
 import com.clo.accloss.core.modules.dashboard.presentation.components.DashboardMenu
 import com.clo.accloss.core.modules.dashboard.presentation.viewmodel.DashboardViewModel
-import com.clo.accloss.management.presentation.screen.ManagementScreen
+import com.clo.accloss.management.presentation.screen.ManagementsScreen
 import com.clo.accloss.products.presentation.screen.ProductsScreen
 import kotlin.math.absoluteValue
 
@@ -319,7 +319,7 @@ class DashboardScreen : Screen {
     private fun handleMenuClick(menu: DashboardMenu, navigator: Navigator): () -> Unit {
         return when (menu) {
             is DashboardMenu.Managements -> {
-                { navigator.parent?.parent?.push(ManagementScreen) }
+                { navigator.parent?.parent?.push(ManagementsScreen) }
             }
             is DashboardMenu.Salesmen -> {
                 { }

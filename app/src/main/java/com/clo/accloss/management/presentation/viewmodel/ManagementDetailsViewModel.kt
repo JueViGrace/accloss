@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 class ManagementDetailsViewModel(
-    private val id: String,
-    private val getManagementStatistics: GetManagementStatistics
+    id: String,
+    getManagementStatistics: GetManagementStatistics
 ) : ScreenModel {
     private var _state: MutableStateFlow<ManagementDetailsState> = MutableStateFlow(ManagementDetailsState())
     val state = combine(

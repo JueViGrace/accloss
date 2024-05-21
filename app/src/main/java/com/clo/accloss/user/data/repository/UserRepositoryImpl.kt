@@ -116,9 +116,18 @@ class UserRepositoryImpl(
                 }
 
                 is ApiOperation.Success -> {
+                    val data = apiOperation.data
+
+                    if (data.response.status != 200) {
+                        RequestState.Error(
+                            message = "You have an outdated version, please update."
+                        )
+                    } else {
+
                     RequestState.Success(
-                        data = apiOperation.data
+                        data = data
                     )
+                    }
                 }
             }
         }

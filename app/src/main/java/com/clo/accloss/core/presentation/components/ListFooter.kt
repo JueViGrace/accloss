@@ -7,14 +7,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.clo.accloss.R
 
 @Composable
 fun ListFooter(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    text: String = ""
 ) {
     Box(
         modifier = modifier
@@ -23,7 +22,7 @@ fun ListFooter(
         contentAlignment = Alignment.Center
     ) {
         CustomText(
-            text = stringResource(R.string.end_of_list),
+            text = text,
             textAlign = TextAlign.Center,
             fontSize = MaterialTheme.typography.bodySmall.fontSize,
             fontWeight = MaterialTheme.typography.bodySmall.fontWeight,

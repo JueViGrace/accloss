@@ -1,11 +1,13 @@
 package com.clo.accloss.management.presentation.screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -24,7 +26,7 @@ import com.clo.accloss.core.presentation.components.LoadingScreen
 import com.clo.accloss.management.presentation.components.ManagementsContent
 import com.clo.accloss.management.presentation.viewmodel.ManagementViewModel
 
-object ManagementScreen : Screen {
+object ManagementsScreen : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @Composable
@@ -33,41 +35,47 @@ object ManagementScreen : Screen {
         val viewModel = koinScreenModel<ManagementViewModel>()
         val state by viewModel.state.collectAsStateWithLifecycle()
 
-        state.managements.DisplayResult(
-            onLoading = {
-                LoadingScreen()
-            },
-            onError = { message ->
-                ErrorScreen(message)
-            },
-            onSuccess = { list ->
-                Scaffold(
-                    topBar = {
-                        DefaultTopBar(
-                            title = {
-                                CustomText(
-                                    text = stringResource(id = R.string.managements),
-                                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleLarge.fontWeight
-                                )
-                            },
-                            navigationIcon = {
-                                DefaultBackArrow {
-                                    navigator.pop()
-                                }
+        Scaffold(
+            topBar = {
+                DefaultTopBar(
+                    title = {
+                        CustomText(
+                            text = stringResource(id = R.string.managements),
+                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                            fontWeight = MaterialTheme.typography.titleLarge.fontWeight
+                        )
+                    },
+                    navigationIcon = {
+                        DefaultBackArrow {
+                            navigator.pop()
+                        }
+                    }
+                )
+            }
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                state.managements.DisplayResult(
+                    onLoading = {
+                        LoadingScreen()
+                    },
+                    onError = { message ->
+                        ErrorScreen(message)
+                    },
+                    onSuccess = { list ->
+                        ManagementsContent(
+                            managements = list,
+                            onClick = { code ->
+                                navigator.push(ManagementDetailsScreen(code))
                             }
                         )
-                    }
-                ) { innerPadding ->
-                    ManagementsContent(
-                        modifier = Modifier.fillMaxSize().padding(innerPadding),
-                        managements = list,
-                        onClick = { code ->
-                            navigator.push(ManagementDetailsScreen(code))
-                        }
-                    )
-                }
-            },
-        )
+                    },
+                )
+            }
+        }
     }
 }

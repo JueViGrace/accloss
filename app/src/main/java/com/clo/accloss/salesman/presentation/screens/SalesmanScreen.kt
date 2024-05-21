@@ -1,19 +1,17 @@
-package com.clo.accloss.management.presentation.screen
+package com.clo.accloss.salesman.presentation.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,21 +26,22 @@ import com.clo.accloss.core.presentation.components.DefaultBackArrow
 import com.clo.accloss.core.presentation.components.DefaultTopBar
 import com.clo.accloss.core.presentation.components.ErrorScreen
 import com.clo.accloss.core.presentation.components.LoadingScreen
-import com.clo.accloss.management.presentation.components.ManagementDetailsContent
-import com.clo.accloss.management.presentation.viewmodel.ManagementDetailsViewModel
+import com.clo.accloss.salesman.domain.model.Salesman
+import com.clo.accloss.salesman.presentation.components.SalesmanContent
+import com.clo.accloss.salesman.presentation.viewmodel.SalesmanViewModel
 import org.koin.core.parameter.parametersOf
 
-data class ManagementDetailsScreen(
-    val code: String
+data class SalesmanScreen(
+    val id: String
 ) : Screen {
-    override val key: ScreenKey = uniqueScreenKey + code
+    override val key: ScreenKey = uniqueScreenKey
 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinScreenModel<ManagementDetailsViewModel>(parameters = { parametersOf(code) })
+        val viewModel = koinScreenModel<SalesmanViewModel>(parameters = { parametersOf(id) })
         val state by viewModel.state.collectAsStateWithLifecycle()
-        var title: String by remember {
+        var title by rememberSaveable {
             mutableStateOf("")
         }
 
@@ -51,10 +50,11 @@ data class ManagementDetailsScreen(
                 DefaultTopBar(
                     title = {
                         CustomText(
+                            modifier = Modifier.padding(horizontal = 10.dp),
                             text = title,
                             fontSize = MaterialTheme.typography.titleLarge.fontSize,
                             fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                            overflow = TextOverflow.Ellipsis,
+                            overflow = TextOverflow.Ellipsis
                         )
                     },
                     navigationIcon = {
@@ -71,19 +71,19 @@ data class ManagementDetailsScreen(
                     .padding(innerPadding),
                 contentAlignment = Alignment.TopCenter
             ) {
-                state.management.DisplayResult(
+                state.salesman.DisplayResult(
                     onLoading = {
                         LoadingScreen()
                     },
                     onError = {
                         ErrorScreen(it)
                     },
-                    onSuccess = { management ->
-                        title = management.nombre
-                        ManagementDetailsContent(
-                            management = management
+                    onSuccess = { salesman: Salesman ->
+                        title = salesman.nombre
+                        SalesmanContent(
+                            salesman = salesman
                         )
-                    }
+                    },
                 )
             }
         }

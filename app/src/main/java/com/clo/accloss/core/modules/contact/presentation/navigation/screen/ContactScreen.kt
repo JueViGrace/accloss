@@ -11,7 +11,7 @@ import com.clo.accloss.core.presentation.components.ErrorScreen
 import com.clo.accloss.core.presentation.components.LoadingScreen
 import com.clo.accloss.core.modules.contact.presentation.components.ContactsContent
 import com.clo.accloss.core.modules.contact.presentation.viewmodel.ContactViewModel
-import com.clo.accloss.salesman.presentation.screens.SalesmanDetailScreen
+import com.clo.accloss.salesman.presentation.screens.SalesmanScreen
 
 class ContactScreen : Screen {
     @Composable
@@ -35,7 +35,7 @@ class ContactScreen : Screen {
                         viewModel.onRefresh()
                     },
                     onSelect = { seller ->
-                        navigator.parent?.parent?.push(SalesmanDetailScreen(seller))
+                        navigator.parent?.parent?.push(SalesmanScreen(seller))
                     }
                 )
             },

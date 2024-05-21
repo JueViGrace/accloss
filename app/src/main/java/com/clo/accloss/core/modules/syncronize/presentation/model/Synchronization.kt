@@ -33,5 +33,5 @@ data class Response(
     @SerialName("status")
     val status: Int,
     @SerialName("usuario")
-    val user: Int
+    val user: String
 )

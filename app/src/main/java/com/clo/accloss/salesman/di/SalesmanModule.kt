@@ -8,7 +8,10 @@ import com.clo.accloss.salesman.data.repository.SalesmanRepositoryImpl
 import com.clo.accloss.salesman.data.source.SalesmanDataSource
 import com.clo.accloss.salesman.data.source.SalesmanDataSourceImpl
 import com.clo.accloss.salesman.domain.repository.SalesmanRepository
-import com.clo.accloss.salesman.domain.usecase.GetSellers
+import com.clo.accloss.salesman.domain.usecase.GetSalesman
+import com.clo.accloss.salesman.domain.usecase.GetSalesmen
+import com.clo.accloss.salesman.presentation.viewmodel.SalesmanViewModel
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -22,5 +25,9 @@ val salesmanModule = module {
 
     singleOf(::SalesmanRepositoryImpl) bind SalesmanRepository::class
 
-    singleOf(::GetSellers)
+    singleOf(::GetSalesmen)
+
+    singleOf(::GetSalesman)
+
+    factoryOf(::SalesmanViewModel)
 }

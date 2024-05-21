@@ -41,4 +41,11 @@
     <string name="synchronize_all_your_data">Sincroniza tus datos</string>
     <string name="loading">Cargando</string>
     <string name="products">Productos</string>
+    <string name="net_billed_amount">Monto facturado neto</string>
+    <string name="average_amount_per_document">Monto promedio por documento</string>
+    <string name="total_sold_amount">Monto total vendido</string>
+    <string name="orders_amount">Cantidad de pedidos</string>
+    <string name="average_number_of_days_between_sales">Promedio de dias entre ventas</string>
+    <string name="days">días</string>
+    <string name="document_amount">Cantidad total de documentos</string>
 </resources>

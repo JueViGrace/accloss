@@ -74,7 +74,7 @@ fun ContactsContent(
                 }
             },
             footer = {
-                ListFooter()
+                ListFooter(text = stringResource(R.string.end_of_list))
             },
             isRefreshing = isRefreshing,
             onRefresh = onRefresh

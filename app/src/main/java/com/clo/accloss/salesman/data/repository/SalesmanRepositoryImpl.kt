@@ -110,6 +110,26 @@ class SalesmanRepositoryImpl(
             }
     }.flowOn(Dispatchers.IO)
 
+    override fun getSalesman(salesman: String, company: String): Flow<RequestState<Salesman>> = flow {
+        emit(RequestState.Loading)
+
+        salesmanDataSource.salesmanLocal.getSalesman(
+            salesman = salesman,
+            company = company
+        )
+            .catch { e ->
+                emit(RequestState.Error(message = DB_ERROR_MESSAGE))
+                e.log("SALESMAN REPOSITORY: getSalesman")
+            }
+            .collect { salesmanEntity ->
+                emit(
+                    RequestState.Success(
+                        data = salesmanEntity.toDomain()
+                    )
+                )
+            }
+    }.flowOn(Dispatchers.IO)
+
     override suspend fun addSalesmen(salesmen: List<Salesman>) =
         withContext(Dispatchers.IO) {
             salesmanDataSource.salesmanLocal.addSalesmen(

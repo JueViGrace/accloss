@@ -41,4 +41,11 @@
     <string name="synchronize_all_your_data">Synchronize all your data.</string>
     <string name="loading">Loading</string>
     <string name="products">Products</string>
+    <string name="net_billed_amount">Net Billed Amount</string>
+    <string name="average_amount_per_document">Average Amount Per Document</string>
+    <string name="total_sold_amount">Total sold amount</string>
+    <string name="orders_amount">Orders amount</string>
+    <string name="average_number_of_days_between_sales">Average number of days between sales</string>
+    <string name="days">days</string>
+    <string name="document_amount">Total document amount</string>
 </resources>
