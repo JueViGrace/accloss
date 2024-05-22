@@ -10,12 +10,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun LetterIcon(
     modifier: Modifier = Modifier,
     letter: String,
+    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
+    fontWeight: FontWeight? = MaterialTheme.typography.titleLarge.fontWeight
 ) {
     Box(
         modifier = modifier
@@ -30,8 +34,8 @@ fun LetterIcon(
     ) {
         CustomText(
             text = letter,
-            fontSize = MaterialTheme.typography.titleLarge.fontSize,
-            fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+            fontSize = fontSize,
+            fontWeight = fontWeight,
             color = MaterialTheme.colorScheme.onPrimaryContainer
         )
     }

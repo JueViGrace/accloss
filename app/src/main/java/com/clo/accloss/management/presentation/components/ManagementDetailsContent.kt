@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -40,7 +40,7 @@ fun ManagementDetailsContent(
         item {
             Box(
                 modifier = Modifier
-                    .size(230.dp)
+                    .requiredSize(210.dp)
                     .clip(CircleShape)
                     .border(
                         color = MaterialTheme.colorScheme.primary,
@@ -62,6 +62,7 @@ fun ManagementDetailsContent(
                 }
             }
         }
+
         item {
             Row(
                 modifier = Modifier

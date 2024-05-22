@@ -22,7 +22,7 @@ interface ProductRepository {
 
     fun getProduct(
         company: String,
-        user: String
+        product: String
     ): Flow<RequestState<Product>>
 
     suspend fun addProducts(products: List<Product>)

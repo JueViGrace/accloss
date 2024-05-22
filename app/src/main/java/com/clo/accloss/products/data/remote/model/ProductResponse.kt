@@ -103,9 +103,9 @@ data class ProductResponseItem(
     @SerialName("util3")
     val util3: Double? = null,
 
-    @SerialName("fchUltComp")
+    @SerialName("fchultcomp")
     val fchUltComp: String? = null,
 
-    @SerialName("qtyUltComp")
+    @SerialName("qtyultcomp")
     val qtyUltComp: Double? = null,
 )

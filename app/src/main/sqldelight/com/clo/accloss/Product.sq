@@ -82,6 +82,12 @@ vtaMinenx,
 vtaSolofac,
 vtaSolone,
 url,
+costoProm,
+util1,
+util2,
+util3,
+fchUltComp,
+qtyUltComp,
 empresa
 )
 VALUES ?;

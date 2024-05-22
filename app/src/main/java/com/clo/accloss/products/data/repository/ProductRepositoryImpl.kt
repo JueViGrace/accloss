@@ -1,5 +1,7 @@
 package com.clo.accloss.products.data.repository
 
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.intl.Locale
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.log
 import com.clo.accloss.core.data.network.ApiOperation
@@ -25,7 +27,14 @@ class ProductRepositoryImpl(
         company: String
     ): RequestState<List<Product>> {
         return withContext(Dispatchers.IO) {
-            when (val apiOperation = productDataSource.productRemote.getSafeProducts(baseUrl, lastSync)) {
+            when (
+                val apiOperation = productDataSource
+                    .productRemote
+                    .getSafeProducts(
+                        baseUrl = baseUrl,
+                        lastSync = lastSync
+                    )
+            ) {
                 is ApiOperation.Failure -> {
                     RequestState.Error(
                         message = apiOperation.error
@@ -75,12 +84,12 @@ class ProductRepositoryImpl(
 
     override fun getProduct(
         company: String,
-        user: String
+        product: String
     ): Flow<RequestState<Product>> = flow {
         emit(RequestState.Loading)
 
         productDataSource.productLocal.getProduct(
-            code = user,
+            code = product,
             company = company
         )
             .catch { e ->
@@ -96,7 +105,13 @@ class ProductRepositoryImpl(
         withContext(Dispatchers.IO) {
             productDataSource.productLocal.addProducts(
                 products = products.map { product ->
-                    product.toDatabase()
+                    product
+                        .toDatabase()
+                        .copy(
+                            nombre = product.nombre
+                                .lowercase()
+                                .capitalize(Locale.current)
+                        )
                 }
             )
         }

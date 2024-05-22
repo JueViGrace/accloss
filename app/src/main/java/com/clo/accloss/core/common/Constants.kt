@@ -18,6 +18,8 @@ object Constants {
 
     const val HUNDRED_DOUBLE: Double = 100.00
 
+    const val HUNDRED_INT: Int = 100
+
     const val MIN_PAGE: Int = 20
 
     const val PREFETCH: Int = 10

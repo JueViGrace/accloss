@@ -48,4 +48,24 @@
     <string name="average_number_of_days_between_sales">Promedio de dias entre ventas</string>
     <string name="days">días</string>
     <string name="document_amount">Cantidad total de documentos</string>
+    <string name="see_less">Ver menos</string>
+    <string name="see_more">Ver más</string>
+    <string name="mobile">Móvil</string>
+    <string name="phone">Teléfono</string>
+    <string name="email">Correo electrónico</string>
+    <string name="coordinator">Coordinador</string>
+    <string name="app_version">App version</string>
+    <string name="last_sync">Última sincronización</string>
+    <string name="zone">Sector</string>
+    <string name="sub_zone">Sub-sector</string>
+    <string name="code">Código</string>
+    <string name="reference">Referencia</string>
+    <string name="brand">Marca</string>
+    <string name="sold_by">Se vende por</string>
+    <string name="stock">Existencia</string>
+    <string name="no_stock_available">No hay existencias</string>
+    <string name="tap_to_see_discount">Descuento disponible!</string>
+    <string name="available_with">Disponible en</string>
+    <string name="prc_off">% dcto</string>
+    <string name="sync_successful">Sincronización exitosa</string>
 </resources>

@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.clo.accloss.BuildConfig
 import com.clo.accloss.R
 import com.clo.accloss.core.modules.syncronize.presentation.state.SynchronizeState
 import com.clo.accloss.core.presentation.components.CustomText
@@ -56,7 +57,9 @@ fun SynchronizeContent(
         }
     ) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(innerPadding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -128,59 +131,62 @@ fun SynchronizeContent(
                     ) { synchronize ->
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 10.dp),
+                                .fillMaxWidth(),
                             verticalArrangement = Arrangement.spacedBy(
                                 5.dp,
                                 Alignment.CenterVertically
                             ),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            CustomText(
-                                text = "${
-                                    stringResource(
-                                        id = R.string.managements
-                                    )
-                                }: ${synchronize.managements.getSuccessData().size}"
-                            )
-                            CustomText(
-                                text = "${
-                                    stringResource(
-                                        id = R.string.salesmen
-                                    )
-                                }: ${synchronize.salesmen.getSuccessData().size}"
-                            )
-                            CustomText(
-                                text = "${
-                                    stringResource(
-                                        id = R.string.statistics
-                                    )
-                                }: ${synchronize.salesmen.getSuccessData().size}"
-                            )
-                            CustomText(
-                                text = "${
-                                    stringResource(
-                                        id = R.string.customers
-                                    )
-                                }: ${synchronize.customers.getSuccessData().size}"
-                            )
-                            CustomText(
-                                text = "${
-                                    stringResource(
-                                        id = R.string.orders
-                                    )
-                                }: ${synchronize.orders.getSuccessData().size}"
-                            )
-                            CustomText(
-                                text = "${stringResource(id = R.string.bills)}: ${synchronize.bills.getSuccessData().size}"
-                            )
-                            CustomText(
-                                text = "${
-                                    stringResource(
-                                        id = R.string.products
-                                    )
-                                }: ${synchronize.products.getSuccessData().size}"
-                            )
+                            if (BuildConfig.DEBUG) {
+                                CustomText(
+                                    text = "${
+                                        stringResource(
+                                            id = R.string.managements
+                                        )
+                                    }: ${synchronize.managements.getSuccessData().size}"
+                                )
+                                CustomText(
+                                    text = "${
+                                        stringResource(
+                                            id = R.string.salesmen
+                                        )
+                                    }: ${synchronize.salesmen.getSuccessData().size}"
+                                )
+                                CustomText(
+                                    text = "${
+                                        stringResource(
+                                            id = R.string.statistics
+                                        )
+                                    }: ${synchronize.salesmen.getSuccessData().size}"
+                                )
+                                CustomText(
+                                    text = "${
+                                        stringResource(
+                                            id = R.string.customers
+                                        )
+                                    }: ${synchronize.customers.getSuccessData().size}"
+                                )
+                                CustomText(
+                                    text = "${
+                                        stringResource(
+                                            id = R.string.orders
+                                        )
+                                    }: ${synchronize.orders.getSuccessData().size}"
+                                )
+                                CustomText(
+                                    text = "${stringResource(id = R.string.bills)}: ${
+                                        synchronize.bills.getSuccessData().size
+                                    }"
+                                )
+                                CustomText(
+                                    text = "${
+                                        stringResource(
+                                            id = R.string.products
+                                        )
+                                    }: ${synchronize.products.getSuccessData().size}"
+                                )
+                            }
                             synchronize.sync.DisplayResult(
                                 onLoading = {
                                     Row(
@@ -228,7 +234,7 @@ fun SynchronizeContent(
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         CustomText(
-                                            text = "Sync successful",
+                                            text = stringResource(R.string.sync_successful),
                                             color = MaterialTheme.colorScheme.primary
                                         )
                                         Icon(

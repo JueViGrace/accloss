@@ -3,6 +3,7 @@ package com.clo.accloss.core.presentation.components
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 fun <T> PullToRefreshLazyColumn(
     modifier: Modifier = Modifier,
     items: List<T>,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     grouped: Map<Char, List<T>>? = null,
     header: (@Composable () -> Unit)? = null,
     stickyHeader: (@Composable (Char?) -> Unit)? = null,
@@ -41,9 +43,9 @@ fun <T> PullToRefreshLazyColumn(
     ) {
         LazyColumn(
             state = lazyListState,
-            // contentPadding = PaddingValues(5.dp),
+            contentPadding = contentPadding,
             modifier = modifier,
-            verticalArrangement = Arrangement.spacedBy(15.dp, Alignment.Top)
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top)
         ) {
             if (grouped != null) {
                 if (header != null){
