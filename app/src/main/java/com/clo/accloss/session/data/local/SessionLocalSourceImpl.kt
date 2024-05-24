@@ -2,7 +2,6 @@ package com.clo.accloss.session.data.local
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToOne
-import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.clo.accloss.core.common.toStringFormat
 import com.clo.accloss.core.data.database.helper.DbHelper
 import com.clo.accloss.session.data.source.SessionDataSource
@@ -91,6 +90,7 @@ class SessionLocalSourceImpl(
                 db.gerenciaQueries.deleteGerencias(session.empresa)
                 db.userQueries.deleteUser(session.user, session.empresa)
                 db.empresaQueries.deleteEmpresa(session.empresa)
+                db.configurationQueries.deleteConfig(session.empresa)
                 db.sessionQueries.deleteSession(
                     user = session.user,
                     empresa = session.empresa

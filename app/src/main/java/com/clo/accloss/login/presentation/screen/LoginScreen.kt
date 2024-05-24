@@ -23,7 +23,7 @@ class LoginScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinScreenModel<LoginViewModel>()
         val state by viewModel.state.collectAsStateWithLifecycle()
-        println(state)
+
         val editLogin = viewModel.newLogin
         val editCompany = viewModel.newCompany
 

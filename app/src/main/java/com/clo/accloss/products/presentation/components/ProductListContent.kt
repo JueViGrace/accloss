@@ -49,10 +49,14 @@ fun ProductListContent(
                 onSelect(product.codigo)
             },
             shape = RoundedCornerShape(10),
-            border = if (discount) {
-                BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.primary)
-            } else {
-                null
+            border = when {
+                discount -> {
+                    BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.primary)
+                }
+                product.existencia == 0.0 -> {
+                    BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.error)
+                }
+                else -> null
             }
         ) {
             Row(
@@ -100,7 +104,12 @@ fun ProductListContent(
                     )
 
                     if (product.existencia <= 0) {
-                        CustomText(text = stringResource(R.string.no_stock_available))
+                        CustomText(
+                            text = stringResource(R.string.no_stock_available),
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                            color = MaterialTheme.colorScheme.error
+                        )
                     } else {
                         Row(
                             modifier = Modifier.fillMaxWidth(),

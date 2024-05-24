@@ -1,5 +1,11 @@
 package com.clo.accloss.products.presentation.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,7 +21,7 @@ fun ProductsContent(
     modifier: Modifier = Modifier,
     products: List<Product>,
     isRefreshing: Boolean,
-    onSelect: ((String) -> Unit)? = null,
+    onSelect: (String) -> Unit,
     onRefresh: () -> Unit
 ) {
     PullToRefreshLazyColumn(
@@ -23,8 +29,22 @@ fun ProductsContent(
         items = products,
         contentPadding = PaddingValues(5.dp),
         content = { product ->
-            ProductListContent(product = product) {
-                onSelect?.invoke(product.codigo)
+            AnimatedContent(
+                targetState = product,
+                label = "Product list",
+                transitionSpec = {
+                    slideInVertically(
+                        initialOffsetY = { height -> height / 4 }
+                    ) + fadeIn() togetherWith
+                        slideOutVertically(
+                            targetOffsetY = { height -> -height / 4 }
+                        ) + fadeOut()
+                }
+            ) {
+                ProductListContent(
+                    product = it,
+                    onSelect = onSelect
+                )
             }
         },
         footer = {

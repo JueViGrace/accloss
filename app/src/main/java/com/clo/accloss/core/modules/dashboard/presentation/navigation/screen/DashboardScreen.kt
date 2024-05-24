@@ -50,15 +50,16 @@ import com.clo.accloss.R
 import com.clo.accloss.core.common.Constants.dashboardOptionsMenu
 import com.clo.accloss.core.common.Constants.dashboardStatisticsMenu
 import com.clo.accloss.core.common.roundFormat
+import com.clo.accloss.core.modules.dashboard.presentation.components.DashboardMenu
+import com.clo.accloss.core.modules.dashboard.presentation.viewmodel.DashboardViewModel
 import com.clo.accloss.core.presentation.components.CustomClickableCard
 import com.clo.accloss.core.presentation.components.CustomText
 import com.clo.accloss.core.presentation.components.ErrorComponent
 import com.clo.accloss.core.presentation.components.LoadingComponent
 import com.clo.accloss.core.presentation.components.MenuItem
-import com.clo.accloss.core.modules.dashboard.presentation.components.DashboardMenu
-import com.clo.accloss.core.modules.dashboard.presentation.viewmodel.DashboardViewModel
 import com.clo.accloss.management.presentation.screen.ManagementsScreen
 import com.clo.accloss.products.presentation.screen.ProductsScreen
+import com.clo.accloss.statistic.presentation.screen.StatisticsScreen
 import kotlin.math.absoluteValue
 
 class DashboardScreen : Screen {
@@ -322,7 +323,7 @@ class DashboardScreen : Screen {
                 { navigator.parent?.parent?.push(ManagementsScreen) }
             }
             is DashboardMenu.Salesmen -> {
-                { }
+                { navigator.parent?.parent?.push(StatisticsScreen) }
             }
             is DashboardMenu.Customers -> {
                 { }

@@ -24,6 +24,9 @@ object Constants {
 
     const val PREFETCH: Int = 10
 
+    // CONFIGURATION KEYS
+    const val APPC_UTILIDADES_KEY = "APPC_UTILIDADES"
+
     private const val STOP_TIME_MILLIS: Long = 5000L
 
     val SHARING_STARTED = SharingStarted.WhileSubscribed(STOP_TIME_MILLIS)

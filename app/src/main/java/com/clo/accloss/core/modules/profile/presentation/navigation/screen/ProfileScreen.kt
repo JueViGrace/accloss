@@ -37,18 +37,17 @@ import com.clo.accloss.R
 import com.clo.accloss.core.common.Constants.profileMenu
 import com.clo.accloss.core.common.roundFormat
 import com.clo.accloss.core.modules.home.presentation.navigation.screen.HomeScreen
+import com.clo.accloss.core.modules.profile.presentation.components.ProfileMenu
+import com.clo.accloss.core.modules.profile.presentation.viewmodel.ProfileViewModel
+import com.clo.accloss.core.modules.syncronize.presentation.screen.SynchronizeScreen
 import com.clo.accloss.core.presentation.components.CustomClickableCard
 import com.clo.accloss.core.presentation.components.CustomText
 import com.clo.accloss.core.presentation.components.ErrorComponent
 import com.clo.accloss.core.presentation.components.LoadingComponent
 import com.clo.accloss.core.presentation.components.MenuItem
-import com.clo.accloss.core.modules.profile.presentation.components.ProfileMenu
-import com.clo.accloss.core.modules.profile.presentation.viewmodel.ProfileViewModel
-import com.clo.accloss.core.modules.syncronize.presentation.screen.SynchronizeScreen
 import com.clo.accloss.login.presentation.components.AddAccountDialog
 import com.clo.accloss.login.presentation.viewmodel.LoginViewModel
 import com.clo.accloss.session.presentation.components.SessionsBody
-import org.koin.core.parameter.parametersOf
 
 class ProfileScreen : Screen {
     override val key: ScreenKey = uniqueScreenKey
@@ -159,7 +158,7 @@ class ProfileScreen : Screen {
                                 ) {
                                     CustomText(text = stringResource(R.string.debts))
                                     CustomText(
-                                        text = "$ ${statistics.debts.roundFormat()}",
+                                        text = "${statistics.debts.roundFormat()} $",
                                         fontSize = MaterialTheme.typography.bodySmall.fontSize,
                                         fontWeight = MaterialTheme.typography.bodySmall.fontWeight
                                     )
@@ -183,7 +182,7 @@ class ProfileScreen : Screen {
                                 ) {
                                     CustomText(text = stringResource(R.string.expired))
                                     CustomText(
-                                        text = "$ ${statistics.expired.roundFormat()}",
+                                        text = "${statistics.expired.roundFormat()} $",
                                         fontSize = MaterialTheme.typography.bodySmall.fontSize,
                                         fontWeight = MaterialTheme.typography.bodySmall.fontWeight
                                     )
@@ -207,7 +206,7 @@ class ProfileScreen : Screen {
                                 ) {
                                     CustomText(text = stringResource(R.string.paid))
                                     CustomText(
-                                        text = "$ ${statistics.paid.roundFormat()}",
+                                        text = "${statistics.paid.roundFormat()} $",
                                         fontSize = MaterialTheme.typography.bodySmall.fontSize,
                                         fontWeight = MaterialTheme.typography.bodySmall.fontWeight
                                     )

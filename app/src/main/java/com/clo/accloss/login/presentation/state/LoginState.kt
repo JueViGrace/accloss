@@ -1,7 +1,7 @@
 package com.clo.accloss.login.presentation.state
 
-import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.company.domain.model.Company
+import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.user.domain.model.User
 

@@ -18,10 +18,10 @@ fun CustomText(
     fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     fontWeight: FontWeight? = MaterialTheme.typography.bodyLarge.fontWeight,
     textAlign: TextAlign = TextAlign.Start,
-    maxLines: Int = 1,
+    maxLines: Int = 2,
     color: Color = Color.Unspecified,
     textDecoration: TextDecoration = TextDecoration.None,
-    softWrap: Boolean = false,
+    softWrap: Boolean = true,
     overflow: TextOverflow = TextOverflow.Clip
 ) {
     Text(

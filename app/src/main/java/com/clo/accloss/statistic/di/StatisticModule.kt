@@ -9,6 +9,9 @@ import com.clo.accloss.statistic.data.source.StatisticDataSource
 import com.clo.accloss.statistic.data.source.StatisticDataSourceImpl
 import com.clo.accloss.statistic.domain.repository.StatisticRepository
 import com.clo.accloss.statistic.domain.usecase.GetProfileStatistics
+import com.clo.accloss.statistic.domain.usecase.GetStatistics
+import com.clo.accloss.statistic.presentation.viewmodel.StatisticsViewModel
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -23,4 +26,8 @@ val statisticModule = module {
     singleOf(::StatisticRepositoryImpl) bind StatisticRepository::class
 
     singleOf(::GetProfileStatistics)
+
+    singleOf(::GetStatistics)
+
+    factoryOf(::StatisticsViewModel)
 }

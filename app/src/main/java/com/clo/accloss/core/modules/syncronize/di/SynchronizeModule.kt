@@ -8,5 +8,6 @@ import org.koin.dsl.module
 
 val synchronizeModule = module {
     singleOf(::GetSynchronization)
+
     factoryOf(::SynchronizeViewModel)
 }

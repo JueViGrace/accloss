@@ -68,4 +68,14 @@
     <string name="available_with">Disponible en</string>
     <string name="prc_off">% dcto</string>
     <string name="sync_successful">Sincronización exitosa</string>
+    <string name="earning">Utilidad</string>
+    <string name="average_cost">Costo promedio</string>
+    <string name="amount_of_last_purchase">Cantidad de la última compra</string>
+    <string name="date_of_last_purchase">Fecha de la última compra</string>
+    <string name="on_pre_sale">En pre-venta!</string>
+    <string name="max_sale_amount">Cantidad de venta máxima</string>
+    <string name="minimum_sale_amount">Cantidad de venta mínima</string>
+    <string name="sold_in_packs_of">Se vende en paquetes de</string>
+    <string name="search">Buscar…</string>
+    <string name="not_specified">No especificado</string>
 </resources>

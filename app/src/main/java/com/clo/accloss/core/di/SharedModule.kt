@@ -3,6 +3,7 @@ package com.clo.accloss.core.di
 import com.clo.accloss.billlines.di.billLinesModule
 import com.clo.accloss.bills.di.billModule
 import com.clo.accloss.company.di.companyModule
+import com.clo.accloss.configuration.di.configurationModule
 import com.clo.accloss.customer.di.customerModule
 import com.clo.accloss.login.di.authModule
 import com.clo.accloss.management.di.managementModule
@@ -32,5 +33,6 @@ val sharedModule = module {
         billLinesModule,
         orderLinesModule,
         rateModule,
+        configurationModule,
     )
 }

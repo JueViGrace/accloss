@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import cafe.adriel.voyager.navigator.Navigator
 import com.clo.accloss.R
 import com.clo.accloss.company.domain.repository.CompanyRepository
 import com.clo.accloss.company.domain.rules.CompanyValidator

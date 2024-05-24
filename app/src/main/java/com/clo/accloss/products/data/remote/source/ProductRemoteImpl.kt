@@ -30,6 +30,7 @@ class ProductRemoteImpl(
                 }
             }
             .get(
+//                urlString = "/webservice/articulos_V26.php?fecha_sinc=0001-01-01 10:10:10"
                 urlString = "/webservice/articulos_V26.php?fecha_sinc=${lastSync.replace(' ', '&')}"
             )
             .body<ProductResponse>()

@@ -1,6 +1,7 @@
 package com.clo.accloss.core.domain.usecase
 
 import com.clo.accloss.bills.domain.repository.BillRepository
+import com.clo.accloss.configuration.domain.repository.ConfigurationRepository
 import com.clo.accloss.core.common.Constants.APP_VERSION
 import com.clo.accloss.core.common.toStringFormat
 import com.clo.accloss.core.domain.state.RequestState
@@ -31,7 +32,8 @@ class GetSynchronization(
     private val customerRepository: CustomerRepository,
     private val orderRepository: OrderRepository,
     private val billRepository: BillRepository,
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val configurationRepository: ConfigurationRepository
 ) {
     operator fun invoke(): Flow<RequestState<Synchronize>> = flow {
         emit(RequestState.Loading)
@@ -48,6 +50,14 @@ class GetSynchronization(
 
                     synchronize = synchronize.copy(
                         session = sessionResult.data
+                    )
+
+                    synchronize = synchronize.copy(
+                        configuration = configurationRepository.getRemoteConfiguration(
+                            baseUrl = sessionResult.data.enlaceEmpresa,
+                            salesman = sessionResult.data.user,
+                            company = sessionResult.data.empresa
+                        )
                     )
 
                     synchronize = synchronize.copy(

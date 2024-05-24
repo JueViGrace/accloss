@@ -68,4 +68,14 @@
     <string name="available_with">Available with</string>
     <string name="prc_off">% off</string>
     <string name="sync_successful">Sync successful</string>
+    <string name="earning">Earning</string>
+    <string name="average_cost">Average Cost</string>
+    <string name="date_of_last_purchase">Date of ast purchase</string>
+    <string name="amount_of_last_purchase">Amount of last purchase</string>
+    <string name="on_pre_sale">On pre-sale!</string>
+    <string name="max_sale_amount">Max sale amount</string>
+    <string name="minimum_sale_amount">Minimum sale amount</string>
+    <string name="sold_in_packs_of">Sold in packs of</string>
+    <string name="search">Search…</string>
+    <string name="not_specified">Not specified</string>
 </resources>

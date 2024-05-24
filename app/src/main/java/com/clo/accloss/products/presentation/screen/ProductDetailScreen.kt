@@ -73,9 +73,9 @@ data class ProductDetailScreen(
                     onError = {
                         ErrorScreen(it)
                     },
-                    onSuccess = { product ->
-                        title = product.codigo
-                        ProductDetailContent(product = product)
+                    onSuccess = { productDetails ->
+                        title = productDetails.product.codigo
+                        ProductDetailContent(productDetails = productDetails)
                     },
                 )
             }

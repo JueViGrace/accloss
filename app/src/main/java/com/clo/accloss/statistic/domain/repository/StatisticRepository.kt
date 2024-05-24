@@ -1,7 +1,7 @@
 package com.clo.accloss.statistic.domain.repository
 
-import com.clo.accloss.core.modules.profile.presentation.model.ProfileStatisticsModel
 import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.modules.profile.presentation.model.ProfileStatisticsModel
 import com.clo.accloss.statistic.data.source.StatisticDataSource
 import com.clo.accloss.statistic.domain.model.Statistic
 import kotlinx.coroutines.flow.Flow

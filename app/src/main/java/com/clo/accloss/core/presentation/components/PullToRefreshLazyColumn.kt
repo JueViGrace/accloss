@@ -48,7 +48,7 @@ fun <T> PullToRefreshLazyColumn(
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top)
         ) {
             if (grouped != null) {
-                if (header != null){
+                if (header != null) {
                     item {
                         header()
                     }

@@ -43,7 +43,7 @@ fun SynchronizeContent(
             DefaultTopBar(
                 title = {
                     CustomText(
-                        text = "Synchronize",
+                        text = stringResource(id = R.string.synchronize),
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
                         fontWeight = MaterialTheme.typography.titleLarge.fontWeight
                     )

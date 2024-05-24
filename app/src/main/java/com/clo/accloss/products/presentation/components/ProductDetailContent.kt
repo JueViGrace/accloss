@@ -29,16 +29,16 @@ import com.clo.accloss.core.common.Constants.HUNDRED_INT
 import com.clo.accloss.core.common.roundFormat
 import com.clo.accloss.core.presentation.components.CustomClickableCard
 import com.clo.accloss.core.presentation.components.CustomText
-import com.clo.accloss.products.domain.model.Product
+import com.clo.accloss.products.presentation.model.ProductDetails
 
 @Composable
 fun ProductDetailContent(
     modifier: Modifier = Modifier,
-    product: Product
+    productDetails: ProductDetails
 ) {
-    val discount: Double = product.dctotope / HUNDRED_INT
-    val discountAmount: Double = product.precio1 * discount
-    val priceWithDiscount: Double = product.precio1 - discountAmount
+    val discount: Double = productDetails.product.dctotope / HUNDRED_INT
+    val discountAmount: Double = productDetails.product.precio1 * discount
+    val priceWithDiscount: Double = productDetails.product.precio1 - discountAmount
 
     LazyColumn(
         modifier = modifier
@@ -50,11 +50,11 @@ fun ProductDetailContent(
         item {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(product.url)
+                    .data(productDetails.product.url)
                     .crossfade(enable = true)
                     .crossfade(200)
                     .build(),
-                contentDescription = product.nombre
+                contentDescription = productDetails.product.nombre
             )
         }
 
@@ -79,7 +79,7 @@ fun ProductDetailContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 5.dp),
-                        text = product.nombre,
+                        text = productDetails.product.nombre,
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
                         fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                         softWrap = true,
@@ -100,14 +100,15 @@ fun ProductDetailContent(
                             ),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            if (product.dctotope > 0) {
+                            if (productDetails.product.dctotope > 0) {
                                 CustomText(
-                                    text = "$ ${priceWithDiscount.roundFormat()}",
+                                    text = "${priceWithDiscount.roundFormat()} $",
                                     fontSize = MaterialTheme.typography.titleLarge.fontSize,
                                     fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                                 CustomText(
-                                    text = "$ ${product.precio1.roundFormat()}",
+                                    text = "${productDetails.product.precio1.roundFormat()} $",
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                                     fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                                     fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
@@ -122,7 +123,7 @@ fun ProductDetailContent(
                                 ) {
                                     CustomText(
                                         modifier = Modifier.padding(5.dp),
-                                        text = "${product.dctotope.roundFormat()} ${
+                                        text = "${productDetails.product.dctotope.roundFormat()} ${
                                             stringResource(
                                                 id = R.string.prc_off
                                             )
@@ -133,7 +134,7 @@ fun ProductDetailContent(
                                 }
                             } else {
                                 CustomText(
-                                    text = "$ ${product.precio1.roundFormat()}",
+                                    text = "$ ${productDetails.product.precio1.roundFormat()}",
                                     fontSize = MaterialTheme.typography.titleLarge.fontSize,
                                     fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                                 )
@@ -141,7 +142,10 @@ fun ProductDetailContent(
                         }
 
                         CustomText(
-                            text = "${stringResource(id = R.string.reference)}: ${product.referencia}",
+                            text = "${stringResource(id = R.string.reference)}: ${
+                                productDetails.product.referencia.ifEmpty {
+                                    stringResource(id = R.string.not_specified)
+                                }}",
                             fontSize = MaterialTheme.typography.titleSmall.fontSize,
                             fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
@@ -181,9 +185,16 @@ fun ProductDetailContent(
                                     fontWeight = MaterialTheme.typography.titleLarge.fontWeight
                                 )
                                 CustomText(
-                                    text = product.marca,
+                                    text = productDetails.product.marca.ifEmpty {
+                                        stringResource(R.string.not_specified)
+                                    },
                                     fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                                    color = if (productDetails.product.marca.isNotEmpty()) {
+                                        MaterialTheme.colorScheme.onSurface
+                                    } else {
+                                        MaterialTheme.colorScheme.tertiary
+                                    }
                                 )
                             }
 
@@ -202,9 +213,16 @@ fun ProductDetailContent(
                                     fontWeight = MaterialTheme.typography.titleLarge.fontWeight
                                 )
                                 CustomText(
-                                    text = product.unidad,
+                                    text = productDetails.product.unidad.ifEmpty {
+                                        stringResource(R.string.not_specified)
+                                    },
                                     fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                                    color = if (productDetails.product.marca.isNotEmpty()) {
+                                        MaterialTheme.colorScheme.onSurface
+                                    } else {
+                                        MaterialTheme.colorScheme.tertiary
+                                    }
                                 )
                             }
 
@@ -223,9 +241,28 @@ fun ProductDetailContent(
                                     fontWeight = MaterialTheme.typography.titleLarge.fontWeight
                                 )
                                 CustomText(
-                                    text = product.existencia.roundFormat(0),
+                                    text = if (productDetails.product.existencia > 0) {
+                                        productDetails.product.existencia.roundFormat(0)
+                                    } else {
+                                        stringResource(
+                                            id = R.string.no_stock_available
+                                        )
+                                    },
                                     fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                                    color = if (productDetails.product.marca.isNotEmpty()) {
+                                        MaterialTheme.colorScheme.onSurface
+                                    } else {
+                                        MaterialTheme.colorScheme.error
+                                    }
+                                )
+                            }
+
+                            if (productDetails.product.enpreventa.isNotEmpty()) {
+                                CustomText(
+                                    text = stringResource(R.string.on_pre_sale),
+                                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                                    fontWeight = MaterialTheme.typography.titleLarge.fontWeight
                                 )
                             }
                         }
@@ -253,11 +290,11 @@ fun ProductDetailContent(
                                 )
                                 CustomText(
                                     text = when {
-                                        product.vtaSolofac == 1 -> {
+                                        productDetails.product.vtaSolofac == 1 -> {
                                             "FAC"
                                         }
 
-                                        product.vtaSolone == 1 -> {
+                                        productDetails.product.vtaSolone == 1 -> {
                                             "N/E"
                                         }
 
@@ -270,37 +307,260 @@ fun ProductDetailContent(
                                 )
                             }
 
+                            if (productDetails.product.vtaMax > 0.0) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 10.dp),
+                                    verticalArrangement = Arrangement.spacedBy(
+                                        5.dp,
+                                        Alignment.CenterVertically
+                                    ),
+                                ) {
+                                    CustomText(
+                                        text = stringResource(R.string.max_sale_amount),
+                                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight
+                                    )
+                                    CustomText(
+                                        text = productDetails.product.vtaMax.roundFormat(0),
+                                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                    )
+                                }
+                            }
+
+                            if (productDetails.product.vtaMin > 0.0 && productDetails.product.vtaMinenx != 1.0) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 10.dp),
+                                    verticalArrangement = Arrangement.spacedBy(
+                                        5.dp,
+                                        Alignment.CenterVertically
+                                    ),
+                                ) {
+                                    CustomText(
+                                        text = stringResource(R.string.minimum_sale_amount),
+                                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight
+                                    )
+                                    CustomText(
+                                        text = productDetails.product.vtaMin.roundFormat(0),
+                                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                    )
+                                }
+                            }
+
+                            if (productDetails.product.vtaMinenx > 0.0) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 10.dp),
+                                    verticalArrangement = Arrangement.spacedBy(
+                                        5.dp,
+                                        Alignment.CenterVertically
+                                    ),
+                                ) {
+                                    CustomText(
+                                        text = stringResource(R.string.sold_in_packs_of),
+                                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                    )
+                                    CustomText(
+                                        text = productDetails.product.vtaMin.roundFormat(0),
+                                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    if (productDetails.utilities) {
+                        CustomText(
+                            text = stringResource(id = R.string.statistics),
+                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                            fontWeight = MaterialTheme.typography.titleLarge.fontWeight
+                        )
+
+                        HorizontalDivider()
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                5.dp,
+                                Alignment.CenterHorizontally
+                            ),
+                            verticalAlignment = Alignment.Top
+                        ) {
                             Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 10.dp),
+                                modifier = Modifier.weight(1f),
                                 verticalArrangement = Arrangement.spacedBy(
-                                    5.dp,
+                                    10.dp,
                                     Alignment.CenterVertically
                                 ),
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                CustomText(
-                                    text = stringResource(R.string.available_with),
-                                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleLarge.fontWeight
-                                )
-                                CustomText(
-                                    text = when {
-                                        product.vtaSolofac == 1 -> {
-                                            "FAC"
-                                        }
+                                CustomClickableCard(
+                                    colors = CardDefaults.elevatedCardColors().copy()
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(10.dp),
+                                        verticalArrangement = Arrangement.spacedBy(
+                                            5.dp,
+                                            Alignment.CenterVertically
+                                        ),
+                                    ) {
+                                        CustomText(
+                                            text = "${stringResource(R.string.earning)} 1",
+                                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleLarge.fontWeight
+                                        )
+                                        CustomText(
+                                            text = "% ${productDetails.product.util1.roundFormat()}",
+                                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                        )
+                                    }
+                                }
 
-                                        product.vtaSolone == 1 -> {
-                                            "N/E"
-                                        }
+                                CustomClickableCard(
+                                    colors = CardDefaults.elevatedCardColors()
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(10.dp),
+                                        verticalArrangement = Arrangement.spacedBy(
+                                            5.dp,
+                                            Alignment.CenterVertically
+                                        ),
+                                    ) {
+                                        CustomText(
+                                            text = "${stringResource(R.string.earning)} 2",
+                                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleLarge.fontWeight
+                                        )
+                                        CustomText(
+                                            text = "% ${productDetails.product.util2.roundFormat()}",
+                                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                        )
+                                    }
+                                }
 
-                                        else -> {
-                                            "FAC, N/E"
-                                        }
-                                    },
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-                                )
+                                CustomClickableCard(
+                                    colors = CardDefaults.elevatedCardColors()
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(10.dp),
+                                        verticalArrangement = Arrangement.spacedBy(
+                                            5.dp,
+                                            Alignment.CenterVertically
+                                        ),
+                                    ) {
+                                        CustomText(
+                                            text = "${stringResource(R.string.earning)} 3",
+                                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleLarge.fontWeight
+                                        )
+                                        CustomText(
+                                            text = "% ${productDetails.product.util3.roundFormat()}",
+                                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                        )
+                                    }
+                                }
+                            }
+
+                            Column(
+                                modifier = Modifier.weight(1f),
+                                verticalArrangement = Arrangement.spacedBy(
+                                    10.dp,
+                                    Alignment.CenterVertically
+                                ),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                CustomClickableCard(
+                                    colors = CardDefaults.elevatedCardColors()
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(10.dp),
+                                        verticalArrangement = Arrangement.spacedBy(
+                                            5.dp,
+                                            Alignment.CenterVertically
+                                        ),
+                                    ) {
+                                        CustomText(
+                                            text = stringResource(R.string.average_cost),
+                                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleLarge.fontWeight
+                                        )
+                                        CustomText(
+                                            text = "${productDetails.product.costoProm.roundFormat()} $",
+                                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                        )
+                                    }
+                                }
+
+                                CustomClickableCard(
+                                    colors = CardDefaults.elevatedCardColors()
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(10.dp),
+                                        verticalArrangement = Arrangement.spacedBy(
+                                            5.dp,
+                                            Alignment.CenterVertically
+                                        ),
+                                    ) {
+                                        CustomText(
+                                            text = stringResource(R.string.date_of_last_purchase),
+                                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                                        )
+                                        CustomText(
+                                            text = productDetails.product.fchUltComp,
+                                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                        )
+                                    }
+                                }
+
+                                CustomClickableCard(
+                                    colors = CardDefaults.elevatedCardColors()
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(10.dp),
+                                        verticalArrangement = Arrangement.spacedBy(
+                                            5.dp,
+                                            Alignment.CenterVertically
+                                        ),
+                                    ) {
+                                        CustomText(
+                                            text = stringResource(R.string.amount_of_last_purchase),
+                                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                                        )
+                                        CustomText(
+                                            text = productDetails.product.qtyUltComp.roundFormat(0),
+                                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
