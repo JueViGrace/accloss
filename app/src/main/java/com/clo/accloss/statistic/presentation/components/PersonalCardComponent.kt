@@ -1,4 +1,4 @@
-package com.clo.accloss.management.presentation.components
+package com.clo.accloss.statistic.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,12 +13,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.clo.accloss.core.presentation.components.CustomClickableCard
 import com.clo.accloss.core.presentation.components.CustomText
-import com.clo.accloss.management.presentation.model.ManagementsUi
 
 @Composable
-fun ManagementsListComponent(
+fun PersonalCardComponent(
     modifier: Modifier = Modifier,
-    management: ManagementsUi,
+    code: String,
+    name: String,
     onClick: (String) -> Unit
 ) {
     Box(
@@ -27,7 +27,7 @@ fun ManagementsListComponent(
     ) {
         CustomClickableCard(
             modifier = Modifier.matchParentSize(),
-            onClick = { onClick(management.codigo) },
+            onClick = { onClick(code) },
             shape = RoundedCornerShape(10),
         ) {
             Column(
@@ -36,7 +36,7 @@ fun ManagementsListComponent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CustomText(
-                    text = management.nombre,
+                    text = name,
                     maxLines = 10,
                     softWrap = true,
                     textAlign = TextAlign.Center

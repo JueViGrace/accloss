@@ -78,4 +78,14 @@
     <string name="sold_in_packs_of">Se vende en paquetes de</string>
     <string name="search">Buscar…</string>
     <string name="not_specified">No especificado</string>
+    <string name="general_statistics">Estadísticas generales</string>
+    <string name="amount_in_orders">Cantidad de pedidos</string>
+    <string name="amount_in_credit_notes_by_pp">Monto notas de crédito PP</string>
+    <string name="amount_returned">Monto en devolución</string>
+    <string name="bad_billing_return">Devolución por mala facturación</string>
+    <string name="amount_by_complaints">Monto por reclamos</string>
+    <string name="customer_quantity">Cantidad de clientes</string>
+    <string name="customers_visited">Clientes visitados</string>
+    <string name="complaints_quantity">Cantidad de reclamos</string>
+    <string name="date_of_analysis">Fecha del análisis</string>
 </resources>

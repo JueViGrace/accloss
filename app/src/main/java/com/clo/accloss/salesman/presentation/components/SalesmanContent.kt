@@ -26,9 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.clo.accloss.R
+import com.clo.accloss.core.presentation.components.CardLabel
 import com.clo.accloss.core.presentation.components.CustomClickableCard
 import com.clo.accloss.core.presentation.components.CustomText
 import com.clo.accloss.core.presentation.components.LetterIcon
@@ -296,75 +299,25 @@ fun SalesmanContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (salesman.vendedor.isNotEmpty()) {
-                        CustomClickableCard {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp),
-                                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
-                            ) {
-                                CustomText(
-                                    text = salesman.vendedor,
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-                                )
-                                CustomText(
-                                    text = stringResource(id = R.string.salesman),
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-                                )
-                            }
-                        }
+                        CardLabel(title = R.string.salesman, value = salesman.vendedor)
                     }
 
                     if (salesman.ultSinc.isNotEmpty()) {
-                        CustomClickableCard {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp),
-                                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
-                            ) {
-                                CustomText(
-                                    text = salesman.ultSinc,
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-                                    softWrap = true,
-                                    maxLines = 2,
-                                )
-                                CustomText(
-                                    text = stringResource(R.string.last_sync),
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-                                    softWrap = true,
-                                    maxLines = 2,
-                                )
-                            }
-                        }
+                        CardLabel(
+                            title = R.string.last_sync,
+                            value = salesman.ultSinc,
+                            valueFontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                            valueFontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
+                        )
                     }
 
                     if (salesman.version.isNotEmpty()) {
-                        CustomClickableCard {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp),
-                                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
-                            ) {
-                                CustomText(
-                                    text = salesman.version,
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-                                    softWrap = true,
-                                    maxLines = 2,
-                                )
-                                CustomText(
-                                    text = stringResource(R.string.app_version),
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-                                )
-                            }
-                        }
+                        CardLabel(
+                            title = R.string.app_version,
+                            value = salesman.version,
+                            valueFontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            valueFontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        )
                     }
                 }
 
@@ -378,69 +331,24 @@ fun SalesmanContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (salesman.supervpor.isNotEmpty()) {
-                        CustomClickableCard {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp),
-                                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
-                            ) {
-                                CustomText(
-                                    text = salesman.supervpor,
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-                                )
-                                CustomText(
-                                    text = stringResource(R.string.coordinator),
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-                                )
-                            }
-                        }
+                        CardLabel(
+                            title = R.string.coordinator,
+                            value = salesman.supervpor
+                        )
                     }
 
                     if (salesman.sector.isNotEmpty()) {
-                        CustomClickableCard {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp),
-                                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
-                            ) {
-                                CustomText(
-                                    text = salesman.sector,
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-                                )
-                                CustomText(
-                                    text = stringResource(R.string.zone),
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-                                )
-                            }
-                        }
+                        CardLabel(
+                            title = R.string.zone,
+                            value = salesman.sector.lowercase().capitalize(Locale.current)
+                        )
                     }
 
                     if (salesman.subsector.isNotEmpty()) {
-                        CustomClickableCard {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp),
-                                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
-                            ) {
-                                CustomText(
-                                    text = salesman.subsector,
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-                                )
-                                CustomText(
-                                    text = stringResource(R.string.sub_zone),
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-                                )
-                            }
-                        }
+                        CardLabel(
+                            title = R.string.sub_zone,
+                            value = salesman.subsector
+                        )
                     }
                 }
             }

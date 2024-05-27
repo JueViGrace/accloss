@@ -28,22 +28,12 @@ class ProductViewModel(
         getProducts(),
     ) { text, state, result ->
         when (result) {
-            is RequestState.Error -> {
-                state.copy(
-                    products = emptyList(),
-                    errorMessage = result.message,
-                    isLoading = false
-                )
-            }
             is RequestState.Success -> {
                 if (text.isBlank()) {
                     state.copy(
-                        products = result.data,
-                        isLoading = false,
-                        errorMessage = null
+                        products = result,
                     )
                 } else {
-
                     val data = result.data.filter { product ->
                         product.nombre.lowercase().contains(text.trim().lowercase()) ||
                             product.codigo.lowercase().contains(text.trim().lowercase()) ||
@@ -51,17 +41,13 @@ class ProductViewModel(
                     }
 
                     state.copy(
-                        products = data,
-                        isLoading = false,
-                        errorMessage = null
+                        products = RequestState.Success(data),
                     )
                 }
             }
             else -> {
                 state.copy(
-                    products = emptyList(),
-                    isLoading = true,
-                    errorMessage = null
+                    products = result,
                 )
             }
         }
@@ -73,6 +59,17 @@ class ProductViewModel(
 
     fun onSearchTextChange(text: String) {
         _searchText.value = text
+        if (text == "") {
+            toggleVisibility(false)
+        }
+    }
+
+    fun toggleVisibility(force: Boolean? = null) {
+        _state.update { productState ->
+            productState.copy(
+                searchBarVisible = force ?: productState.searchBarVisible
+            )
+        }
     }
 
     private fun updateProducts() {

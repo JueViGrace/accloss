@@ -78,4 +78,14 @@
     <string name="sold_in_packs_of">Sold in packs of</string>
     <string name="search">Search…</string>
     <string name="not_specified">Not specified</string>
+    <string name="general_statistics">General statistics</string>
+    <string name="amount_in_orders">Amount in orders</string>
+    <string name="amount_in_credit_notes_by_pp">Amount in credit notes by PP</string>
+    <string name="amount_returned">Amount Returned</string>
+    <string name="bad_billing_return">Bad Billing Return</string>
+    <string name="amount_by_complaints">Amount by complaints</string>
+    <string name="customer_quantity">Customer quantity</string>
+    <string name="customers_visited">Customers visited</string>
+    <string name="complaints_quantity">Complaints quantity</string>
+    <string name="date_of_analysis">Date of analysis</string>
 </resources>

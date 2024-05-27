@@ -2,7 +2,7 @@ package com.clo.accloss.management.domain.usecase
 
 import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.management.domain.repository.ManagementRepository
-import com.clo.accloss.management.presentation.model.ManagementsUi
+import com.clo.accloss.statistic.presentation.model.PersonalStatistics
 import com.clo.accloss.session.domain.usecase.GetCurrentUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +13,7 @@ class GetManagementsStatistics(
     private val getSession: GetCurrentUser,
     private val managementRepository: ManagementRepository
 ) {
-    operator fun invoke(): Flow<RequestState<List<ManagementsUi>>> = flow {
+    operator fun invoke(): Flow<RequestState<List<PersonalStatistics>>> = flow {
         getSession().collect { sessionResult ->
             when (sessionResult) {
                 is RequestState.Error -> TODO()

@@ -3,14 +3,15 @@ package com.clo.accloss.statistic.data.repository
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.log
 import com.clo.accloss.core.data.network.ApiOperation
-import com.clo.accloss.core.modules.profile.presentation.model.ProfileStatisticsModel
 import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.modules.profile.presentation.model.ProfileStatisticsModel
 import com.clo.accloss.statistic.data.source.StatisticDataSource
 import com.clo.accloss.statistic.domain.mappers.toDatabase
 import com.clo.accloss.statistic.domain.mappers.toDomain
 import com.clo.accloss.statistic.domain.mappers.toUi
 import com.clo.accloss.statistic.domain.model.Statistic
 import com.clo.accloss.statistic.domain.repository.StatisticRepository
+import com.clo.accloss.statistic.presentation.model.PersonalStatistics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -74,6 +75,81 @@ class StatisticRepositoryImpl(
                         }
                     )
                 )
+            }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun getStatistic(
+        code: String,
+        company: String
+    ): RequestState<Statistic> {
+
+        val statistic =  statisticDataSource.statisticLocal.getStatistic(
+            seller = code,
+            company = company
+        )
+
+        return if (statistic != null) {
+            RequestState.Success(
+                data = statistic.toDomain()
+            )
+        } else {
+            RequestState.Error(
+                message = "No data found"
+            )
+        }
+    }
+
+    override suspend fun getPersonalStatistic(
+        code: String,
+        company: String,
+    ): RequestState<PersonalStatistics> {
+
+
+        val personalStatistic = statisticDataSource.statisticLocal.getSalesmanPersonalStatistic(
+            salesman = code,
+            company = company
+        )
+
+        return if (personalStatistic != null) {
+            RequestState.Success(
+                data = personalStatistic.toUi()
+            )
+        } else {
+            RequestState.Error(
+                message = "No data found"
+            )
+        }
+    }
+
+    override fun getManagementStatistics(
+        code: String,
+        company: String,
+    ): Flow<RequestState<PersonalStatistics>> = flow {
+        emit(RequestState.Loading)
+
+        statisticDataSource.statisticLocal
+            .getManagementStatistics(
+                code = code,
+                company = company
+            )
+            .catch { e ->
+                emit(RequestState.Error(message = DB_ERROR_MESSAGE))
+                e.log("MANAGEMENT REPOSITORY: getManagementsStatistics")
+            }
+            .collect { getManagementStatistics ->
+                if(getManagementStatistics != null){
+                    emit(
+                        RequestState.Success(
+                            data = getManagementStatistics.toUi()
+                        )
+                    )
+                } else {
+                    emit(
+                        RequestState.Error(
+                            message = "No data found"
+                        )
+                    )
+                }
             }
     }.flowOn(Dispatchers.IO)
 

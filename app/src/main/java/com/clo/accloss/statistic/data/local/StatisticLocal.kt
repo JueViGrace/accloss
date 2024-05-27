@@ -1,6 +1,8 @@
 package com.clo.accloss.statistic.data.local
 
+import com.clo.accloss.GetManagementStatistics
 import com.clo.accloss.GetProfileStatistics
+import com.clo.accloss.GetSalesmanPersonalStatistic
 import kotlinx.coroutines.flow.Flow
 import com.clo.accloss.Estadistica as StatisticsEntity
 
@@ -10,11 +12,21 @@ interface StatisticLocal {
     suspend fun getStatistic(
         company: String,
         seller: String
-    ): Flow<StatisticsEntity>
+    ): StatisticsEntity?
 
     suspend fun getProfileStatistics(
         company: String
     ): Flow<GetProfileStatistics>
+
+    suspend fun getManagementStatistics(
+        code: String,
+        company: String
+    ): Flow<GetManagementStatistics?>
+
+    suspend fun getSalesmanPersonalStatistic(
+        salesman: String,
+        company: String
+    ): GetSalesmanPersonalStatistic?
 
     suspend fun addStatistics(statistics: List<StatisticsEntity>)
 }

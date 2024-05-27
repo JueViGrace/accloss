@@ -10,7 +10,6 @@ import com.clo.accloss.management.data.source.ManagementDataSourceImpl
 import com.clo.accloss.management.domain.repository.ManagementRepository
 import com.clo.accloss.management.domain.usecase.GetManagementStatistics
 import com.clo.accloss.management.domain.usecase.GetManagementsStatistics
-import com.clo.accloss.management.presentation.viewmodel.ManagementDetailsViewModel
 import com.clo.accloss.management.presentation.viewmodel.ManagementViewModel
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -31,6 +30,4 @@ val managementModule = module {
     singleOf(::GetManagementStatistics)
 
     factoryOf(::ManagementViewModel)
-
-    factoryOf(::ManagementDetailsViewModel)
 }

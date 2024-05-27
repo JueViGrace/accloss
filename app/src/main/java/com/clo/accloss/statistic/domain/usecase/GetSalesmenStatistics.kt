@@ -2,18 +2,18 @@ package com.clo.accloss.statistic.domain.usecase
 
 import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.session.domain.usecase.GetCurrentUser
-import com.clo.accloss.statistic.domain.model.Statistic
 import com.clo.accloss.statistic.domain.repository.StatisticRepository
+import com.clo.accloss.statistic.presentation.model.PersonalStatistics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class GetStatistics(
+class GetSalesmenStatistics(
     private val getCurrentUser: GetCurrentUser,
     private val statisticRepository: StatisticRepository
 ) {
-    operator fun invoke(): Flow<RequestState<List<Statistic>>> = flow {
+    operator fun invoke(): Flow<RequestState<List<PersonalStatistics>>> = flow {
         emit(RequestState.Loading)
 
         getCurrentUser().collect { sessionResult ->
@@ -21,8 +21,9 @@ class GetStatistics(
                 is RequestState.Error -> {
                     emit(
                         RequestState.Error(
-                        message = sessionResult.message
-                    ))
+                            message = sessionResult.message
+                        )
+                    )
                 }
                 is RequestState.Success -> {
                     statisticRepository.getStatistics(
@@ -37,9 +38,15 @@ class GetStatistics(
                                 )
                             }
                             is RequestState.Success -> {
+                                val personalStatistics = result.data.map {
+                                    PersonalStatistics(
+                                        statistic = it
+                                    )
+                                }
+
                                 emit(
                                     RequestState.Success(
-                                        data = result.data
+                                        data = personalStatistics
                                     )
                                 )
                             }

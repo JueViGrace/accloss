@@ -2,8 +2,6 @@ package com.clo.accloss.management.data.local
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
-import app.cash.sqldelight.coroutines.mapToOne
-import com.clo.accloss.GetManagementStatistics
 import com.clo.accloss.GetManagementsStatistics
 import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
@@ -27,21 +25,6 @@ class ManagementLocalImpl(
                 )
                 .asFlow()
                 .mapToList(scope.coroutineContext)
-        }
-    }.await()
-
-    override suspend fun getManagementStatistics(
-        code: String,
-        company: String,
-    ): Flow<GetManagementStatistics> = scope.async {
-        dbHelper.withDatabase { db ->
-            db.gerenciaQueries
-                .getManagementStatistics(
-                    codigo = code,
-                    empresa = company
-                )
-                .asFlow()
-                .mapToOne(scope.coroutineContext)
         }
     }.await()
 

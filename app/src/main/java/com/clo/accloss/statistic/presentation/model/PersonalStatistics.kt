@@ -1,6 +1,8 @@
-package com.clo.accloss.management.presentation.model
+package com.clo.accloss.statistic.presentation.model
 
-data class ManagementsUi(
+import com.clo.accloss.statistic.domain.model.Statistic
+
+data class PersonalStatistics(
     val prcmeta: Double = 0.0,
     val mtofactneto: Double = 0.0,
     val cantped: Double = 0.0,
@@ -13,5 +15,6 @@ data class ManagementsUi(
     val totmtodocs: Double = 0.0,
     val prommtopordoc: Double = 0.0,
     val nombre: String = "",
-    val codigo: String = ""
+    val codigo: String = "",
+    val statistic: Statistic? = null
 )

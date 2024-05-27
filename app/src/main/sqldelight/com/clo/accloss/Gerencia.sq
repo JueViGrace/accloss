@@ -9,18 +9,7 @@ CREATE TABLE IF NOT EXISTS gerencia (
 getManagementsStatistics:
 SELECT
     gerencia.kngCodcoord AS codigo,
-    (SELECT estadistica.nomcoord FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS nombre,
-    (SELECT SUM(factura.dtotalfinal - factura.dtotpagos) FROM factura WHERE factura.codcoord = gerencia.kngCodcoord AND factura.empresa = gerencia.empresa) AS deuda,
-    (SELECT SUM(factura.dtotalfinal - factura.dtotpagos) FROM factura WHERE factura.codcoord = gerencia.kngCodcoord AND factura.vence < DATE('now') AND factura.empresa = gerencia.empresa) AS vencido,
-    (SELECT (SUM(estadistica.mtofacturas) - SUM(estadistica.ppgdolTotneto) - SUM(estadistica.devdolTotneto) - SUM(estadistica.defdolTotneto)) / (SUM(estadistica.metavend)) * 100 FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS prcmeta,
-    (SELECT (SUM(estadistica.mtofacturas) - SUM(estadistica.ppgdolTotneto) - SUM(estadistica.devdolTotneto) - SUM(estadistica.defdolTotneto)) FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS mtofactneto,
-    (SELECT SUM(estadistica.cntpedidos) FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS cantped,
-    (SELECT SUM(metavend) FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS meta,
-    (SELECT SUM(totdolcob) FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS mtocob,
-    (SELECT SUM(cliente.promdiasvta) / COUNT(cliente.codigo) FROM cliente INNER JOIN estadistica ON cliente.vendedor = estadistica.vendedor WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS promdiasvta,
-    (SELECT SUM(cantdocs) FROM cliente INNER JOIN estadistica ON cliente.vendedor = estadistica.vendedor WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS cantdocs,
-    (SELECT SUM(totmtodocs) FROM cliente INNER JOIN estadistica ON cliente.vendedor = estadistica.vendedor WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS totmtodocs,
-    (SELECT SUM(totmtodocs) / SUM(cantdocs) FROM cliente INNER JOIN estadistica ON cliente.vendedor = estadistica.vendedor WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS prommtopordoc
+    (SELECT estadistica.nomcoord FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS nombre
 FROM gerencia
 WHERE
 	gerencia.kngCodgcia = :codigo AND gerencia.empresa = :empresa
@@ -28,25 +17,6 @@ GROUP BY
 	gerencia.kngCodcoord
 ORDER BY
 	gerencia.kngCodcoord ASC;
-
-getManagementStatistics:
-SELECT
-    gerencia.kngCodcoord AS codigo,
-    (SELECT estadistica.nomcoord FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS nombre,
-    (SELECT SUM(factura.dtotalfinal - factura.dtotpagos) FROM factura WHERE factura.codcoord = gerencia.kngCodcoord AND factura.empresa = gerencia.empresa) AS deuda,
-    (SELECT SUM(factura.dtotalfinal - factura.dtotpagos) FROM factura WHERE factura.codcoord = gerencia.kngCodcoord AND factura.vence < DATE('now') AND factura.empresa = gerencia.empresa) AS vencido,
-    (SELECT (SUM(estadistica.mtofacturas) - SUM(estadistica.ppgdolTotneto) - SUM(estadistica.devdolTotneto) - SUM(estadistica.defdolTotneto)) / (SUM(estadistica.metavend)) * 100 FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS prcmeta,
-    (SELECT (SUM(estadistica.mtofacturas) - SUM(estadistica.ppgdolTotneto) - SUM(estadistica.devdolTotneto) - SUM(estadistica.defdolTotneto)) FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS mtofactneto,
-    (SELECT SUM(estadistica.cntpedidos) FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS cantped,
-    (SELECT SUM(metavend) FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS meta,
-    (SELECT SUM(totdolcob) FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS mtocob,
-    (SELECT SUM(cliente.promdiasvta) / COUNT(cliente.codigo) FROM cliente INNER JOIN estadistica ON cliente.vendedor = estadistica.vendedor WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS promdiasvta,
-    (SELECT SUM(cantdocs) FROM cliente INNER JOIN estadistica ON cliente.vendedor = estadistica.vendedor WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS cantdocs,
-    (SELECT SUM(totmtodocs) FROM cliente INNER JOIN estadistica ON cliente.vendedor = estadistica.vendedor WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS totmtodocs,
-    (SELECT SUM(totmtodocs) / SUM(cantdocs) FROM cliente INNER JOIN estadistica ON cliente.vendedor = estadistica.vendedor WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS prommtopordoc
-FROM gerencia
-WHERE
-	gerencia.kngCodcoord = :codigo AND gerencia.empresa = :empresa;
 
 addGerencia:
 INSERT OR REPLACE

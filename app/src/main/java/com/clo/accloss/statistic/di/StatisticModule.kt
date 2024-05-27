@@ -8,8 +8,10 @@ import com.clo.accloss.statistic.data.repository.StatisticRepositoryImpl
 import com.clo.accloss.statistic.data.source.StatisticDataSource
 import com.clo.accloss.statistic.data.source.StatisticDataSourceImpl
 import com.clo.accloss.statistic.domain.repository.StatisticRepository
+import com.clo.accloss.statistic.domain.usecase.GetPersonalStatistics
 import com.clo.accloss.statistic.domain.usecase.GetProfileStatistics
-import com.clo.accloss.statistic.domain.usecase.GetStatistics
+import com.clo.accloss.statistic.domain.usecase.GetSalesmenStatistics
+import com.clo.accloss.statistic.presentation.viewmodel.StatisticDetailsViewModel
 import com.clo.accloss.statistic.presentation.viewmodel.StatisticsViewModel
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -27,7 +29,11 @@ val statisticModule = module {
 
     singleOf(::GetProfileStatistics)
 
-    singleOf(::GetStatistics)
+    singleOf(::GetSalesmenStatistics)
+
+    singleOf(::GetPersonalStatistics)
 
     factoryOf(::StatisticsViewModel)
+
+    factoryOf(::StatisticDetailsViewModel)
 }

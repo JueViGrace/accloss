@@ -3,7 +3,10 @@ package com.clo.accloss.statistic.data.local
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
+import app.cash.sqldelight.coroutines.mapToOneOrNull
+import com.clo.accloss.GetManagementStatistics
 import com.clo.accloss.GetProfileStatistics
+import com.clo.accloss.GetSalesmanPersonalStatistic
 import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,16 +33,15 @@ class StatisticsLocalImpl(
     override suspend fun getStatistic(
         company: String,
         seller: String
-    ): Flow<StatisticsEntity> = scope.async {
+    ): StatisticsEntity? = scope.async {
         dbHelper.withDatabase { db ->
             db.estadisticaQueries
                 .getEstadistica(
                     empresa = company,
                     vendedor = seller
                 )
-                .asFlow()
-                .mapToOne(scope.coroutineContext)
-        }.flowOn(Dispatchers.IO)
+                .executeAsOneOrNull()
+        }
     }.await()
 
     override suspend fun getProfileStatistics(
@@ -53,6 +55,35 @@ class StatisticsLocalImpl(
                 .asFlow()
                 .mapToOne(scope.coroutineContext)
         }.flowOn(Dispatchers.IO)
+    }.await()
+
+    override suspend fun getManagementStatistics(
+        code: String,
+        company: String,
+    ): Flow<GetManagementStatistics?> = scope.async {
+        dbHelper.withDatabase { db ->
+            db.estadisticaQueries
+                .getManagementStatistics(
+                    codigo = code,
+                    empresa = company
+                )
+                .asFlow()
+                .mapToOneOrNull(scope.coroutineContext)
+        }
+    }.await()
+
+    override suspend fun getSalesmanPersonalStatistic(
+        salesman: String,
+        company: String,
+    ): GetSalesmanPersonalStatistic? = scope.async {
+        dbHelper.withDatabase { db ->
+            db.estadisticaQueries
+                .getSalesmanPersonalStatistic(
+                    vendedor = salesman,
+                    empresa = company
+                )
+                .executeAsOneOrNull()
+        }
     }.await()
 
     override suspend fun addStatistics(statistics: List<StatisticsEntity>) = scope.async {
