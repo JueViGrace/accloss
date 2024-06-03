@@ -8,6 +8,9 @@ import com.clo.accloss.customer.data.repository.CustomerRepositoryImpl
 import com.clo.accloss.customer.data.source.CustomerDataSource
 import com.clo.accloss.customer.data.source.CustomerDataSourceImpl
 import com.clo.accloss.customer.domain.repository.CustomerRepository
+import com.clo.accloss.customer.domain.usecase.GetCustomers
+import com.clo.accloss.customer.presentation.viewmodel.CustomersViewModel
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -20,4 +23,8 @@ val customerModule = module {
     singleOf(::CustomerDataSourceImpl) bind CustomerDataSource::class
 
     singleOf(::CustomerRepositoryImpl) bind CustomerRepository::class
+
+    singleOf(::GetCustomers)
+
+    factoryOf(::CustomersViewModel)
 }

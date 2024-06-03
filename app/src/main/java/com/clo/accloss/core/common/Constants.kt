@@ -14,6 +14,8 @@ object Constants {
 
     const val DB_ERROR_MESSAGE = "Database is not available"
 
+    const val UNEXPECTED_ERROR = "An unexpected error occurred"
+
     const val BASE_URL: String = "https://cloccidental.com"
 
     const val HUNDRED_DOUBLE: Double = 100.00
@@ -43,7 +45,6 @@ object Constants {
     )
 
     val dashboardStatisticsMenu = listOf(
-        DashboardMenu.Managements,
         DashboardMenu.Salesmen,
         DashboardMenu.Customers,
         DashboardMenu.Orders,

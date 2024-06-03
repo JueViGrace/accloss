@@ -18,6 +18,11 @@ CREATE TABLE IF NOT EXISTS pedido (
     PRIMARY KEY(ktiNdoc, empresa)
 );
 
+CREATE INDEX order_document ON pedido(ktiNdoc);
+CREATE INDEX order_company ON pedido(empresa);
+CREATE INDEX order_customer ON pedido(ktiCodcli);
+CREATE INDEX order_salesman ON pedido(ktiCodven);
+
 getPedidos:
 SELECT *
 FROM pedido

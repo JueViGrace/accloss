@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
@@ -40,14 +41,17 @@ import com.clo.accloss.core.modules.home.presentation.navigation.screen.HomeScre
 import com.clo.accloss.core.modules.profile.presentation.components.ProfileMenu
 import com.clo.accloss.core.modules.profile.presentation.viewmodel.ProfileViewModel
 import com.clo.accloss.core.modules.syncronize.presentation.screen.SynchronizeScreen
-import com.clo.accloss.core.presentation.components.CustomClickableCard
-import com.clo.accloss.core.presentation.components.CustomText
-import com.clo.accloss.core.presentation.components.ErrorComponent
-import com.clo.accloss.core.presentation.components.LoadingComponent
+import com.clo.accloss.core.presentation.components.DisplayComponents.CustomClickableCard
+import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
+import com.clo.accloss.core.presentation.components.ErrorComponents.ErrorComponent
+import com.clo.accloss.core.presentation.components.LoadingComponents.LoadingComponent
 import com.clo.accloss.core.presentation.components.MenuItem
-import com.clo.accloss.login.presentation.components.AddAccountDialog
+import com.clo.accloss.login.domain.model.Login
+import com.clo.accloss.login.presentation.events.LoginEvents
+import com.clo.accloss.login.presentation.screen.LoginScreen.Companion.LoginCardComponent
+import com.clo.accloss.login.presentation.state.LoginState
 import com.clo.accloss.login.presentation.viewmodel.LoginViewModel
-import com.clo.accloss.session.presentation.components.SessionsBody
+import com.clo.accloss.session.presentation.components.SessionComponents.SessionsBody
 
 class ProfileScreen : Screen {
     override val key: ScreenKey = uniqueScreenKey
@@ -254,6 +258,27 @@ class ProfileScreen : Screen {
             is ProfileMenu.Synchronize -> {
                 { navigator.parent?.parent?.push(SynchronizeScreen) }
             }
+        }
+    }
+
+    @Composable
+    private fun AddAccountDialog(
+        showChanged: (Boolean) -> Unit,
+        editCompany: String?,
+        editLogin: Login?,
+        onEvent: (LoginEvents) -> Unit,
+        state: LoginState
+    ) {
+        Dialog(
+            onDismissRequest = { showChanged(false) },
+        ) {
+            LoginCardComponent(
+                editCompany = editCompany,
+                editLogin = editLogin,
+                onEvent = onEvent,
+                state = state,
+                isDialog = true
+            )
         }
     }
 }

@@ -21,7 +21,6 @@ interface SalesmanRepository {
     ): RequestState<List<Salesman>>
 
     fun getSalesmen(
-        baseUrl: String,
         user: String,
         company: String,
     ): Flow<RequestState<List<Salesman>>>

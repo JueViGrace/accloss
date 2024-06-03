@@ -9,7 +9,6 @@ import com.clo.accloss.products.domain.usecase.GetProducts
 import com.clo.accloss.products.presentation.state.ProductState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -18,26 +17,22 @@ import kotlinx.coroutines.launch
 class ProductViewModel(
     private val getProducts: GetProducts,
 ) : ScreenModel {
-    private val _searchText = MutableStateFlow("")
-    val searchText = _searchText.asStateFlow()
-
     private var _state: MutableStateFlow<ProductState> = MutableStateFlow(ProductState())
     val state = combine(
-        _searchText,
         _state,
         getProducts(),
-    ) { text, state, result ->
+    ) { state, result ->
         when (result) {
             is RequestState.Success -> {
-                if (text.isBlank()) {
+                if (state.searchText.isBlank()) {
                     state.copy(
                         products = result,
                     )
                 } else {
                     val data = result.data.filter { product ->
-                        product.nombre.lowercase().contains(text.trim().lowercase()) ||
-                            product.codigo.lowercase().contains(text.trim().lowercase()) ||
-                            product.referencia.lowercase().contains(text.trim().lowercase())
+                        product.nombre.lowercase().contains(state.searchText.trim().lowercase()) ||
+                            product.codigo.lowercase().contains(state.searchText.trim().lowercase()) ||
+                            product.referencia.lowercase().contains(state.searchText.trim().lowercase())
                     }
 
                     state.copy(
@@ -58,9 +53,10 @@ class ProductViewModel(
     )
 
     fun onSearchTextChange(text: String) {
-        _searchText.value = text
-        if (text == "") {
-            toggleVisibility(false)
+        _state.update { productState ->
+            productState.copy(
+                searchText = text
+            )
         }
     }
 

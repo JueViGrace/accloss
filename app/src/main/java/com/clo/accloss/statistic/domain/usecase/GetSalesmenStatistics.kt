@@ -13,7 +13,7 @@ class GetSalesmenStatistics(
     private val getCurrentUser: GetCurrentUser,
     private val statisticRepository: StatisticRepository
 ) {
-    operator fun invoke(): Flow<RequestState<List<PersonalStatistics>>> = flow {
+    operator fun invoke(id: String): Flow<RequestState<List<PersonalStatistics>>> = flow {
         emit(RequestState.Loading)
 
         getCurrentUser().collect { sessionResult ->
@@ -26,31 +26,62 @@ class GetSalesmenStatistics(
                     )
                 }
                 is RequestState.Success -> {
-                    statisticRepository.getStatistics(
-                        company = sessionResult.data.empresa
-                    ).collect { result ->
-                        when (result) {
-                            is RequestState.Error -> {
-                                emit(
-                                    RequestState.Error(
-                                        message = result.message
-                                    )
-                                )
-                            }
-                            is RequestState.Success -> {
-                                val personalStatistics = result.data.map {
-                                    PersonalStatistics(
-                                        statistic = it
+                    if (id.isNotEmpty()) {
+                        statisticRepository.getManagementsStatistics(
+                            code = id,
+                            company = sessionResult.data.empresa
+                        ).collect { result ->
+                            when (result) {
+                                is RequestState.Error -> {
+                                    emit(
+                                        RequestState.Error(
+                                            message = result.message
+                                        )
                                     )
                                 }
 
-                                emit(
-                                    RequestState.Success(
-                                        data = personalStatistics
+                                is RequestState.Success -> {
+                                    val personalStatistics = result.data
+
+                                    emit(
+                                        RequestState.Success(
+                                            data = personalStatistics
+                                        )
                                     )
-                                )
+                                }
+
+                                else -> emit(RequestState.Loading)
                             }
-                            else -> emit(RequestState.Loading)
+                        }
+                    } else {
+                        statisticRepository.getStatistics(
+                            company = sessionResult.data.empresa
+                        ).collect { result ->
+                            when (result) {
+                                is RequestState.Error -> {
+                                    emit(
+                                        RequestState.Error(
+                                            message = result.message
+                                        )
+                                    )
+                                }
+
+                                is RequestState.Success -> {
+                                    val personalStatistics = result.data.map {
+                                        PersonalStatistics(
+                                            statistic = it
+                                        )
+                                    }
+
+                                    emit(
+                                        RequestState.Success(
+                                            data = personalStatistics
+                                        )
+                                    )
+                                }
+
+                                else -> emit(RequestState.Loading)
+                            }
                         }
                     }
                 }

@@ -88,4 +88,6 @@
     <string name="customers_visited">Customers visited</string>
     <string name="complaints_quantity">Complaints quantity</string>
     <string name="date_of_analysis">Date of analysis</string>
+    <string name="choose_an_account">Choose an account</string>
+    <string name="empty_list">Empty list</string>
 </resources>

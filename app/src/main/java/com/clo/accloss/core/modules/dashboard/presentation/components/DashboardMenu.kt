@@ -22,7 +22,7 @@ sealed class DashboardMenu(
         name = R.string.bills,
         icon = R.drawable.ic_receipt_24px
     )
-    data object Managements : DashboardMenu(
+    data class Managements(val id: String) : DashboardMenu(
         name = R.string.managements,
         icon = R.drawable.ic_supervisor_account_24px
     )

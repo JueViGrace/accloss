@@ -8,6 +8,7 @@ import com.clo.accloss.statistic.data.repository.StatisticRepositoryImpl
 import com.clo.accloss.statistic.data.source.StatisticDataSource
 import com.clo.accloss.statistic.data.source.StatisticDataSourceImpl
 import com.clo.accloss.statistic.domain.repository.StatisticRepository
+import com.clo.accloss.statistic.domain.usecase.GetManagementStatistics
 import com.clo.accloss.statistic.domain.usecase.GetPersonalStatistics
 import com.clo.accloss.statistic.domain.usecase.GetProfileStatistics
 import com.clo.accloss.statistic.domain.usecase.GetSalesmenStatistics
@@ -32,6 +33,8 @@ val statisticModule = module {
     singleOf(::GetSalesmenStatistics)
 
     singleOf(::GetPersonalStatistics)
+
+    singleOf(::GetManagementStatistics)
 
     factoryOf(::StatisticsViewModel)
 

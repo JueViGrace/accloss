@@ -1,7 +1,9 @@
 package com.clo.accloss.customer.domain.mappers
 
+import com.clo.accloss.GetCustomersData
 import com.clo.accloss.customer.data.remote.model.CustomerItem
 import com.clo.accloss.customer.domain.model.Customer
+import com.clo.accloss.customer.presentation.model.CustomerData
 import com.clo.accloss.Cliente as CustomerEntity
 
 fun CustomerEntity.toDomain(): Customer = Customer(
@@ -100,4 +102,42 @@ fun CustomerItem.toDomain(): Customer = Customer(
     telefonos = telefonos ?: "",
     totmtodocs = totmtodocs ?: 0.0,
     vendedor = vendedor ?: ""
+)
+
+fun GetCustomersData.toUi(): CustomerData = CustomerData(
+    customer = Customer(
+        cantdocs = cantdocs,
+        codigo = codigo,
+        contribespecial = contribespecial,
+        diasultvta = diasultvta,
+        direccion = direccion,
+        email = email,
+        fchcrea = fchcrea,
+        fchultvta = fchultvta,
+        fechamodifi = fechamodifi,
+        kneActiva = kneActiva,
+        kneMtomin = kneMtomin,
+        limcred = limcred,
+        mtoultvta = mtoultvta,
+        noemifac = noemifac.toInt(),
+        noeminota = noeminota.toInt(),
+        nombre = nombre,
+        perscont = perscont,
+        prcdpagdia = prcdpagdia,
+        precio = precio,
+        promdiasp = promdiasp,
+        promdiasvta = promdiasvta,
+        prommtodoc = prommtodoc,
+        riesgocrd = riesgocrd,
+        sector = sector,
+        status = status,
+        subcodigo = subcodigo,
+        telefonos = telefonos,
+        totmtodocs = totmtodocs,
+        vendedor = vendedor,
+        empresa = empresa
+    ),
+    orders = orders.toInt(),
+    debt = debt ?: 0.0,
+    expired = expired ?: 0.0
 )

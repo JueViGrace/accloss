@@ -87,7 +87,6 @@ class SalesmanRepositoryImpl(
     }
 
     override fun getSalesmen(
-        baseUrl: String,
         user: String,
         company: String,
     ): Flow<RequestState<List<Salesman>>> = flow {
@@ -99,7 +98,6 @@ class SalesmanRepositoryImpl(
                 e.log("SALESMAN REPOSITORY: getSalesmen")
             }
             .collect { cachedList ->
-
                 emit(
                     RequestState.Success(
                         data = cachedList.map { salesman ->

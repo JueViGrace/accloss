@@ -13,12 +13,8 @@ class GetSalesmen(
     private val getSession: GetCurrentUser,
     private val salesmanRepository: SalesmanRepository
 ) {
-    operator fun invoke(
-        forceReload: Boolean = false
-    ): Flow<RequestState<List<Salesman>>> = flow {
+    operator fun invoke(): Flow<RequestState<List<Salesman>>> = flow {
         emit(RequestState.Loading)
-
-        var reload = forceReload
 
         getSession().collect { sessionResult ->
             when (sessionResult) {
@@ -27,7 +23,6 @@ class GetSalesmen(
                 }
                 is RequestState.Success -> {
                     salesmanRepository.getSalesmen(
-                        baseUrl = sessionResult.data.enlaceEmpresa,
                         user = sessionResult.data.user,
                         company = sessionResult.data.empresa,
                     ).collect { result ->
@@ -36,50 +31,7 @@ class GetSalesmen(
                                 emit(RequestState.Error(result.message))
                             }
                             is RequestState.Success -> {
-                                if (result.data.isNotEmpty() && !reload) {
-                                    emit(RequestState.Success(data = result.data))
-                                } else {
-                                    val apiResult = salesmanRepository.getRemoteSalesman(
-                                        baseUrl = sessionResult.data.enlaceEmpresa,
-                                        user = sessionResult.data.user,
-                                        company = sessionResult.data.empresa,
-                                    )
-
-                                    when (apiResult) {
-                                        is RequestState.Error -> {
-                                            emit(
-                                                RequestState.Error(
-                                                    message = apiResult.message
-                                                )
-                                            )
-                                        }
-                                        is RequestState.Success -> {
-                                            reload = false
-                                        }
-                                        else -> emit(RequestState.Loading)
-                                    }
-
-                                    // TODO: DOWNLOAD CONFIG
-                                    val mastersResult = salesmanRepository.getRemoteMasters(
-                                        baseUrl = sessionResult.data.enlaceEmpresa,
-                                        user = sessionResult.data.user,
-                                        company = sessionResult.data.empresa,
-                                    )
-
-                                    when (mastersResult) {
-                                        is RequestState.Error -> {
-                                            emit(
-                                                RequestState.Error(
-                                                    message = mastersResult.message
-                                                )
-                                            )
-                                        }
-                                        is RequestState.Success -> {
-                                            reload = false
-                                        }
-                                        else -> emit(RequestState.Loading)
-                                    }
-                                }
+                                emit(RequestState.Success(data = result.data))
                             }
                             else -> emit(RequestState.Loading)
                         }

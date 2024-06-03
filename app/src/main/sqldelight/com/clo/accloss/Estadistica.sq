@@ -43,6 +43,18 @@ vendedor == :vendedor
 AND
 empresa == :empresa;
 
+getManagementsStatistics:
+SELECT
+    gerencia.kngCodcoord AS codigo,
+    (SELECT estadistica.nomcoord FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS nombre
+FROM gerencia
+WHERE
+	gerencia.kngCodgcia = :codigo AND gerencia.empresa = :empresa
+GROUP BY
+	gerencia.kngCodcoord
+ORDER BY
+	gerencia.kngCodcoord ASC;
+
 getProfileStatistics:
 SELECT
     (
@@ -100,8 +112,7 @@ WHERE
 	estadistica.vendedor = :vendedor AND estadistica.empresa = :empresa
 GROUP BY
 	estadistica.vendedor
-ORDER BY
-	estadistica.prcmeta ASC;
+ORDER BY estadistica.prcmeta;
 
 addEstadistica:
 INSERT OR REPLACE

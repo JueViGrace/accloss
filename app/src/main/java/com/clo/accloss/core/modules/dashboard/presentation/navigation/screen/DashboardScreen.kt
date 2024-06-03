@@ -26,6 +26,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -52,12 +55,12 @@ import com.clo.accloss.core.common.Constants.dashboardStatisticsMenu
 import com.clo.accloss.core.common.roundFormat
 import com.clo.accloss.core.modules.dashboard.presentation.components.DashboardMenu
 import com.clo.accloss.core.modules.dashboard.presentation.viewmodel.DashboardViewModel
-import com.clo.accloss.core.presentation.components.CustomClickableCard
-import com.clo.accloss.core.presentation.components.CustomText
-import com.clo.accloss.core.presentation.components.ErrorComponent
-import com.clo.accloss.core.presentation.components.LoadingComponent
+import com.clo.accloss.core.presentation.components.DisplayComponents.CustomClickableCard
+import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
+import com.clo.accloss.core.presentation.components.ErrorComponents.ErrorComponent
+import com.clo.accloss.core.presentation.components.LoadingComponents.LoadingComponent
 import com.clo.accloss.core.presentation.components.MenuItem
-import com.clo.accloss.management.presentation.screen.ManagementsScreen
+import com.clo.accloss.customer.presentation.screens.CustomersScreen
 import com.clo.accloss.products.presentation.screen.ProductsScreen
 import com.clo.accloss.statistic.presentation.screen.StatisticsScreen
 import kotlin.math.absoluteValue
@@ -75,6 +78,14 @@ class DashboardScreen : Screen {
         val list = emptyList<String>()
 
         val pagerState = rememberPagerState(pageCount = { list.size })
+
+        var userId by remember {
+            mutableStateOf("")
+        }
+
+        var managementMenu: DashboardMenu? by remember {
+            mutableStateOf(null)
+        }
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -185,6 +196,8 @@ class DashboardScreen : Screen {
                                     },
                                     onError = { ErrorComponent() },
                                     onSuccess = { session ->
+                                        userId = session.user
+                                        managementMenu = DashboardMenu.Managements(session.user)
                                         CustomText(
                                             text = session.nombre,
                                         )
@@ -301,6 +314,16 @@ class DashboardScreen : Screen {
                         verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
                         horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally)
                     ) {
+                        item {
+                            managementMenu?.let { menu ->
+                                MenuItem(
+                                    name = stringResource(menu.name),
+                                    icon = painterResource(id = menu.icon),
+                                    onClick = handleMenuClick(menu, navigator)
+                                )
+                            }
+                        }
+
                         items(
                             items = dashboardStatisticsMenu,
                             key = { item -> item.name }
@@ -320,13 +343,13 @@ class DashboardScreen : Screen {
     private fun handleMenuClick(menu: DashboardMenu, navigator: Navigator): () -> Unit {
         return when (menu) {
             is DashboardMenu.Managements -> {
-                { navigator.parent?.parent?.push(ManagementsScreen) }
+                { navigator.parent?.parent?.push(StatisticsScreen(menu.id)) }
             }
             is DashboardMenu.Salesmen -> {
-                { navigator.parent?.parent?.push(StatisticsScreen) }
+                { navigator.parent?.parent?.push(StatisticsScreen()) }
             }
             is DashboardMenu.Customers -> {
-                { }
+                { navigator.parent?.parent?.push(CustomersScreen) }
             }
             is DashboardMenu.Offers -> {
                 { }

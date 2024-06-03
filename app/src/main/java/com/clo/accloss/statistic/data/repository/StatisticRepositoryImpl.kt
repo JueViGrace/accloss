@@ -82,8 +82,7 @@ class StatisticRepositoryImpl(
         code: String,
         company: String
     ): RequestState<Statistic> {
-
-        val statistic =  statisticDataSource.statisticLocal.getStatistic(
+        val statistic = statisticDataSource.statisticLocal.getStatistic(
             seller = code,
             company = company
         )
@@ -99,12 +98,36 @@ class StatisticRepositoryImpl(
         }
     }
 
+    override fun getManagementsStatistics(
+        code: String,
+        company: String
+    ): Flow<RequestState<List<PersonalStatistics>>> = flow {
+        emit(RequestState.Loading)
+
+        statisticDataSource.statisticLocal
+            .getManagementsStatistics(
+                code = code,
+                company = company
+            )
+            .catch { e ->
+                emit(RequestState.Error(message = DB_ERROR_MESSAGE))
+                e.log("MANAGEMENT REPOSITORY: getManagementsStatistics")
+            }
+            .collect { list ->
+                emit(
+                    RequestState.Success(
+                        data = list.map { getManagementsStatistics ->
+                            getManagementsStatistics.toUi()
+                        }
+                    )
+                )
+            }
+    }.flowOn(Dispatchers.IO)
+
     override suspend fun getPersonalStatistic(
         code: String,
         company: String,
     ): RequestState<PersonalStatistics> {
-
-
         val personalStatistic = statisticDataSource.statisticLocal.getSalesmanPersonalStatistic(
             salesman = code,
             company = company
@@ -137,7 +160,7 @@ class StatisticRepositoryImpl(
                 e.log("MANAGEMENT REPOSITORY: getManagementsStatistics")
             }
             .collect { getManagementStatistics ->
-                if(getManagementStatistics != null){
+                if (getManagementStatistics != null) {
                     emit(
                         RequestState.Success(
                             data = getManagementStatistics.toUi()

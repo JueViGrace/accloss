@@ -3,6 +3,7 @@ package com.clo.accloss.customer.data.local
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
+import com.clo.accloss.GetCustomersData
 import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +20,17 @@ class CustomerLocalImpl(
         dbHelper.withDatabase { db ->
             db.clienteQueries
                 .getClientes(empresa = company)
+                .asFlow()
+                .mapToList(scope.coroutineContext)
+        }.flowOn(Dispatchers.IO)
+    }.await()
+
+    override suspend fun getCustomersData(company: String): Flow<List<GetCustomersData>> = scope.async {
+        dbHelper.withDatabase { db ->
+            db.clienteQueries
+                .getCustomersData(
+                    empresa = company
+                )
                 .asFlow()
                 .mapToList(scope.coroutineContext)
         }.flowOn(Dispatchers.IO)

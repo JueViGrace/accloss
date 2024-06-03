@@ -6,18 +6,6 @@ CREATE TABLE IF NOT EXISTS gerencia (
     PRIMARY KEY(kngCodcoord, empresa)
 );
 
-getManagementsStatistics:
-SELECT
-    gerencia.kngCodcoord AS codigo,
-    (SELECT estadistica.nomcoord FROM estadistica WHERE estadistica.codcoord = gerencia.kngCodcoord AND estadistica.empresa = gerencia.empresa) AS nombre
-FROM gerencia
-WHERE
-	gerencia.kngCodgcia = :codigo AND gerencia.empresa = :empresa
-GROUP BY
-	gerencia.kngCodcoord
-ORDER BY
-	gerencia.kngCodcoord ASC;
-
 addGerencia:
 INSERT OR REPLACE
 INTO gerencia (

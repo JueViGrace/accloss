@@ -3,56 +3,64 @@ package com.clo.accloss.core.modules.contact.presentation.viewmodel
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.common.Constants.SHARING_STARTED
-import com.clo.accloss.core.modules.contact.presentation.state.ContactState
 import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.modules.contact.presentation.state.ContactState
 import com.clo.accloss.salesman.domain.usecase.GetSalesmen
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class ContactViewModel(
-    private val getSellers: GetSalesmen
+    getSalesmen: GetSalesmen
 ) : ScreenModel {
     private var _state: MutableStateFlow<ContactState> = MutableStateFlow(ContactState())
     val state = combine(
         _state,
-        getSellers(true)
+        getSalesmen()
     ) { state, result ->
-        state.copy(
-            sellers = result,
-        )
+        when (result) {
+            is RequestState.Success -> {
+                if (state.searchText.isBlank()) {
+                    state.copy(
+                        salesmen = result,
+                    )
+                } else {
+                    val data = result.data.filter { salesman ->
+                        salesman.nombre.lowercase().contains(state.searchText.trim().lowercase()) ||
+                            salesman.vendedor.lowercase().contains(state.searchText.trim().lowercase())
+                    }
+
+                    state.copy(
+                        salesmen = RequestState.Success(data)
+                    )
+                }
+            }
+            else -> {
+                state.copy(
+                    salesmen = result,
+                )
+            }
+        }
     }.stateIn(
         screenModelScope,
         SHARING_STARTED,
         ContactState()
     )
 
-    private suspend fun updateSellers() {
-        getSellers(
-            forceReload = _state.value.reload == true
-        ).collect { result ->
-            _state.update { contactState ->
-                contactState.copy(
-                    sellers = result,
-                    reload = null
-                )
-            }
+    fun onSearchTextChange(text: String) {
+        _state.update { productState ->
+            productState.copy(
+                searchText = text
+            )
         }
     }
 
-    fun onRefresh() {
-        screenModelScope.launch {
-            _state.update { contactState ->
-                contactState.copy(
-                    sellers = RequestState.Loading,
-                    reload = true
-                )
-            }
-            delay(500)
-            updateSellers()
+    fun toggleVisibility(force: Boolean? = null) {
+        _state.update { productState ->
+            productState.copy(
+                searchBarVisible = force ?: productState.searchBarVisible
+            )
         }
     }
 }

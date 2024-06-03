@@ -25,6 +25,11 @@ interface StatisticRepository {
         company: String
     ): RequestState<Statistic>
 
+    fun getManagementsStatistics(
+        code: String,
+        company: String
+    ): Flow<RequestState<List<PersonalStatistics>>>
+
     suspend fun getPersonalStatistic(
         code: String,
         company: String

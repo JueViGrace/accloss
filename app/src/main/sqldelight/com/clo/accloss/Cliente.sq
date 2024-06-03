@@ -32,10 +32,15 @@ CREATE TABLE IF NOT EXISTS cliente (
      PRIMARY KEY(codigo, empresa)
 );
 
+CREATE INDEX customer_code ON cliente(codigo);
+CREATE INDEX customer_company ON cliente(empresa);
+CREATE INDEX customer_salesman ON cliente(vendedor);
+
 getClientes:
 SELECT *
 FROM cliente
-WHERE empresa == :empresa;
+WHERE empresa == :empresa
+ORDER BY cliente.nombre;
 
 getCliente:
 SELECT *
@@ -44,6 +49,45 @@ WHERE
 empresa == :empresa
 AND
 codigo == :codigo;
+
+getCustomersData:
+SELECT
+cliente.cantdocs,
+cliente.codigo,
+cliente.contribespecial,
+cliente.diasultvta,
+cliente.direccion,
+cliente.email,
+cliente.fchcrea,
+cliente.fchultvta,
+cliente.fechamodifi,
+cliente.kneActiva,
+cliente.kneMtomin,
+cliente.limcred,
+cliente.mtoultvta,
+cliente.noemifac,
+cliente.noeminota,
+cliente.nombre,
+cliente.perscont,
+cliente.prcdpagdia,
+cliente.precio,
+cliente.promdiasp,
+cliente.promdiasvta,
+cliente.prommtodoc,
+cliente.riesgocrd,
+cliente.sector,
+cliente.status,
+cliente.subcodigo,
+cliente.telefonos,
+cliente.totmtodocs,
+cliente.vendedor,
+cliente.empresa,
+(SELECT COUNT(pedido.ktiNdoc) FROM pedido WHERE pedido.ktiCodcli = cliente.codigo AND pedido.empresa = cliente.empresa) AS orders,
+(SELECT SUM(factura.dtotalfinal - factura.dtotpagos) FROM factura WHERE factura.codcliente = cliente.codigo AND factura.empresa = cliente.empresa) AS debt,
+(SELECT SUM(factura.dtotalfinal - factura.dtotpagos) FROM factura WHERE factura.codcliente = cliente.codigo AND factura.vence < DATE('now') AND factura.empresa = cliente.empresa) AS expired
+FROM cliente
+WHERE cliente.empresa = :empresa
+ORDER BY cliente.nombre;
 
 addCliente:
 INSERT OR REPLACE

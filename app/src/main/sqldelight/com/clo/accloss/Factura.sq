@@ -50,6 +50,11 @@ CREATE TABLE IF NOT EXISTS factura (
     PRIMARY KEY (documento, empresa)
 );
 
+CREATE INDEX bill_document ON factura(documento);
+CREATE INDEX bill_company ON factura(empresa);
+CREATE INDEX bill_customer ON factura(codcliente);
+CREATE INDEX bill_salesman ON factura(vendedor);
+
 getFacturas:
 SELECT *
 FROM factura

@@ -35,6 +35,9 @@ CREATE TABLE IF NOT EXISTS product (
       PRIMARY KEY(codigo, empresa)
 );
 
+CREATE INDEX product_code ON product(codigo);
+CREATE INDEX product_company ON product(empresa);
+
 countProducts:
 SELECT COUNT(*)
 FROM product

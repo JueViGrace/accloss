@@ -7,24 +7,27 @@ import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.customer.data.source.CustomerDataSource
 import com.clo.accloss.customer.domain.mappers.toDatabase
 import com.clo.accloss.customer.domain.mappers.toDomain
+import com.clo.accloss.customer.domain.mappers.toUi
 import com.clo.accloss.customer.domain.model.Customer
 import com.clo.accloss.customer.domain.repository.CustomerRepository
-import kotlinx.coroutines.Dispatchers
+import com.clo.accloss.customer.presentation.model.CustomerData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class CustomerRepositoryImpl(
-    override val customerDataSource: CustomerDataSource
+    override val customerDataSource: CustomerDataSource,
+    override val coroutineContext: CoroutineContext,
 ) : CustomerRepository {
     override suspend fun getRemoteCustomer(
         baseUrl: String,
         company: String,
         user: String
     ): RequestState<List<Customer>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(coroutineContext) {
             when (
                 val apiOperation = customerDataSource.customerRemote
                     .getSafeCustomers(
@@ -55,9 +58,7 @@ class CustomerRepositoryImpl(
 
     override fun getCustomers(
         company: String,
-        baseUrl: String,
-        user: String,
-    ): Flow<RequestState<List<Customer>>> = flow<RequestState<List<Customer>>> {
+    ): Flow<RequestState<List<Customer>>> = flow {
         emit(RequestState.Loading)
 
         customerDataSource.customerLocal.getCustomers(
@@ -74,12 +75,38 @@ class CustomerRepositoryImpl(
                 )
             )
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(coroutineContext)
+
+    override fun getCustomersData(company: String): Flow<RequestState<List<CustomerData>>> = flow {
+        emit(RequestState.Loading)
+
+        customerDataSource.customerLocal
+            .getCustomersData(
+                company = company
+            )
+            .catch { e ->
+                emit(
+                    RequestState.Error(
+                        message = DB_ERROR_MESSAGE
+                    )
+                )
+                e.log("CUSTOMER REPOSITORY: getCustomerData")
+            }
+            .collect { cachedList ->
+                emit(
+                    RequestState.Success(
+                        data = cachedList.map { getCustomerData ->
+                            getCustomerData.toUi()
+                        }
+                    )
+                )
+            }
+    }.flowOn(coroutineContext)
 
     override fun getCustomer(
         code: String,
         company: String
-    ): Flow<RequestState<Customer>> = flow<RequestState<Customer>> {
+    ): Flow<RequestState<Customer>> = flow {
         emit(RequestState.Loading)
 
         customerDataSource.customerLocal.getCustomer(
@@ -95,12 +122,13 @@ class CustomerRepositoryImpl(
                 )
             )
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(coroutineContext)
 
-    override suspend fun addCustomer(customers: List<Customer>) =
+    override suspend fun addCustomer(customers: List<Customer>) {
         customerDataSource.customerLocal.addCustomer(
             customers = customers.map { customer ->
                 customer.toDatabase()
             }
         )
+    }
 }

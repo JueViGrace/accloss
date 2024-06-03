@@ -5,6 +5,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.clo.accloss.GetManagementStatistics
+import com.clo.accloss.GetManagementsStatistics
 import com.clo.accloss.GetProfileStatistics
 import com.clo.accloss.GetSalesmanPersonalStatistic
 import com.clo.accloss.core.data.database.helper.DbHelper
@@ -41,6 +42,21 @@ class StatisticsLocalImpl(
                     vendedor = seller
                 )
                 .executeAsOneOrNull()
+        }
+    }.await()
+
+    override suspend fun getManagementsStatistics(
+        code: String,
+        company: String
+    ): Flow<List<GetManagementsStatistics>> = scope.async {
+        dbHelper.withDatabase { db ->
+            db.estadisticaQueries
+                .getManagementsStatistics(
+                    codigo = code,
+                    empresa = company
+                )
+                .asFlow()
+                .mapToList(scope.coroutineContext)
         }
     }.await()
 
