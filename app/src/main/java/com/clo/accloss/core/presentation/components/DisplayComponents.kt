@@ -68,6 +68,7 @@ object DisplayComponents {
             Alignment.CenterVertically
         ),
         horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+        colors: CardColors = CardDefaults.elevatedCardColors(),
         title: Int,
         value: String,
         softWrap: Boolean = true,
@@ -75,19 +76,19 @@ object DisplayComponents {
         titleFontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
         titleFontWeight: FontWeight? = MaterialTheme.typography.bodyLarge.fontWeight,
         valueFontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
-        valueFontWeight: FontWeight? = MaterialTheme.typography.titleLarge.fontWeight
+        valueFontWeight: FontWeight? = MaterialTheme.typography.titleLarge.fontWeight,
     ) {
-        CustomClickableCard {
+        CustomClickableCard(
+            colors = colors
+        ) {
             Column(
                 modifier = modifier
-                    .fillMaxWidth()
                     .padding(10.dp),
                 verticalArrangement = verticalArrangement,
                 horizontalAlignment = horizontalAlignment
             ) {
                 CustomText(
                     modifier = Modifier
-                        .fillMaxWidth()
                         .padding(horizontal = 5.dp),
                     text = stringResource(id = title),
                     fontSize = titleFontSize,
@@ -97,7 +98,6 @@ object DisplayComponents {
                 )
                 CustomText(
                     modifier = Modifier
-                        .fillMaxWidth()
                         .padding(horizontal = 5.dp),
                     text = value,
                     fontSize = valueFontSize,

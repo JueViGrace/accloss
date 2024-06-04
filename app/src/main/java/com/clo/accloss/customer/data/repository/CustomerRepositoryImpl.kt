@@ -90,7 +90,7 @@ class CustomerRepositoryImpl(
                         message = DB_ERROR_MESSAGE
                     )
                 )
-                e.log("CUSTOMER REPOSITORY: getCustomerData")
+                e.log("CUSTOMER REPOSITORY: getCustomersData")
             }
             .collect { cachedList ->
                 emit(
@@ -100,6 +100,73 @@ class CustomerRepositoryImpl(
                         }
                     )
                 )
+            }
+    }.flowOn(coroutineContext)
+
+    override fun getCustomersDataBySalesman(
+        company: String,
+        salesman: String,
+    ): Flow<RequestState<List<CustomerData>>> = flow {
+        emit(RequestState.Loading)
+
+        customerDataSource.customerLocal
+            .getCustomersDataBySalesman(
+                company = company,
+                salesman = salesman
+            )
+            .catch { e ->
+                emit(
+                    RequestState.Error(
+                        message = DB_ERROR_MESSAGE
+                    )
+                )
+                e.log("CUSTOMER REPOSITORY: getCustomersData")
+            }
+            .collect { cachedList ->
+                emit(
+                    RequestState.Success(
+                        data = cachedList.map { getCustomerData ->
+                            getCustomerData.toUi()
+                        }
+                    )
+                )
+            }
+    }.flowOn(coroutineContext)
+
+    override fun getCustomerData(
+        company: String,
+        id: String
+    ): Flow<RequestState<CustomerData>> = flow {
+        emit(RequestState.Loading)
+
+        customerDataSource.customerLocal
+            .getCustomerData(
+                company = company,
+                id = id
+            )
+            .catch { e ->
+                emit(
+                    RequestState.Error(
+                        message = DB_ERROR_MESSAGE
+                    )
+                )
+                e.log("CUSTOMER REPOSITORY: getCustomerData")
+            }
+            .collect { getCustomerData ->
+                if (getCustomerData != null) {
+                    emit(
+                        RequestState.Success(
+                            data = getCustomerData.toUi()
+
+                        )
+                    )
+                } else {
+                    emit(
+                        RequestState.Error(
+                            message = "This customer doesn't exists"
+                        )
+                    )
+                }
             }
     }.flowOn(coroutineContext)
 

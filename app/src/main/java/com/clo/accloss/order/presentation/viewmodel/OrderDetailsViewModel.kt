@@ -1,29 +1,29 @@
-package com.clo.accloss.salesman.presentation.viewmodel
+package com.clo.accloss.order.presentation.viewmodel
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.common.Constants.SHARING_STARTED
-import com.clo.accloss.salesman.domain.usecase.GetSalesman
-import com.clo.accloss.salesman.presentation.state.SalesmanState
+import com.clo.accloss.order.domain.usecase.GetOrder
+import com.clo.accloss.order.presentation.state.OrderDetailsState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-class SalesmanViewModel(
-    getSalesman: GetSalesman,
-    id: String
+class OrderDetailsViewModel(
+    orderId: String,
+    getOrder: GetOrder
 ) : ScreenModel {
-    private var _state: MutableStateFlow<SalesmanState> = MutableStateFlow(SalesmanState())
+    private var _state = MutableStateFlow(OrderDetailsState())
     val state = combine(
         _state,
-        getSalesman(id)
-    ) { state, salesman ->
+        getOrder(orderId)
+    ) { state, order ->
         state.copy(
-            salesman = salesman
+            order = order
         )
     }.stateIn(
         screenModelScope,
         SHARING_STARTED,
-        SalesmanState()
+        OrderDetailsState()
     )
 }

@@ -15,16 +15,18 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class OrderLinesRepositoryImpl(
-    override val orderLinesDataSource: OrderLinesDataSource
+    override val orderLinesDataSource: OrderLinesDataSource,
+    override val coroutineContext: CoroutineContext
 ) : OrderLinesRepository {
     override suspend fun getRemoteOrderLines(
         baseUrl: String,
         document: String,
         company: String
     ): RequestState<List<OrderLines>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(coroutineContext) {
             when (
                 val apiOperation = orderLinesDataSource.orderLinesRemote
                     .getSafeOrderLines(
@@ -53,31 +55,21 @@ class OrderLinesRepositoryImpl(
         }
     }
 
-    override fun getOrderLines(
+    override suspend fun getOrderLines(
         document: String,
         company: String,
-    ): Flow<RequestState<List<OrderLines>>> = flow {
-        emit(RequestState.Loading)
-
-        orderLinesDataSource.orderLinesLocal.getOrderLines(
-            document = document,
-            company = company
-        ).catch { e ->
-            emit(RequestState.Error(message = DB_ERROR_MESSAGE))
-            e.log("ORDER LINES REPOSITORY: getOrderLines")
-        }.collect { cachedList ->
-            emit(
-                RequestState.Success(
-                    data = cachedList.map { orderLinesEntity ->
-                        orderLinesEntity.toDomain()
-                    }
-                )
-            )
-        }
-    }.flowOn(Dispatchers.IO)
+    ): List<OrderLines> = withContext(coroutineContext) {
+        orderLinesDataSource.orderLinesLocal
+            .getOrderLines(
+                document = document,
+                company = company
+            ).map { orderLinesEntity ->
+                orderLinesEntity.toDomain()
+            }
+    }
 
     override suspend fun addOrderLines(orderLines: List<OrderLines>) =
-        withContext(Dispatchers.IO) {
+        withContext(coroutineContext) {
             orderLinesDataSource.orderLinesLocal.addOrderLines(
                 orderLines = orderLines.map { line ->
                     line.toDatabase()

@@ -1,4 +1,4 @@
-package com.clo.accloss.core.modules.contact.presentation.navigation.screen
+package com.clo.accloss.core.modules.contact.presentation.navigation.screens
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -51,7 +51,6 @@ import com.clo.accloss.core.presentation.components.ListComponents.ListStickyHea
 import com.clo.accloss.core.presentation.components.TextFieldComponents.SearchBarComponent
 import com.clo.accloss.core.presentation.components.TopBarActions
 import com.clo.accloss.salesman.domain.model.Salesman
-import com.clo.accloss.salesman.presentation.screens.SalesmanScreen
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
@@ -124,7 +123,7 @@ class ContactScreen : Screen {
             ContactsContent(
                 salesmen = salesmen,
                 onSelect = { salesman ->
-                    navigator.parent?.parent?.push(SalesmanScreen(salesman))
+                    navigator.parent?.parent?.push(ContactDetailsScreen(salesman))
                 }
             )
         }

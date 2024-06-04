@@ -7,24 +7,27 @@ import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.order.data.source.OrderDataSource
 import com.clo.accloss.order.domain.mappers.toDatabase
 import com.clo.accloss.order.domain.mappers.toDomain
+import com.clo.accloss.order.domain.mappers.toUi
 import com.clo.accloss.order.domain.model.Order
 import com.clo.accloss.order.domain.repository.OrderRepository
-import kotlinx.coroutines.Dispatchers
+import com.clo.accloss.order.presentation.model.OrderDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class OrderRepositoryImpl(
-    override val orderDataSource: OrderDataSource
+    override val orderDataSource: OrderDataSource,
+    override val coroutineContext: CoroutineContext
 ) : OrderRepository {
     override suspend fun getRemoteOrders(
         baseUrl: String,
         user: String,
         company: String
     ): RequestState<List<Order>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(coroutineContext) {
             when (
                 val apiOperation = orderDataSource.orderRemote
                     .getSafeOrders(
@@ -74,37 +77,87 @@ class OrderRepositoryImpl(
                     )
                 )
             }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(coroutineContext)
 
-    override fun getOrder(
-        order: String,
-        company: String
-    ): Flow<RequestState<Order>> = flow {
+    override fun getOrdersBySalesman(
+        company: String,
+        salesman: String,
+    ): Flow<RequestState<List<Order>>> = flow {
         emit(RequestState.Loading)
 
-        orderDataSource.orderLocal.getOrder(
-            order = order,
-            company = company
-        )
+        orderDataSource.orderLocal
+            .getOrdersBySalesman(
+                company = company,
+                salesman = salesman
+            )
             .catch { e ->
                 emit(RequestState.Error(message = DB_ERROR_MESSAGE))
-                e.log("ORDER REPOSITORY: getOrder")
+                e.log("ORDER REPOSITORY: getOrders")
             }
-            .collect { orderEntity ->
+            .collect { cachedList ->
                 emit(
                     RequestState.Success(
-                        data = orderEntity.toDomain()
+                        data = cachedList.map { orderEntity ->
+                            orderEntity.toDomain()
+                        }
                     )
                 )
             }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(coroutineContext)
 
-    override suspend fun addOrder(orders: List<Order>) =
-        withContext(Dispatchers.IO) {
-            orderDataSource.orderLocal.addOrder(
-                orders = orders.map { order ->
-                    order.toDatabase()
-                }
+    override fun getOrderWithLines(
+        order: String,
+        company: String,
+    ): Flow<RequestState<OrderDetails>> = flow {
+        emit(RequestState.Loading)
+
+        orderDataSource.orderLocal
+            .getOrderWithLines(
+                order = order,
+                company = company
+            )
+            .catch { e ->
+                emit(
+                    RequestState.Error(
+                        message = DB_ERROR_MESSAGE
+                    )
+                )
+                e.log("ORDER REPOSITORY: getOrderWithLines")
+            }
+            .collect { getOrderWithLines ->
+                emit(
+                    RequestState.Success(
+                        data = getOrderWithLines.toUi()
+                    )
+                )
+            }
+    }.flowOn(coroutineContext)
+
+    override suspend fun getOrder(
+        order: String,
+        company: String
+    ): RequestState<Order> = withContext(coroutineContext) {
+        val orderEntity = orderDataSource.orderLocal.getOrder(
+            order = order,
+            company = company
+        )
+
+        if (orderEntity != null) {
+            RequestState.Success(
+                data = orderEntity.toDomain()
+            )
+        } else {
+            RequestState.Error(
+                message = "This order doesn't exists"
             )
         }
+    }
+
+    override suspend fun addOrder(orders: List<Order>) {
+        orderDataSource.orderLocal.addOrder(
+            orders = orders.map { order ->
+                order.toDatabase()
+            }
+        )
+    }
 }

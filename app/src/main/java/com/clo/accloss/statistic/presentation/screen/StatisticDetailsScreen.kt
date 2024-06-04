@@ -38,7 +38,10 @@ import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultBackArrow
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultLayoutComponent
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultTopBar
+import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultTopBarActions
 import com.clo.accloss.core.presentation.components.ListComponents.ListFooter
+import com.clo.accloss.core.presentation.components.TopBarActions
+import com.clo.accloss.customer.presentation.screens.CustomersScreen
 import com.clo.accloss.statistic.domain.model.Statistic
 import com.clo.accloss.statistic.presentation.model.PersonalStatistics
 import com.clo.accloss.statistic.presentation.viewmodel.StatisticDetailsViewModel
@@ -73,6 +76,22 @@ data class StatisticDetailsScreen(
                             navigator.pop()
                         }
                     },
+                    actions = if (!id.startsWith("C")) {
+                        {
+                            DefaultTopBarActions(
+                                onMenuClick = { action ->
+                                    when {
+                                        action is TopBarActions.Customers -> {
+                                            navigator.push(CustomersScreen(id))
+                                        }
+                                    }
+                                },
+                                items = listOf(TopBarActions.Customers)
+                            )
+                        }
+                    } else {
+                        {}
+                    }
                 )
             },
             state = state.personalStatistics
@@ -155,7 +174,11 @@ data class StatisticDetailsScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         amountsList.forEach { (key, value) ->
-                            CardLabel(title = key, value = "${value.roundFormat()} $")
+                            CardLabel(
+                                modifier = Modifier.fillMaxWidth(),
+                                title = key,
+                                value = "${value.roundFormat()} $"
+                            )
                         }
                     }
 
@@ -167,12 +190,14 @@ data class StatisticDetailsScreen(
                     ) {
                         quantitiesList.forEach { (key, value) ->
                             CardLabel(
+                                modifier = Modifier.fillMaxWidth(),
                                 title = key,
                                 value = value.roundFormat(0)
                             )
                         }
 
                         CardLabel(
+                            modifier = Modifier.fillMaxWidth(),
                             title = R.string.average_number_of_days_between_sales,
                             value = "${personalStatistics.promdiasvta.roundFormat(0)} ${
                                 stringResource(
@@ -244,7 +269,11 @@ data class StatisticDetailsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 generalStats.forEach { (key, value) ->
-                    CardLabel(title = key, value = "${value.roundFormat()} $")
+                    CardLabel(
+                        modifier = Modifier.fillMaxWidth(),
+                        title = key,
+                        value = "${value.roundFormat()} $"
+                    )
                 }
             }
 
@@ -254,10 +283,18 @@ data class StatisticDetailsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 quantitiesStats.forEach { (key, value) ->
-                    CardLabel(title = key, value = value.roundFormat(0))
+                    CardLabel(
+                        modifier = Modifier.fillMaxWidth(),
+                        title = key,
+                        value = value.roundFormat(0)
+                    )
                 }
 
-                CardLabel(title = R.string.date_of_analysis, value = statistic.fechaEstad)
+                CardLabel(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = R.string.date_of_analysis,
+                    value = statistic.fechaEstad
+                )
             }
         }
     }

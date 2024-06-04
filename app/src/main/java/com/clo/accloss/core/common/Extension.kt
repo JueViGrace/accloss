@@ -8,8 +8,15 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
 
-fun Date.toStringFormat(): String =
-    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(this)
+fun Date.toStringFormat(format: Int? = null): String =
+    when (format) {
+        1 -> {
+            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(this)
+        }
+        else -> {
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(this)
+        }
+    }
 
 fun String.toDate(): Date =
     SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(this) as Date

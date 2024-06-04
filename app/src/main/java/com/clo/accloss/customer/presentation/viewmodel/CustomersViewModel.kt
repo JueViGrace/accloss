@@ -12,12 +12,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class CustomersViewModel(
+    id: String,
     getCustomers: GetCustomers
 ) : ScreenModel {
     private var _state: MutableStateFlow<CustomersState> = MutableStateFlow(CustomersState())
     val state = combine(
         _state,
-        getCustomers()
+        getCustomers(id)
     ) { state, result ->
         when (result) {
             is RequestState.Success -> {

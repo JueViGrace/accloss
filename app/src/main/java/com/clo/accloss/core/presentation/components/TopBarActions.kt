@@ -15,4 +15,9 @@ sealed class TopBarActions(
         title = R.string.statistics,
         icon = R.drawable.ic_analytics_24px
     )
+
+    data object Customers : TopBarActions(
+        title = R.string.customers,
+        icon = R.drawable.ic_groups_24px
+    )
 }

@@ -61,6 +61,7 @@ import com.clo.accloss.core.presentation.components.ErrorComponents.ErrorCompone
 import com.clo.accloss.core.presentation.components.LoadingComponents.LoadingComponent
 import com.clo.accloss.core.presentation.components.MenuItem
 import com.clo.accloss.customer.presentation.screens.CustomersScreen
+import com.clo.accloss.order.presentation.screens.OrdersScreen
 import com.clo.accloss.products.presentation.screen.ProductsScreen
 import com.clo.accloss.statistic.presentation.screen.StatisticsScreen
 import kotlin.math.absoluteValue
@@ -349,7 +350,7 @@ class DashboardScreen : Screen {
                 { navigator.parent?.parent?.push(StatisticsScreen()) }
             }
             is DashboardMenu.Customers -> {
-                { navigator.parent?.parent?.push(CustomersScreen) }
+                { navigator.parent?.parent?.push(CustomersScreen()) }
             }
             is DashboardMenu.Offers -> {
                 { }
@@ -358,7 +359,7 @@ class DashboardScreen : Screen {
                 { navigator.parent?.parent?.push(ProductsScreen) }
             }
             is DashboardMenu.Orders -> {
-                { }
+                { navigator.parent?.parent?.push(OrdersScreen()) }
             }
             is DashboardMenu.Bills -> {
                 { }

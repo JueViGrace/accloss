@@ -3,6 +3,8 @@ package com.clo.accloss.order.data.local
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
+import app.cash.sqldelight.coroutines.mapToOneOrNull
+import com.clo.accloss.GetOrderWithLines
 import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,19 +28,48 @@ class OrderLocalImpl(
         }.flowOn(Dispatchers.IO)
     }.await()
 
+    override suspend fun getOrdersBySalesman(
+        company: String,
+        salesman: String,
+    ): Flow<List<OrderEntity>> = scope.async {
+        dbHelper.withDatabase { db ->
+            db.pedidoQueries
+                .getOrdersBySalesman(
+                    empresa = company,
+                    vendedor = salesman
+                )
+                .asFlow()
+                .mapToList(scope.coroutineContext)
+        }.flowOn(Dispatchers.IO)
+    }.await()
+
+    override suspend fun getOrderWithLines(
+        company: String,
+        order: String,
+    ): Flow<List<GetOrderWithLines>> = scope.async {
+        dbHelper.withDatabase { db ->
+            db.pedidoQueries
+                .getOrderWithLines(
+                    pedido = order,
+                    empresa = company
+                )
+                .asFlow()
+                .mapToList(scope.coroutineContext)
+        }.flowOn(Dispatchers.IO)
+    }.await()
+
     override suspend fun getOrder(
         order: String,
         company: String
-    ): Flow<OrderEntity> = scope.async {
+    ): OrderEntity? = scope.async {
         dbHelper.withDatabase { db ->
             db.pedidoQueries
                 .getPedido(
                     pedido = order,
                     empresa = company
                 )
-                .asFlow()
-                .mapToOne(scope.coroutineContext)
-        }.flowOn(Dispatchers.IO)
+                .executeAsOneOrNull()
+        }
     }.await()
 
     override suspend fun addOrder(orders: List<OrderEntity>) = scope.async {

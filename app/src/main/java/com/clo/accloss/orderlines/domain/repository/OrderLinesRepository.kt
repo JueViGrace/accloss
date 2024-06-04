@@ -3,10 +3,11 @@ package com.clo.accloss.orderlines.domain.repository
 import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.orderlines.data.source.OrderLinesDataSource
 import com.clo.accloss.orderlines.domain.model.OrderLines
-import kotlinx.coroutines.flow.Flow
+import kotlin.coroutines.CoroutineContext
 
 interface OrderLinesRepository {
     val orderLinesDataSource: OrderLinesDataSource
+    val coroutineContext: CoroutineContext
 
     suspend fun getRemoteOrderLines(
         baseUrl: String,
@@ -14,10 +15,10 @@ interface OrderLinesRepository {
         company: String
     ): RequestState<List<OrderLines>>
 
-    fun getOrderLines(
+    suspend fun getOrderLines(
         document: String,
         company: String,
-    ): Flow<RequestState<List<OrderLines>>>
+    ): List<OrderLines>
 
     suspend fun addOrderLines(orderLines: List<OrderLines>)
 }

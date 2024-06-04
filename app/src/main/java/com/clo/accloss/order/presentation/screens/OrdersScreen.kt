@@ -1,12 +1,13 @@
-package com.clo.accloss.customer.presentation.screens
+package com.clo.accloss.order.presentation.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
@@ -15,19 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.R
+import com.clo.accloss.core.common.toDate
+import com.clo.accloss.core.common.toStringFormat
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomClickableCard
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
 import com.clo.accloss.core.presentation.components.ErrorComponents.ErrorScreen
@@ -40,23 +39,17 @@ import com.clo.accloss.core.presentation.components.ListComponents.ListFooter
 import com.clo.accloss.core.presentation.components.ListComponents.ListStickyHeader
 import com.clo.accloss.core.presentation.components.TextFieldComponents.SearchBarComponent
 import com.clo.accloss.core.presentation.components.TopBarActions
-import com.clo.accloss.core.presentation.theme.onWarning_color_dark
-import com.clo.accloss.core.presentation.theme.onWarning_color_light
-import com.clo.accloss.core.presentation.theme.warning_color_dark
-import com.clo.accloss.core.presentation.theme.warning_color_light
-import com.clo.accloss.customer.presentation.model.CustomerData
-import com.clo.accloss.customer.presentation.viewmodel.CustomersViewModel
+import com.clo.accloss.order.domain.model.Order
+import com.clo.accloss.order.presentation.viewmodel.OrdersViewModel
 import org.koin.core.parameter.parametersOf
 
-data class CustomersScreen(
-    val id: String = ""
+data class OrdersScreen(
+    val id: String = "",
 ) : Screen {
-    override val key: ScreenKey = super.key + uniqueScreenKey
-
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinScreenModel<CustomersViewModel>(parameters = { parametersOf(id) })
+        val viewModel = koinScreenModel<OrdersViewModel>(parameters = { parametersOf(id) })
         val state by viewModel.state.collectAsStateWithLifecycle()
 
         val focus = LocalFocusManager.current
@@ -71,7 +64,7 @@ data class CustomersScreen(
                     DefaultTopBar(
                         title = {
                             CustomText(
-                                text = stringResource(id = R.string.customers),
+                                text = stringResource(id = R.string.orders),
                                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
                                 fontWeight = MaterialTheme.typography.titleLarge.fontWeight
                             )
@@ -121,42 +114,44 @@ data class CustomersScreen(
                     )
                 }
             },
-            state = state.customers
+            state = state.orders
         ) { list ->
             if (list.isNotEmpty()) {
-                CustomersContent(
+                OrdersContent(
                     modifier = Modifier.fillMaxSize(),
-                    customers = list
+                    orders = list
                 )
             } else {
-                ErrorScreen(message = stringResource(R.string.empty_list))
+                ErrorScreen(
+                    message = stringResource(id = R.string.empty_list)
+                )
             }
         }
     }
 
     @Composable
-    private fun CustomersContent(
+    private fun OrdersContent(
         modifier: Modifier = Modifier,
-        customers: List<CustomerData>
+        orders: List<Order>
     ) {
         val navigator = LocalNavigator.currentOrThrow
         CustomLazyColumn(
             modifier = modifier,
-            grouped = customers.groupBy { it.customer.nombre.first().toString() },
-            items = customers,
-            stickyHeader = { char ->
-                char?.let { letter ->
+            grouped = orders.groupBy { it.ktiCodven },
+            items = orders,
+            stickyHeader = { salesman ->
+                salesman?.let { value ->
                     ListStickyHeader(
-                        text = letter
+                        text = "${stringResource(id = R.string.salesman)} $value"
                     )
                 }
             },
-            content = { customer ->
-                CustomerListComponent(
+            content = { order ->
+                OrderListComponent(
                     modifier = Modifier.padding(horizontal = 10.dp),
-                    customerData = customer,
-                    onClick = { id ->
-                        navigator.push(CustomerDetailsScreen(id))
+                    order = order,
+                    onClick = { orderId ->
+                        navigator.push(OrderDetailsScreen(orderId))
                     }
                 )
             },
@@ -169,91 +164,61 @@ data class CustomersScreen(
     }
 
     @Composable
-    private fun CustomerListComponent(
+    private fun OrderListComponent(
         modifier: Modifier = Modifier,
-        customerData: CustomerData,
+        order: Order,
         onClick: (String) -> Unit
     ) {
         CustomClickableCard(
             modifier = modifier,
-            onClick = { onClick(customerData.customer.codigo) },
+            onClick = { onClick(order.ktiNdoc) },
             shape = RoundedCornerShape(10),
-            colors = CardDefaults.elevatedCardColors(
-                containerColor = calculateContainerColor(customerData = customerData),
-                contentColor = calculateContentColor(customerData = customerData)
-            )
+            colors = CardDefaults.elevatedCardColors()
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.Center,
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                CustomText(
-                    text = customerData.customer.nombre,
-                    maxLines = 10,
-                    softWrap = true,
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-    }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CustomText(
+                        text = "Doc: ${order.ktiNdoc}",
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                    )
 
-    @Composable
-    private fun calculateContainerColor(customerData: CustomerData): Color {
-        return when {
-            customerData.customer.email.isEmpty() ||
-                customerData.customer.perscont.isEmpty() ||
-                customerData.customer.telefonos.isEmpty() -> {
-                if (isSystemInDarkTheme()) {
-                    warning_color_dark
-                } else {
-                    warning_color_light
+                    CustomText(
+                        text = "Nº ${order.ktiNroped.ifEmpty {
+                            stringResource(id = R.string.not_specified)
+                        }}",
+                        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
                 }
-            }
 
-            customerData.customer.diasultvta > 40 ||
-                customerData.customer.prcdpagdia < 50 ||
-                customerData.customer.riesgocrd > 10 ||
-                (
-                    customerData.customer.diasultvta >= customerData.customer.promdiasvta &&
-                        (customerData.customer.promdiasvta > 0)
-                    ) -> {
-                MaterialTheme.colorScheme.errorContainer
-            }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CustomText(
+                        text = "${stringResource(R.string.customer)}: ${order.ktiCodcli}",
+                    )
 
-            else -> {
-                MaterialTheme.colorScheme.surfaceContainer
-            }
-        }
-    }
-
-    @Composable
-    private fun calculateContentColor(customerData: CustomerData): Color {
-        return when {
-            customerData.customer.email.isEmpty() ||
-                customerData.customer.perscont.isEmpty() ||
-                customerData.customer.telefonos.isEmpty() -> {
-                if (isSystemInDarkTheme()) {
-                    onWarning_color_dark
-                } else {
-                    onWarning_color_light
+                    CustomText(
+                        text = "${stringResource(R.string.issue_date)}: ${order.ktiFchdoc.toDate().toStringFormat(1)}",
+                        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
                 }
-            }
-
-            customerData.customer.diasultvta > 40.0 ||
-                customerData.customer.prcdpagdia < 50.0 ||
-                customerData.customer.riesgocrd > 10.0 ||
-                (
-                    customerData.customer.diasultvta >= customerData.customer.promdiasvta &&
-                        (customerData.customer.promdiasvta > 0)
-                    ) -> {
-                MaterialTheme.colorScheme.onErrorContainer
-            }
-
-            else -> {
-                MaterialTheme.colorScheme.onSurface
             }
         }
     }

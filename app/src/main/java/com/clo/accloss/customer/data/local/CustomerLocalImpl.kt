@@ -3,7 +3,10 @@ package com.clo.accloss.customer.data.local
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
+import app.cash.sqldelight.coroutines.mapToOneOrNull
+import com.clo.accloss.GetCustomerData
 import com.clo.accloss.GetCustomersData
+import com.clo.accloss.GetCustomersDataBySalesman
 import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +36,35 @@ class CustomerLocalImpl(
                 )
                 .asFlow()
                 .mapToList(scope.coroutineContext)
+        }.flowOn(Dispatchers.IO)
+    }.await()
+
+    override suspend fun getCustomersDataBySalesman(
+        company: String,
+        salesman: String,
+    ): Flow<List<GetCustomersDataBySalesman>> = scope.async {
+        dbHelper.withDatabase { db ->
+            db.clienteQueries
+                .getCustomersDataBySalesman(
+                    empresa = company,
+                    vendedor = salesman,
+                )
+                .asFlow()
+                .mapToList(scope.coroutineContext)
+        }.flowOn(Dispatchers.IO)
+    }.await()
+
+    override suspend fun getCustomerData(
+        company: String,
+        id: String
+    ): Flow<GetCustomerData?> = scope.async {
+        dbHelper.withDatabase { db ->
+            db.clienteQueries.getCustomerData(
+                empresa = company,
+                codigo = id
+            )
+                .asFlow()
+                .mapToOneOrNull(scope.coroutineContext)
         }.flowOn(Dispatchers.IO)
     }.await()
 

@@ -1,4 +1,4 @@
-package com.clo.accloss.salesman.presentation.screens
+package com.clo.accloss.core.modules.contact.presentation.navigation.screens
 
 import android.content.Intent
 import android.net.Uri
@@ -38,6 +38,7 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.R
+import com.clo.accloss.core.modules.contact.presentation.viewmodel.ContactDetailsViewModel
 import com.clo.accloss.core.presentation.components.DisplayComponents.CardLabel
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomClickableCard
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
@@ -47,12 +48,12 @@ import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultLayo
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultTopBar
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultTopBarActions
 import com.clo.accloss.core.presentation.components.TopBarActions
+import com.clo.accloss.customer.presentation.screens.CustomersScreen
 import com.clo.accloss.salesman.domain.model.Salesman
-import com.clo.accloss.salesman.presentation.viewmodel.SalesmanViewModel
 import com.clo.accloss.statistic.presentation.screen.StatisticDetailsScreen
 import org.koin.core.parameter.parametersOf
 
-data class SalesmanScreen(
+data class ContactDetailsScreen(
     val id: String
 ) : Screen {
     override val key: ScreenKey = uniqueScreenKey
@@ -60,11 +61,8 @@ data class SalesmanScreen(
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = koinScreenModel<SalesmanViewModel>(parameters = { parametersOf(id) })
+        val viewModel = koinScreenModel<ContactDetailsViewModel>(parameters = { parametersOf(id) })
         val state by viewModel.state.collectAsStateWithLifecycle()
-        var code by rememberSaveable {
-            mutableStateOf("")
-        }
 
         DefaultLayoutComponent(
             topBar = {
@@ -77,20 +75,25 @@ data class SalesmanScreen(
                     actions = {
                         DefaultTopBarActions(
                             onMenuClick = { action ->
-                                when {
-                                    action is TopBarActions.Statistics -> {
-                                        navigator.push(StatisticDetailsScreen(code))
+                                when (action) {
+                                    is TopBarActions.Statistics -> {
+                                        navigator.push(StatisticDetailsScreen(id))
                                     }
+
+                                    is TopBarActions.Customers -> {
+                                        navigator.push(CustomersScreen(id))
+                                    }
+
+                                    else -> {}
                                 }
                             },
-                            items = listOf(TopBarActions.Statistics)
+                            items = listOf(TopBarActions.Statistics, TopBarActions.Customers)
                         )
                     }
                 )
             },
             state = state.salesman
         ) { salesman ->
-            code = salesman.vendedor
             SalesmanContent(
                 salesman = salesman
             )
@@ -359,11 +362,16 @@ data class SalesmanScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         if (salesman.vendedor.isNotEmpty()) {
-                            CardLabel(title = R.string.salesman, value = salesman.vendedor)
+                            CardLabel(
+                                modifier = Modifier.fillMaxWidth(),
+                                title = R.string.salesman,
+                                value = salesman.vendedor
+                            )
                         }
 
                         if (salesman.ultSinc.isNotEmpty()) {
                             CardLabel(
+                                modifier = Modifier.fillMaxWidth(),
                                 title = R.string.last_sync,
                                 value = salesman.ultSinc,
                                 valueFontSize = MaterialTheme.typography.bodyLarge.fontSize,
@@ -373,6 +381,7 @@ data class SalesmanScreen(
 
                         if (salesman.version.isNotEmpty()) {
                             CardLabel(
+                                modifier = Modifier.fillMaxWidth(),
                                 title = R.string.app_version,
                                 value = salesman.version,
                                 valueFontSize = MaterialTheme.typography.titleMedium.fontSize,
@@ -392,6 +401,7 @@ data class SalesmanScreen(
                     ) {
                         if (salesman.supervpor.isNotEmpty()) {
                             CardLabel(
+                                modifier = Modifier.fillMaxWidth(),
                                 title = R.string.coordinator,
                                 value = salesman.supervpor
                             )
@@ -399,6 +409,7 @@ data class SalesmanScreen(
 
                         if (salesman.sector.isNotEmpty()) {
                             CardLabel(
+                                modifier = Modifier.fillMaxWidth(),
                                 title = R.string.zone,
                                 value = salesman.sector.lowercase().capitalize(Locale.current)
                             )
@@ -406,6 +417,7 @@ data class SalesmanScreen(
 
                         if (salesman.subsector.isNotEmpty()) {
                             CardLabel(
+                                modifier = Modifier.fillMaxWidth(),
                                 title = R.string.sub_zone,
                                 value = salesman.subsector
                             )

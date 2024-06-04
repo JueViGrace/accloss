@@ -26,15 +26,35 @@ CREATE INDEX order_salesman ON pedido(ktiCodven);
 getPedidos:
 SELECT *
 FROM pedido
-WHERE empresa == :empresa;
+WHERE
+    pedido.empresa = :empresa
+ORDER BY pedido.ktiCodven, pedido.ktiNdoc;
+
+getOrdersBySalesman:
+SELECT *
+FROM pedido
+WHERE
+    pedido.empresa = :empresa AND
+    pedido.ktiCodven = :vendedor
+ORDER BY pedido.ktiCodven, pedido.ktiNdoc;
 
 getPedido:
 SELECT *
 FROM pedido
 WHERE
-empresa == :empresa
-AND
-ktiNdoc == :pedido;
+    pedido.empresa = :empresa AND
+    pedido.ktiNdoc = :pedido;
+
+getOrderWithLines:
+SELECT *
+FROM pedido
+LEFT JOIN lineas_pedido
+ON lineas_pedido.ktiNdoc = pedido.ktiNdoc AND
+   lineas_pedido.empresa = pedido.empresa
+WHERE
+    pedido.empresa = :empresa AND
+    pedido.ktiNdoc = :pedido
+GROUP BY pedido.ktiNdoc, lineas_pedido.kmvCodart;
 
 addPedido:
 INSERT OR REPLACE

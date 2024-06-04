@@ -25,6 +25,16 @@ interface CustomerRepository {
         company: String
     ): Flow<RequestState<List<CustomerData>>>
 
+    fun getCustomersDataBySalesman(
+        company: String,
+        salesman: String
+    ): Flow<RequestState<List<CustomerData>>>
+
+    fun getCustomerData(
+        company: String,
+        id: String,
+    ): Flow<RequestState<CustomerData>>
+
     fun getCustomer(
         code: String,
         company: String

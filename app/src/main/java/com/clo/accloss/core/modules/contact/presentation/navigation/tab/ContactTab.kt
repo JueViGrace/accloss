@@ -10,7 +10,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.SlideTransition
-import com.clo.accloss.core.modules.contact.presentation.navigation.screen.ContactScreen
+import com.clo.accloss.core.modules.contact.presentation.navigation.screens.ContactScreen
 import com.clo.accloss.core.modules.home.presentation.navigation.routes.HomeTabs
 
 object ContactTab : Tab {

@@ -2,6 +2,11 @@ package com.clo.accloss.core.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
+val warning_color_dark = Color(0xFFFDD835)
+val warning_color_light = Color(0xFFFFF59D)
+val onWarning_color_light = Color(0xFF000000)
+val onWarning_color_dark = Color(0xFF000000)
+
 val md_theme_light_primary_oc = Color(0xFF13458E)
 val md_theme_light_onPrimary_oc = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer_oc = Color(0xFFD8E2FF)

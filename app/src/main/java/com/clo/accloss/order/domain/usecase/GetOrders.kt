@@ -1,10 +1,10 @@
-package com.clo.accloss.customer.domain.usecase
+package com.clo.accloss.order.domain.usecase
 
-import com.clo.accloss.core.common.Constants.UNEXPECTED_ERROR
+import com.clo.accloss.core.common.Constants
 import com.clo.accloss.core.common.log
 import com.clo.accloss.core.domain.state.RequestState
-import com.clo.accloss.customer.domain.repository.CustomerRepository
-import com.clo.accloss.customer.presentation.model.CustomerData
+import com.clo.accloss.order.domain.model.Order
+import com.clo.accloss.order.domain.repository.OrderRepository
 import com.clo.accloss.session.domain.usecase.GetCurrentUser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -12,19 +12,19 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlin.coroutines.CoroutineContext
 
-class GetCustomers(
+class GetOrders(
     private val getCurrentUser: GetCurrentUser,
-    private val customerRepository: CustomerRepository,
+    private val ordersRepository: OrderRepository,
     private val coroutineContext: CoroutineContext
 ) {
-    operator fun invoke(id: String): Flow<RequestState<List<CustomerData>>> = flow {
+    operator fun invoke(id: String): Flow<RequestState<List<Order>>> = flow {
         emit(RequestState.Loading)
 
         getCurrentUser()
             .catch { e ->
                 emit(
                     RequestState.Error(
-                        message = UNEXPECTED_ERROR
+                        message = Constants.UNEXPECTED_ERROR
                     )
                 )
                 e.log("GET CUSTOMERS USE CASE: session")
@@ -39,20 +39,19 @@ class GetCustomers(
                         )
                     }
                     is RequestState.Success -> {
-
                         when {
                             id.isEmpty() -> {
-                                customerRepository
-                                    .getCustomersData(
+                                ordersRepository
+                                    .getOrders(
                                         company = sessionResult.data.empresa
                                     )
                                     .catch { e ->
                                         emit(
                                             RequestState.Error(
-                                                message = UNEXPECTED_ERROR
+                                                message = Constants.UNEXPECTED_ERROR
                                             )
                                         )
-                                        e.log("GET CUSTOMERS USE CASE: customer, id empty")
+                                        e.log("GET ORDERS USE CASE: orders, id empty")
                                     }
                                     .collect { result ->
                                         when (result) {
@@ -76,18 +75,18 @@ class GetCustomers(
                             }
 
                             id.isNotEmpty() -> {
-                                customerRepository
-                                    .getCustomersDataBySalesman(
+                                ordersRepository
+                                    .getOrdersBySalesman(
                                         company = sessionResult.data.empresa,
                                         salesman = id
                                     )
                                     .catch { e ->
                                         emit(
                                             RequestState.Error(
-                                                message = UNEXPECTED_ERROR
+                                                message = Constants.UNEXPECTED_ERROR
                                             )
                                         )
-                                        e.log("GET CUSTOMERS USE CASE: customer, id not empty")
+                                        e.log("GET ORDERS USE CASE: orders, id not empty")
                                     }
                                     .collect { result ->
                                         when (result) {
@@ -110,7 +109,6 @@ class GetCustomers(
                                     }
                             }
                         }
-
                     }
                     else -> emit(RequestState.Loading)
                 }

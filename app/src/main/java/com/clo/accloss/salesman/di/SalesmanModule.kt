@@ -10,7 +10,7 @@ import com.clo.accloss.salesman.data.source.SalesmanDataSourceImpl
 import com.clo.accloss.salesman.domain.repository.SalesmanRepository
 import com.clo.accloss.salesman.domain.usecase.GetSalesman
 import com.clo.accloss.salesman.domain.usecase.GetSalesmen
-import com.clo.accloss.salesman.presentation.viewmodel.SalesmanViewModel
+import com.clo.accloss.core.modules.contact.presentation.viewmodel.ContactDetailsViewModel
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -28,6 +28,4 @@ val salesmanModule = module {
     singleOf(::GetSalesmen)
 
     singleOf(::GetSalesman)
-
-    factoryOf(::SalesmanViewModel)
 }

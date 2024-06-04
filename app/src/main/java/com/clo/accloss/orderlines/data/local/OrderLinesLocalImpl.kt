@@ -17,15 +17,13 @@ class OrderLinesLocalImpl(
     override suspend fun getOrderLines(
         document: String,
         company: String
-    ): Flow<List<OrderLinesEntity>> = scope.async {
+    ): List<OrderLinesEntity> = scope.async {
         dbHelper.withDatabase { db ->
             db.lineasPedidoQueries.getLineasPedido(
                 documento = document,
                 empresa = company
-            )
-                .asFlow()
-                .mapToList(scope.coroutineContext)
-        }.flowOn(Dispatchers.IO)
+            ).executeAsList()
+        }
     }.await()
 
     override suspend fun addOrderLines(orderLines: List<OrderLinesEntity>) = scope.async {
