@@ -1,11 +1,13 @@
 package com.clo.accloss.order.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
@@ -14,19 +16,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.R
+import com.clo.accloss.core.common.roundFormat
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomClickableCard
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultBackArrow
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultLayoutComponent
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultTopBar
+import com.clo.accloss.order.domain.model.Order
 import com.clo.accloss.order.presentation.model.OrderDetails
 import com.clo.accloss.order.presentation.viewmodel.OrderDetailsViewModel
 import com.clo.accloss.orderlines.domain.model.OrderLines
@@ -106,20 +113,13 @@ data class OrderDetailsScreen(
             }
 
             item {
-                CustomClickableCard(
-                    modifier = Modifier.padding(horizontal = 10.dp)
-                ) {
-                    Column(
+                orderDetails.order?.let { order ->
+                    OrderDetailsComponent(
                         modifier = Modifier
                             .fillParentMaxWidth()
-                            .padding(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Row {
-                            CustomText(text = orderDetails.order?.ktiTdoc ?: "")
-                        }
-                    }
+                            .padding(horizontal = 10.dp),
+                        order = order
+                    )
                 }
             }
 
@@ -135,7 +135,45 @@ data class OrderDetailsScreen(
                 orderDetails.orderLines,
                 key = { item -> item.kmvCodart }
             ) { orderLine ->
-                OrderLinesComponent(orderLine = orderLine)
+                OrderLinesComponent(
+                    modifier = Modifier
+                        .fillParentMaxWidth()
+                        .padding(horizontal = 10.dp),
+                    orderLine = orderLine
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun OrderDetailsComponent(
+        modifier: Modifier = Modifier,
+        order: Order
+    ) {
+        CustomClickableCard(
+            modifier = modifier
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                }
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                }
             }
         }
     }
@@ -145,8 +183,48 @@ data class OrderDetailsScreen(
         modifier: Modifier = Modifier,
         orderLine: OrderLines
     ) {
-        CustomClickableCard {
+        CustomClickableCard(
+            modifier = modifier,
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                BoxWithConstraints(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    CustomText(
+                        modifier = Modifier
+                            .requiredWidth(width = maxWidth / 1.2f)
+                            .align(Alignment.TopStart),
+                        text = orderLine.kmvNombre,
+                        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    CustomText(
+                        modifier = Modifier.align(Alignment.TopEnd),
+                        text = orderLine.kmvCodart,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
+                }
 
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CustomText(
+                        text = "${stringResource(R.string.amount)}: ${orderLine.kmvArtprec.roundFormat()} $"
+                    )
+                    CustomText(
+                        text = "${stringResource(R.string.quantity)}: ${orderLine.kmvCant.roundFormat(0)}"
+                    )
+                }
+            }
         }
     }
 }

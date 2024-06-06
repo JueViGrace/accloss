@@ -4,11 +4,14 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +28,7 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.R
+import com.clo.accloss.core.common.roundFormat
 import com.clo.accloss.core.common.toDate
 import com.clo.accloss.core.common.toStringFormat
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomClickableCard
@@ -169,6 +173,44 @@ data class OrdersScreen(
         order: Order,
         onClick: (String) -> Unit
     ) {
+        val status = when (order.kePedstatus) {
+            "1" -> {
+                R.string.waiting_for_approval
+            }
+
+            "12" -> {
+                R.string.printed
+            }
+
+            "17" -> {
+                R.string.in_packaging_process
+            }
+
+            "20" -> {
+                R.string.in_labeling_process
+            }
+
+            "25" -> {
+                R.string.ready_to_invoice
+            }
+
+            "80" -> {
+                R.string.invoiced
+            }
+
+            "82" -> {
+                R.string.waiting_for_dispatch_order
+            }
+
+            "85" -> {
+                R.string.delivered_to_the_customer
+            }
+
+            else -> {
+                R.string.not_specified
+            }
+        }
+
         CustomClickableCard(
             modifier = modifier,
             onClick = { onClick(order.ktiNdoc) },
@@ -203,17 +245,21 @@ data class OrdersScreen(
                     )
                 }
 
-                Row(
+                BoxWithConstraints(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     CustomText(
-                        text = "${stringResource(R.string.customer)}: ${order.ktiCodcli}",
+                        modifier = Modifier
+                            .requiredWidth(width = maxWidth / 1.5f)
+                            .align(Alignment.CenterStart),
+                        text = "${stringResource(R.string.status)}: ${stringResource(id = status)}",
                     )
 
                     CustomText(
-                        text = "${stringResource(R.string.issue_date)}: ${order.ktiFchdoc.toDate().toStringFormat(1)}",
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        text = "${stringResource(R.string.amount)}: ${
+                            order.ktiTotneto.roundFormat()
+                        } $",
                         fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                         fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)

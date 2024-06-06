@@ -116,4 +116,15 @@
     <string name="issue_date">Fecha de emisión</string>
     <string name="order_details">Detalles del pedido</string>
     <string name="order_products">Productos del pedido</string>
+    <string name="amount">Monto</string>
+    <string name="quantity">Cantidad</string>
+    <string name="status">Estado</string>
+    <string name="waiting_for_approval">Esperando por aprovación</string>
+    <string name="printed">Ya impreso</string>
+    <string name="in_packaging_process">En proceso de embalaje</string>
+    <string name="in_labeling_process">En proceso de etiquetado</string>
+    <string name="ready_to_invoice">Listo para facturar</string>
+    <string name="invoiced">Facturado</string>
+    <string name="waiting_for_dispatch_order">Esperando orden de despacho</string>
+    <string name="delivered_to_the_customer">Entregado al cliente</string>
 </resources>

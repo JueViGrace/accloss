@@ -116,4 +116,15 @@
     <string name="issue_date">Issue date</string>
     <string name="order_details">Order details</string>
     <string name="order_products">Order products</string>
+    <string name="amount">Amount</string>
+    <string name="quantity">Quantity</string>
+    <string name="status">Status</string>
+    <string name="waiting_for_approval">Waiting for approval</string>
+    <string name="printed">Printed</string>
+    <string name="in_packaging_process">In packaging process</string>
+    <string name="in_labeling_process">In labeling process</string>
+    <string name="ready_to_invoice">Ready to invoice</string>
+    <string name="invoiced">Invoiced</string>
+    <string name="waiting_for_dispatch_order">Waiting for dispatch order</string>
+    <string name="delivered_to_the_customer">Delivered to the customer</string>
 </resources>

@@ -8,8 +8,10 @@ class Koin {
     fun init(
         additionalModules: List<Module> = emptyList(),
         appDeclaration: KoinAppDeclaration = {}
-    ) = startKoin {
-        appDeclaration()
-        modules(additionalModules + databaseModule + dispatchersModule + remoteModule + sharedModule)
+    ) {
+        startKoin {
+            appDeclaration()
+            modules(additionalModules + databaseModule + dispatchersModule + remoteModule + sharedModule)
+        }
     }
 }

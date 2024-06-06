@@ -12,10 +12,12 @@ import org.koin.android.ext.koin.androidLogger
 
 class ACCLOSSApp : Application() {
 
+    private val koin = Koin()
+
     override fun onCreate() {
         super.onCreate()
 
-        Koin().init(
+        koin.init(
             additionalModules = listOf(
                 homeModule,
                 dashboardModule,
