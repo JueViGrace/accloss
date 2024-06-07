@@ -127,4 +127,10 @@
     <string name="invoiced">Invoiced</string>
     <string name="waiting_for_dispatch_order">Waiting for dispatch order</string>
     <string name="delivered_to_the_customer">Delivered to the customer</string>
+    <string name="price_type">Price type</string>
+    <string name="condition">Condition</string>
+    <string name="net_amount">Net amount</string>
+    <string name="doc_type">Doc type</string>
+    <string name="fac">FAC</string>
+    <string name="n_e">N/E</string>
 </resources>

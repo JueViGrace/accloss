@@ -2,6 +2,7 @@ package com.clo.accloss.core.common
 
 import cafe.adriel.voyager.navigator.tab.Tab
 import com.clo.accloss.BuildConfig
+import com.clo.accloss.R
 import com.clo.accloss.core.modules.dashboard.presentation.components.DashboardMenu
 import com.clo.accloss.core.modules.home.presentation.navigation.routes.HomeTabs
 import com.clo.accloss.core.modules.profile.presentation.components.ProfileMenu
@@ -55,4 +56,42 @@ object Constants {
         ProfileMenu.Synchronize,
         ProfileMenu.LogOut
     )
+
+    fun calculateOrderStatus(status: String) = when (status) {
+        "1" -> {
+            R.string.waiting_for_approval
+        }
+
+        "12" -> {
+            R.string.printed
+        }
+
+        "17" -> {
+            R.string.in_packaging_process
+        }
+
+        "20" -> {
+            R.string.in_labeling_process
+        }
+
+        "25" -> {
+            R.string.ready_to_invoice
+        }
+
+        "80" -> {
+            R.string.invoiced
+        }
+
+        "82" -> {
+            R.string.waiting_for_dispatch_order
+        }
+
+        "85" -> {
+            R.string.delivered_to_the_customer
+        }
+
+        else -> {
+            R.string.not_specified
+        }
+    }
 }

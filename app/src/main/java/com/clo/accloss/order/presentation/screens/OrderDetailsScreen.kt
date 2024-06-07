@@ -20,19 +20,21 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.R
+import com.clo.accloss.core.common.Constants.calculateOrderStatus
 import com.clo.accloss.core.common.roundFormat
+import com.clo.accloss.core.presentation.components.DisplayComponents.CardLabel
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomClickableCard
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultBackArrow
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultLayoutComponent
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultTopBar
+import com.clo.accloss.core.presentation.components.ListComponents.ListFooter
 import com.clo.accloss.order.domain.model.Order
 import com.clo.accloss.order.presentation.model.OrderDetails
 import com.clo.accloss.order.presentation.viewmodel.OrderDetailsViewModel
@@ -124,6 +126,10 @@ data class OrderDetailsScreen(
             }
 
             item {
+                HorizontalDivider()
+            }
+
+            item {
                 CustomText(
                     text = stringResource(R.string.order_products),
                     fontSize = MaterialTheme.typography.titleLarge.fontSize,
@@ -142,6 +148,10 @@ data class OrderDetailsScreen(
                     orderLine = orderLine
                 )
             }
+
+            item {
+                ListFooter()
+            }
         }
     }
 
@@ -150,29 +160,64 @@ data class OrderDetailsScreen(
         modifier: Modifier = Modifier,
         order: Order
     ) {
-        CustomClickableCard(
-            modifier = modifier
+        val status = calculateOrderStatus(order.kePedstatus)
+
+        val condicion = when (order.ktiCondicion) {
+            "1" -> R.string.fac
+            "2" -> R.string.n_e
+            else -> R.string.not_specified
+        }
+
+        val column1 = mapOf(
+            Pair(R.string.customer, order.ktiNombrecli),
+            Pair(R.string.id_or_rif, order.ktiCodcli),
+            Pair(R.string.id_or_rif, order.ktiCodcli),
+            Pair(R.string.price_type, order.ktiTipprec.roundFormat(0)),
+            Pair(R.string.condition, stringResource(id = condicion)),
+        )
+
+        val column2 = mapOf(
+            Pair(R.string.net_amount, "${order.ktiTotneto.roundFormat()} $"),
+            Pair(R.string.issue_date, order.ktiFchdoc),
+            Pair(R.string.status, stringResource(status)),
+            Pair(R.string.doc_type, order.ktiTdoc),
+        )
+
+        Row(
+            modifier = modifier,
+            horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.Top
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
+                modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-
+                column1.forEach { (title, value) ->
+                    CardLabel(
+                        modifier = Modifier.fillMaxWidth(),
+                        title = title,
+                        value = value,
+                        maxLines = 10,
+                        valueFontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                        valueFontWeight = MaterialTheme.typography.bodyMedium.fontWeight
+                    )
                 }
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.Top),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                column2.forEach { (title, value) ->
+                    CardLabel(
+                        modifier = Modifier.fillMaxWidth(),
+                        title = title,
+                        value = value,
+                        maxLines = 10,
+                        valueFontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                        valueFontWeight = MaterialTheme.typography.bodyMedium.fontWeight
+                    )
                 }
             }
         }

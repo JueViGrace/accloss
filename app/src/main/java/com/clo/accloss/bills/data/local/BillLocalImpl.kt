@@ -26,6 +26,21 @@ class BillLocalImpl(
         }.flowOn(Dispatchers.IO)
     }.await()
 
+    override suspend fun getBillsBySalesman(
+        company: String,
+        salesman: String
+    ): Flow<List<BillEntity>> = scope.async {
+        dbHelper.withDatabase { db ->
+            db.facturaQueries
+                .getBillsBySalesman(
+                    empresa = company,
+                    vendedor = salesman
+                )
+                .asFlow()
+                .mapToList(scope.coroutineContext)
+        }.flowOn(Dispatchers.IO)
+    }.await()
+
     override suspend fun getBill(
         document: String,
         company: String

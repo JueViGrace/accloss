@@ -58,7 +58,16 @@ CREATE INDEX bill_salesman ON factura(vendedor);
 getFacturas:
 SELECT *
 FROM factura
-WHERE empresa == :empresa;
+WHERE factura.empresa == :empresa
+ORDER BY factura.vendedor, factura.documento;
+
+getBillsBySalesman:
+SELECT *
+FROM factura
+WHERE
+factura.empresa == :empresa AND
+factura.vendedor == :vendedor
+ORDER BY factura.vendedor, factura.documento;
 
 getFactura:
 SELECT *

@@ -8,6 +8,9 @@ import com.clo.accloss.bills.data.repository.BillRepositoryImpl
 import com.clo.accloss.bills.data.source.BillDataSource
 import com.clo.accloss.bills.data.source.BillDataSourceImpl
 import com.clo.accloss.bills.domain.repository.BillRepository
+import com.clo.accloss.bills.domain.usecase.GetBills
+import com.clo.accloss.bills.presentation.viewmodel.BillsViewModel
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -20,4 +23,8 @@ val billModule = module {
     singleOf(::BillDataSourceImpl) bind BillDataSource::class
 
     singleOf(::BillRepositoryImpl) bind BillRepository::class
+
+    singleOf(::GetBills)
+
+    factoryOf(::BillsViewModel)
 }

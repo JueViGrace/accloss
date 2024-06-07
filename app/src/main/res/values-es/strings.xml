@@ -127,4 +127,10 @@
     <string name="invoiced">Facturado</string>
     <string name="waiting_for_dispatch_order">Esperando orden de despacho</string>
     <string name="delivered_to_the_customer">Entregado al cliente</string>
+    <string name="price_type">Tipo de precio</string>
+    <string name="condition">Condición</string>
+    <string name="net_amount">Monto neto</string>
+    <string name="doc_type">Tipo doc</string>
+    <string name="fac">FAC</string>
+    <string name="n_e">N/E</string>
 </resources>

@@ -5,25 +5,26 @@ import com.clo.accloss.bills.domain.mappers.toDatabase
 import com.clo.accloss.bills.domain.mappers.toDomain
 import com.clo.accloss.bills.domain.model.Bill
 import com.clo.accloss.bills.domain.repository.BillRepository
-import com.clo.accloss.core.common.Constants
+import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.data.network.ApiOperation
 import com.clo.accloss.core.domain.state.RequestState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class BillRepositoryImpl(
-    override val billDataSource: BillDataSource
+    override val billDataSource: BillDataSource,
+    override val coroutineContext: CoroutineContext
 ) : BillRepository {
     override suspend fun getRemoteBills(
         baseUrl: String,
         user: String,
         company: String
     ): RequestState<List<Bill>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(coroutineContext) {
             when (
                 val apiOperation = billDataSource.billRemote
                     .getSafeBills(
@@ -59,7 +60,11 @@ class BillRepositoryImpl(
 
         billDataSource.billLocal.getBills(company)
             .catch { e ->
-                emit(RequestState.Error(message = e.message ?: Constants.DB_ERROR_MESSAGE))
+                emit(
+                    RequestState.Error(
+                        message = e.message ?: DB_ERROR_MESSAGE
+                    )
+                )
             }
             .collect { cachedList ->
                 emit(
@@ -70,14 +75,39 @@ class BillRepositoryImpl(
                     )
                 )
             }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(coroutineContext)
 
-    override suspend fun addBills(bills: List<Bill>) =
-        withContext(Dispatchers.IO) {
-            billDataSource.billLocal.addBills(
-                bills = bills.map { bill ->
-                    bill.toDatabase()
-                }
+    override fun getBillsBySalesman(
+        company: String,
+        salesman: String
+    ): Flow<RequestState<List<Bill>>> = flow {
+        emit(RequestState.Loading)
+
+        billDataSource.billLocal.getBillsBySalesman(
+            company = company,
+            salesman = salesman
+        ).catch { e ->
+            emit(
+                RequestState.Error(
+                    message = e.message ?: DB_ERROR_MESSAGE
+                )
+            )
+        }.collect { cachedList ->
+            emit(
+                RequestState.Success(
+                    data = cachedList.map { billEntity ->
+                        billEntity.toDomain()
+                    }
+                )
             )
         }
+    }.flowOn(coroutineContext)
+
+    override suspend fun addBills(bills: List<Bill>) {
+        billDataSource.billLocal.addBills(
+            bills = bills.map { bill ->
+                bill.toDatabase()
+            }
+        )
+    }
 }
