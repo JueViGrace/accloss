@@ -29,11 +29,10 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import com.clo.accloss.R
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
 import com.clo.accloss.core.presentation.components.ErrorComponents.ErrorScreen
 import com.clo.accloss.core.presentation.components.LoadingComponents.LoadingScreen
-import com.clo.accloss.core.presentation.components.TopBarActions
 
 object LayoutComponents {
     @OptIn(ExperimentalMaterial3Api::class)

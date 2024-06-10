@@ -1,7 +1,7 @@
 package com.clo.accloss.session.domain.usecase
 
 import com.clo.accloss.core.common.Constants
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.session.domain.repository.SessionRepository
 import kotlinx.coroutines.Dispatchers

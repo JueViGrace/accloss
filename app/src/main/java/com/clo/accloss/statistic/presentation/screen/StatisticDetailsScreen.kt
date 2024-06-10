@@ -32,6 +32,7 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.R
+import com.clo.accloss.bills.presentation.screens.BillsScreen
 import com.clo.accloss.core.common.roundFormat
 import com.clo.accloss.core.presentation.components.DisplayComponents.CardLabel
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
@@ -42,6 +43,7 @@ import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultTopB
 import com.clo.accloss.core.presentation.components.ListComponents.ListFooter
 import com.clo.accloss.core.presentation.components.TopBarActions
 import com.clo.accloss.customer.presentation.screens.CustomersScreen
+import com.clo.accloss.order.presentation.screens.OrdersScreen
 import com.clo.accloss.statistic.domain.model.Statistic
 import com.clo.accloss.statistic.presentation.model.PersonalStatistics
 import com.clo.accloss.statistic.presentation.viewmodel.StatisticDetailsViewModel
@@ -84,9 +86,21 @@ data class StatisticDetailsScreen(
                                         action is TopBarActions.Customers -> {
                                             navigator.push(CustomersScreen(id))
                                         }
+
+                                        action is TopBarActions.Orders -> {
+                                            navigator.push(OrdersScreen(id))
+                                        }
+
+                                        action is TopBarActions.Bills -> {
+                                            navigator.push(BillsScreen(id))
+                                        }
                                     }
                                 },
-                                items = listOf(TopBarActions.Customers)
+                                items = listOf(
+                                    TopBarActions.Customers,
+                                    TopBarActions.Orders,
+                                    TopBarActions.Bills
+                                )
                             )
                         }
                     } else {
@@ -112,7 +126,7 @@ data class StatisticDetailsScreen(
             Pair(R.string.debts, personalStatistics.deuda),
             Pair(R.string.expired, personalStatistics.vencido),
             Pair(R.string.net_billed_amount, personalStatistics.mtofactneto),
-            Pair(R.string.paid, personalStatistics.mtocob),
+            Pair(R.string.charged, personalStatistics.mtocob),
             Pair(R.string.average_amount_per_document, personalStatistics.prommtopordoc),
             Pair(R.string.total_sold_amount, personalStatistics.totmtodocs)
         )

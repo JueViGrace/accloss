@@ -77,6 +77,17 @@ documento == :documento
 AND
 empresa == :empresa;
 
+getBillWithLines:
+SELECT *
+FROM factura
+LEFT JOIN lineas_factura
+ON lineas_factura.documento = factura.documento AND
+   lineas_factura.empresa = factura.empresa
+WHERE
+    factura.empresa = :empresa AND
+    factura.documento = :documento
+GROUP BY factura.documento, lineas_factura.codigo;
+
 addFactura:
 INSERT OR REPLACE
 INTO factura (

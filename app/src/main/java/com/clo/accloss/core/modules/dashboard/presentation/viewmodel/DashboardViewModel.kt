@@ -4,7 +4,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.common.Constants.SHARING_STARTED
 import com.clo.accloss.core.modules.dashboard.presentation.state.DashboardState
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.rate.domain.usecase.GetRate
 import com.clo.accloss.session.domain.usecase.GetCurrentUser
 import kotlinx.coroutines.flow.MutableStateFlow

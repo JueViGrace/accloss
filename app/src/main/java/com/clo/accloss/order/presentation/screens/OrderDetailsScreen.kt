@@ -10,13 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -26,6 +26,7 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.R
+import com.clo.accloss.core.common.Constants.calculateDocType
 import com.clo.accloss.core.common.Constants.calculateOrderStatus
 import com.clo.accloss.core.common.roundFormat
 import com.clo.accloss.core.presentation.components.DisplayComponents.CardLabel
@@ -162,18 +163,13 @@ data class OrderDetailsScreen(
     ) {
         val status = calculateOrderStatus(order.kePedstatus)
 
-        val condicion = when (order.ktiCondicion) {
-            "1" -> R.string.fac
-            "2" -> R.string.n_e
-            else -> R.string.not_specified
-        }
+        val condition = calculateDocType(order.ktiCondicion)
 
         val column1 = mapOf(
             Pair(R.string.customer, order.ktiNombrecli),
             Pair(R.string.id_or_rif, order.ktiCodcli),
-            Pair(R.string.id_or_rif, order.ktiCodcli),
             Pair(R.string.price_type, order.ktiTipprec.roundFormat(0)),
-            Pair(R.string.condition, stringResource(id = condicion)),
+            Pair(R.string.condition, stringResource(id = condition)),
         )
 
         val column2 = mapOf(
@@ -223,6 +219,8 @@ data class OrderDetailsScreen(
         }
     }
 
+    // TODO: navigate to product details
+
     @Composable
     private fun OrderLinesComponent(
         modifier: Modifier = Modifier,
@@ -230,6 +228,7 @@ data class OrderDetailsScreen(
     ) {
         CustomClickableCard(
             modifier = modifier,
+            colors = CardDefaults.elevatedCardColors()
         ) {
             Column(
                 modifier = Modifier

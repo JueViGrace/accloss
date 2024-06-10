@@ -20,4 +20,13 @@ sealed class TopBarActions(
         title = R.string.customers,
         icon = R.drawable.ic_groups_24px
     )
+    data object Orders : TopBarActions(
+        title = R.string.orders,
+        icon = R.drawable.ic_shopping_bag_24px
+    )
+
+    data object Bills : TopBarActions(
+        title = R.string.bills,
+        icon = R.drawable.ic_receipt_24px
+    )
 }

@@ -2,8 +2,7 @@ package com.clo.accloss.products.domain.usecase
 
 import com.clo.accloss.configuration.domain.repository.ConfigurationRepository
 import com.clo.accloss.core.common.Constants.APPC_UTILIDADES_KEY
-import com.clo.accloss.core.domain.state.RequestState
-import com.clo.accloss.products.domain.model.Product
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.products.domain.repository.ProductRepository
 import com.clo.accloss.products.presentation.model.ProductDetails
 import com.clo.accloss.session.domain.usecase.GetCurrentUser

@@ -3,7 +3,7 @@ package com.clo.accloss.order.presentation.viewmodel
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.common.Constants
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.order.domain.usecase.GetOrders
 import com.clo.accloss.order.presentation.state.OrdersState
 import kotlinx.coroutines.flow.MutableStateFlow

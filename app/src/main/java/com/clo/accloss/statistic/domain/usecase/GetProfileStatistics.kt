@@ -1,6 +1,6 @@
 package com.clo.accloss.statistic.domain.usecase
 
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.core.modules.profile.presentation.model.ProfileStatisticsModel
 import com.clo.accloss.session.domain.usecase.GetCurrentUser
 import com.clo.accloss.statistic.domain.repository.StatisticRepository

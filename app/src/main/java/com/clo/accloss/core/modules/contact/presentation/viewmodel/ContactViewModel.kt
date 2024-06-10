@@ -3,7 +3,7 @@ package com.clo.accloss.core.modules.contact.presentation.viewmodel
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.common.Constants.SHARING_STARTED
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.core.modules.contact.presentation.state.ContactState
 import com.clo.accloss.salesman.domain.usecase.GetSalesmen
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -3,11 +3,13 @@ package com.clo.accloss.bills.data.repository
 import com.clo.accloss.bills.data.source.BillDataSource
 import com.clo.accloss.bills.domain.mappers.toDatabase
 import com.clo.accloss.bills.domain.mappers.toDomain
+import com.clo.accloss.bills.domain.mappers.toUi
 import com.clo.accloss.bills.domain.model.Bill
 import com.clo.accloss.bills.domain.repository.BillRepository
+import com.clo.accloss.bills.presentation.model.BillDetails
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.data.network.ApiOperation
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -98,6 +100,52 @@ class BillRepositoryImpl(
                     data = cachedList.map { billEntity ->
                         billEntity.toDomain()
                     }
+                )
+            )
+        }
+    }.flowOn(coroutineContext)
+
+    override suspend fun getBill(
+        bill: String, company: String
+    ): RequestState<Bill> {
+        return withContext(coroutineContext){
+            val billEntity = billDataSource.billLocal
+                .getBill(
+                    document = bill,
+                    company = company,
+                )
+            if (billEntity != null) {
+                RequestState.Success(
+                    data = billEntity.toDomain()
+                )
+            } else {
+                RequestState.Error(
+                    message = "This Bill doesn't exists"
+                )
+            }
+        }
+    }
+
+    override fun getBillWithLines(
+        bill: String,
+        company: String,
+    ): Flow<RequestState<BillDetails>> = flow {
+        emit(RequestState.Loading)
+
+        billDataSource.billLocal.getBillWithLines(
+            company = company,
+            bill = bill
+        ).catch { e ->
+            emit(
+                RequestState.Error(
+                    message = e.message ?: DB_ERROR_MESSAGE
+                )
+            )
+        }.collect { cachedList ->
+            emit(
+                RequestState.Success(
+                    data = cachedList.toUi()
+
                 )
             )
         }

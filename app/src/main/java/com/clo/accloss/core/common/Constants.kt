@@ -57,6 +57,14 @@ object Constants {
         ProfileMenu.LogOut
     )
 
+    // TODO: TRANSFORM RETURN TO VALUE AND COLOR
+
+    fun calculateDocType(type: String?) = when (type) {
+        "1" -> R.string.fac
+        "2" -> R.string.n_e
+        else -> R.string.not_specified
+    }
+
     fun calculateOrderStatus(status: String) = when (status) {
         "1" -> {
             R.string.waiting_for_approval
@@ -88,6 +96,28 @@ object Constants {
 
         "85" -> {
             R.string.delivered_to_the_customer
+        }
+
+        else -> {
+            R.string.not_specified
+        }
+    }
+
+    fun calculateDocStatus(status: String) = when (status) {
+        "0" -> {
+            R.string.to_be_paid
+        }
+
+        "1" -> {
+            R.string.paid_off
+        }
+
+        "2" -> {
+            R.string.paid
+        }
+
+        "3" -> {
+            R.string.nullified
         }
 
         else -> {

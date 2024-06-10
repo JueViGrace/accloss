@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS imagen (
+    fechamodifi TEXT NOT NULL DEFAULT '',
+    enlace TEXT NOT NULL DEFAULT '',
+    nombre TEXT NOT NULL DEFAULT '',
+    empresa TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY(enlace)
+);
+
+getImages:
+SELECT *
+FROM imagen
+WHERE empresa = :empresa;
+
+addImage:
+INSERT OR REPLACE
+INTO imagen (
+fechamodifi,
+enlace,
+nombre,
+empresa
+)
+VALUES ?;
+
+deleteImages:
+DELETE FROM imagen WHERE empresa = :empresa;

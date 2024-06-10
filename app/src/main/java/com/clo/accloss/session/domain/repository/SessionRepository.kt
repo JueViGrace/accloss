@@ -1,6 +1,6 @@
 package com.clo.accloss.session.domain.repository
 
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 import kotlinx.coroutines.flow.Flow
 

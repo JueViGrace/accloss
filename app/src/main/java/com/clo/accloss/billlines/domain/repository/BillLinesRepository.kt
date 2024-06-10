@@ -2,11 +2,12 @@ package com.clo.accloss.billlines.domain.repository
 
 import com.clo.accloss.billlines.data.source.BillLinesDataSource
 import com.clo.accloss.billlines.domain.model.BillLines
-import com.clo.accloss.core.domain.state.RequestState
-import kotlinx.coroutines.flow.Flow
+import com.clo.accloss.core.state.RequestState
+import kotlin.coroutines.CoroutineContext
 
 interface BillLinesRepository {
     val billLinesDataSource: BillLinesDataSource
+    val coroutineContext: CoroutineContext
 
     suspend fun getRemoteBillLines(
         baseUrl: String,
@@ -14,10 +15,10 @@ interface BillLinesRepository {
         company: String
     ): RequestState<List<BillLines>>
 
-    fun getBillLines(
+    suspend fun getBillLines(
         document: String,
         company: String,
-    ): Flow<RequestState<List<BillLines>>>
+    ): List<BillLines>
 
     suspend fun addBillLines(billLines: List<BillLines>)
 }

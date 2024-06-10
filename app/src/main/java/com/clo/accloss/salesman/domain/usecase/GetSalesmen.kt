@@ -1,6 +1,6 @@
 package com.clo.accloss.salesman.domain.usecase
 
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.salesman.domain.model.Salesman
 import com.clo.accloss.salesman.domain.repository.SalesmanRepository
 import com.clo.accloss.session.domain.usecase.GetCurrentUser

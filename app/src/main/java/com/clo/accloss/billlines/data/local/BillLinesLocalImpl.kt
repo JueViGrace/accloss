@@ -17,15 +17,15 @@ class BillLinesLocalImpl(
     override suspend fun getBillLines(
         document: String,
         company: String
-    ): Flow<List<BillLinesEntity>> = scope.async {
+    ): List<BillLinesEntity> = scope.async {
         dbHelper.withDatabase { db ->
-            db.lineasFacturaQueries.getLineasFactura(
+            db.lineasFacturaQueries
+                .getLineasFactura(
                 documento = document,
                 empresa = company
-            )
-                .asFlow()
-                .mapToList(scope.coroutineContext)
-        }.flowOn(Dispatchers.IO)
+                )
+                .executeAsList()
+        }
     }.await()
 
     override suspend fun addBillLines(billLines: List<BillLinesEntity>) = scope.async {

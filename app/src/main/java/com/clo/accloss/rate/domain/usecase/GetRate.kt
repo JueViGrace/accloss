@@ -1,6 +1,6 @@
 package com.clo.accloss.rate.domain.usecase
 
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.rate.domain.model.Rate
 import com.clo.accloss.rate.domain.repository.RateRepository
 import com.clo.accloss.session.domain.usecase.GetCurrentUser

@@ -3,7 +3,7 @@ package com.clo.accloss.statistic.presentation.viewmodel
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.common.Constants.SHARING_STARTED
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.statistic.domain.usecase.GetSalesmenStatistics
 import com.clo.accloss.statistic.presentation.state.StatisticsState
 import kotlinx.coroutines.flow.MutableStateFlow

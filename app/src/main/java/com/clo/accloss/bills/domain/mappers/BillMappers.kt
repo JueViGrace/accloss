@@ -1,7 +1,10 @@
 package com.clo.accloss.bills.domain.mappers
 
+import com.clo.accloss.GetBillWithLines
+import com.clo.accloss.billlines.domain.model.BillLines
 import com.clo.accloss.bills.data.remote.model.BillItem
 import com.clo.accloss.bills.domain.model.Bill
+import com.clo.accloss.bills.presentation.model.BillDetails
 import com.clo.accloss.Factura as BillEntity
 
 fun BillEntity.toDomain(): Bill = Bill(
@@ -155,3 +158,98 @@ fun BillItem.toDomain(): Bill = Bill(
     vence = vence ?: "",
     vendedor = vendedor ?: ""
 )
+
+fun List<GetBillWithLines>.toUi(): BillDetails {
+    val group = this.groupBy { bill ->
+        Bill(
+            aceptadev = bill.aceptadev,
+            agencia = bill.agencia,
+            bsflete = bill.bsflete,
+            bsiva = bill.bsiva,
+            bsmtofte = bill.bsmtofte,
+            bsmtoiva = bill.bsmtoiva,
+            bsretencioniva = bill.bsretencioniva,
+            cbsret = bill.cbsret,
+            cbsretflete = bill.cbsretflete,
+            cbsretiva = bill.cbsretiva,
+            cbsrparme = bill.cbsrparme,
+            cdret = bill.cdret,
+            cdretflete = bill.cdretflete,
+            cdretiva = bill.cdretiva,
+            cdrparme = bill.cdrparme,
+            codcliente = bill.codcliente,
+            codcoord = bill.codcoord,
+            contribesp = bill.contribesp,
+            dFlete = bill.dFlete,
+            diascred = bill.diascred,
+            documento = bill.documento,
+            dretencion = bill.dretencion,
+            dretencioniva = bill.dretencioniva,
+            dtotalfinal = bill.dtotalfinal,
+            dtotdescuen = bill.dtotdescuen,
+            dtotdev = bill.dtotdev,
+            dtotimpuest = bill.dtotimpuest,
+            dtotneto = bill.dtotneto,
+            dtotpagos = bill.dtotpagos,
+            dvndmtototal = bill.dvndmtototal,
+            emision = bill.emision,
+            estatusdoc = bill.estatusdoc,
+            fchvencedcto = bill.fchvencedcto,
+            fechamodifi = bill.fechamodifi,
+            ktiNegesp = bill.ktiNegesp,
+            mtodcto = bill.mtodcto,
+            nombrecli = bill.nombrecli,
+            recepcion = bill.recepcion,
+            retmunMto = bill.retmunMto,
+            rutaParme = bill.rutaParme,
+            tasadoc = bill.tasadoc,
+            tienedcto = bill.tienedcto,
+            tipodoc = bill.tipodoc,
+            tipodocv = bill.tipodocv,
+            tipoprecio = bill.tipoprecio,
+            vence = bill.vence,
+            vendedor = bill.vendedor,
+            empresa = bill.empresa,
+        )
+    }
+
+    var billDetails = BillDetails()
+
+    group.forEach { (key, value) ->
+        billDetails = billDetails.copy(
+            bill = key,
+            billLines = value.map { getBillWithLines ->
+                BillLines(
+                    agencia = getBillWithLines.agencia,
+                    cantidad = getBillWithLines.cantidad ?: 0.0,
+                    cntdevuelt = getBillWithLines.cntdevuelt ?: 0.0,
+                    codcoord = getBillWithLines.codcoord,
+                    codhijo = getBillWithLines.codhijo ?: "",
+                    codigo = getBillWithLines.codigo ?: "",
+                    dmontoneto = getBillWithLines.dmontoneto ?: 0.0,
+                    dmontototal = getBillWithLines.dmontototal ?: 0.0,
+                    documento = getBillWithLines.documento,
+                    dpreciofin = getBillWithLines.dpreciofin ?: 0.0,
+                    dpreciounit = getBillWithLines.dpreciounit ?: 0.0,
+                    dvndmtototal = getBillWithLines.dvndmtototal,
+                    fechadoc = getBillWithLines.fechadoc ?: "",
+                    fechamodifi = getBillWithLines.fechamodifi,
+                    grupo = getBillWithLines.grupo ?: "",
+                    nombre = getBillWithLines.nombre ?: "",
+                    origen = getBillWithLines.origen ?: 0.0,
+                    pid = getBillWithLines.pid ?: "",
+                    subgrupo = getBillWithLines.subgrupo ?: "",
+                    timpueprc = getBillWithLines.timpueprc ?: 0.0,
+                    tipodoc = getBillWithLines.tipodoc,
+                    tipodocv = getBillWithLines.tipodocv,
+                    unidevuelt = getBillWithLines.unidevuelt ?: 0.0,
+                    vendedor = getBillWithLines.vendedor,
+                    vndcntdevuelt = getBillWithLines.vndcntdevuelt ?: 0.0,
+                    empresa = getBillWithLines.empresa,
+                )
+            }
+        )
+    }
+
+    return billDetails
+}

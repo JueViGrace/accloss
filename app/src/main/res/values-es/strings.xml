@@ -34,7 +34,7 @@
     <string name="management_finances">Finanzas gerencia</string>
     <string name="debts">Deudas</string>
     <string name="expired">Vencido</string>
-    <string name="paid">Cobrado</string>
+    <string name="paid">Pagado</string>
     <string name="goal">Meta</string>
     <string name="goal_percentage">Porcentaje de meta</string>
     <string name="synchronize">Sincronizar</string>
@@ -133,4 +133,17 @@
     <string name="doc_type">Tipo doc</string>
     <string name="fac">FAC</string>
     <string name="n_e">N/E</string>
+    <string name="paid_off">Abonado</string>
+    <string name="to_be_paid">Por pagar</string>
+    <string name="nullified">Anulado</string>
+    <string name="charged">Cobrado</string>
+    <string name="debt">Deuda</string>
+    <string name="expires">Vence</string>
+    <string name="in_string">en</string>
+    <string name="expires_today">Vence hoy</string>
+    <string name="bill_products">Productos de la factura</string>
+    <string name="bill_details">Detalles de la factura</string>
+    <string name="total_amount">Monto total</string>
+    <string name="date_of_receipt">Fecha de recepción</string>
+    <string name="expiration_date">Fecha de vencimiento</string>
 </resources>

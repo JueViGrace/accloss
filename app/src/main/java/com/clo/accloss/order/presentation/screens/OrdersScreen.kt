@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,8 +29,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.R
 import com.clo.accloss.core.common.Constants.calculateOrderStatus
 import com.clo.accloss.core.common.roundFormat
-import com.clo.accloss.core.common.toDate
-import com.clo.accloss.core.common.toStringFormat
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomClickableCard
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
 import com.clo.accloss.core.presentation.components.ErrorComponents.ErrorScreen
@@ -195,7 +192,7 @@ data class OrdersScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     CustomText(
-                        text = "Doc: ${order.ktiNdoc}",
+                        text = order.ktiNdoc,
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         fontWeight = MaterialTheme.typography.titleMedium.fontWeight
                     )
@@ -217,7 +214,7 @@ data class OrdersScreen(
                         modifier = Modifier
                             .requiredWidth(width = maxWidth / 1.5f)
                             .align(Alignment.CenterStart),
-                        text = "${stringResource(R.string.status)}: ${stringResource(id = status)}",
+                        text = stringResource(id = status),
                     )
 
                     CustomText(

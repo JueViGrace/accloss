@@ -5,7 +5,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.bills.domain.usecase.GetBills
 import com.clo.accloss.bills.presentation.state.BillsState
 import com.clo.accloss.core.common.Constants.SHARING_STARTED
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn

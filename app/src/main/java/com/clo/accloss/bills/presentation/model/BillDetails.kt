@@ -4,6 +4,6 @@ import com.clo.accloss.billlines.domain.model.BillLines
 import com.clo.accloss.bills.domain.model.Bill
 
 data class BillDetails(
-    val bill: Bill,
-    val billLines: List<BillLines>
+    val bill: Bill? = null,
+    val billLines: List<BillLines> = emptyList()
 )

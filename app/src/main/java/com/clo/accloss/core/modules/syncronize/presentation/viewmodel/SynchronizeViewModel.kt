@@ -2,7 +2,7 @@ package com.clo.accloss.core.modules.syncronize.presentation.viewmodel
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.clo.accloss.core.domain.usecase.GetSynchronization
+import com.clo.accloss.core.modules.syncronize.domain.usecase.GetSynchronization
 import com.clo.accloss.core.modules.syncronize.presentation.state.SynchronizeState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

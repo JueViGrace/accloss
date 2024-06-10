@@ -4,7 +4,7 @@ import android.util.Log
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.core.common.Constants.SHARING_STARTED
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.products.domain.usecase.GetProducts
 import com.clo.accloss.products.presentation.state.ProductState
 import kotlinx.coroutines.Dispatchers

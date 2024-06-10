@@ -5,6 +5,7 @@ import com.clo.accloss.core.di.Koin
 import com.clo.accloss.core.modules.contact.di.contactsModule
 import com.clo.accloss.core.modules.dashboard.di.dashboardModule
 import com.clo.accloss.core.modules.home.di.homeModule
+import com.clo.accloss.core.modules.offers.di.offersModule
 import com.clo.accloss.core.modules.profile.di.profileModule
 import com.clo.accloss.core.modules.syncronize.di.synchronizeModule
 import org.koin.android.ext.koin.androidContext
@@ -23,7 +24,8 @@ class ACCLOSSApp : Application() {
                 dashboardModule,
                 profileModule,
                 contactsModule,
-                synchronizeModule
+                synchronizeModule,
+                offersModule
             )
         ) {
             androidContext(this@ACCLOSSApp)

@@ -4,7 +4,7 @@ import com.clo.accloss.bills.domain.model.Bill
 import com.clo.accloss.bills.domain.repository.BillRepository
 import com.clo.accloss.core.common.Constants.UNEXPECTED_ERROR
 import com.clo.accloss.core.common.log
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.session.domain.usecase.GetCurrentUser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

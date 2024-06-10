@@ -3,7 +3,7 @@ package com.clo.accloss.statistic.data.repository
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.log
 import com.clo.accloss.core.data.network.ApiOperation
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.core.modules.profile.presentation.model.ProfileStatisticsModel
 import com.clo.accloss.statistic.data.source.StatisticDataSource
 import com.clo.accloss.statistic.domain.mappers.toDatabase

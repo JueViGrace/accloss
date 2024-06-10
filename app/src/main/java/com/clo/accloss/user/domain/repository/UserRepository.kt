@@ -1,6 +1,6 @@
 package com.clo.accloss.user.domain.repository
 
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.core.modules.syncronize.presentation.model.Estado
 import com.clo.accloss.core.modules.syncronize.presentation.model.Synchronization
 import com.clo.accloss.login.domain.model.Login

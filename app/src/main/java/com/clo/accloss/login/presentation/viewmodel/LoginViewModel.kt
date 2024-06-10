@@ -9,7 +9,7 @@ import com.clo.accloss.R
 import com.clo.accloss.company.domain.repository.CompanyRepository
 import com.clo.accloss.company.domain.rules.CompanyValidator
 import com.clo.accloss.core.common.toStringFormat
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.login.domain.model.Login
 import com.clo.accloss.login.domain.rules.LoginValidator
 import com.clo.accloss.login.presentation.events.LoginEvents

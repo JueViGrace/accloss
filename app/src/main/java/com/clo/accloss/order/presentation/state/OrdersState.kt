@@ -1,6 +1,6 @@
 package com.clo.accloss.order.presentation.state
 
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.order.domain.model.Order
 
 data class OrdersState(

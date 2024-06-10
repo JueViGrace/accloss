@@ -5,26 +5,21 @@ import com.clo.accloss.billlines.domain.mappers.toDatabase
 import com.clo.accloss.billlines.domain.mappers.toDomain
 import com.clo.accloss.billlines.domain.model.BillLines
 import com.clo.accloss.billlines.domain.repository.BillLinesRepository
-import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
-import com.clo.accloss.core.common.log
 import com.clo.accloss.core.data.network.ApiOperation
-import com.clo.accloss.core.domain.state.RequestState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import com.clo.accloss.core.state.RequestState
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class BillLinesRepositoryImpl(
-    override val billLinesDataSource: BillLinesDataSource
+    override val billLinesDataSource: BillLinesDataSource,
+    override val coroutineContext: CoroutineContext
 ) : BillLinesRepository {
     override suspend fun getRemoteBillLines(
         baseUrl: String,
         document: String,
         company: String
     ): RequestState<List<BillLines>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(coroutineContext) {
             when (
                 val apiOperation = billLinesDataSource.billLinesRemote
                     .getSafeBillLines(
@@ -53,34 +48,29 @@ class BillLinesRepositoryImpl(
         }
     }
 
-    override fun getBillLines(
+    override suspend fun getBillLines(
         document: String,
         company: String,
-    ): Flow<RequestState<List<BillLines>>> = flow {
-        emit(RequestState.Loading)
-        billLinesDataSource.billLinesLocal.getBillLines(
-            document = document,
-            company = company
-        ).catch { e ->
-            emit(RequestState.Error(message = DB_ERROR_MESSAGE))
-            e.log("BILL LINES REPOSITORY: getBillLines")
-        }.collect { cachedList ->
-            emit(
-                RequestState.Success(
-                    data = cachedList.map { billLinesEntity ->
-                        billLinesEntity.toDomain()
-                    }
-                )
-            )
+    ): List<BillLines> {
+        return withContext(coroutineContext) {
+            billLinesDataSource
+                .billLinesLocal
+                .getBillLines(
+                    document = document,
+                    company = company
+                ).map { billLinesEntity ->
+                    billLinesEntity.toDomain()
+                }
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
-    override suspend fun addBillLines(billLines: List<BillLines>) =
-        withContext(Dispatchers.IO) {
+    override suspend fun addBillLines(billLines: List<BillLines>) {
+        withContext(coroutineContext) {
             billLinesDataSource.billLinesLocal.addBillLines(
                 billLines = billLines.map { line ->
                     line.toDatabase()
                 }
             )
         }
+    }
 }

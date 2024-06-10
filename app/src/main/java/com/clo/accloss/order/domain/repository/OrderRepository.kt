@@ -1,6 +1,6 @@
 package com.clo.accloss.order.domain.repository
 
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.order.data.source.OrderDataSource
 import com.clo.accloss.order.domain.model.Order
 import com.clo.accloss.order.presentation.model.OrderDetails

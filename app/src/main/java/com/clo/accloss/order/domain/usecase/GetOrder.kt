@@ -2,7 +2,7 @@ package com.clo.accloss.order.domain.usecase
 
 import com.clo.accloss.core.common.Constants
 import com.clo.accloss.core.common.log
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.order.domain.repository.OrderRepository
 import com.clo.accloss.order.presentation.model.OrderDetails
 import com.clo.accloss.orderlines.domain.repository.OrderLinesRepository

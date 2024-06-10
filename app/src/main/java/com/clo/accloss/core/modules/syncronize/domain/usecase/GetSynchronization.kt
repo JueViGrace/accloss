@@ -1,12 +1,12 @@
-package com.clo.accloss.core.domain.usecase
+package com.clo.accloss.core.modules.syncronize.domain.usecase
 
 import com.clo.accloss.bills.domain.repository.BillRepository
 import com.clo.accloss.configuration.domain.repository.ConfigurationRepository
 import com.clo.accloss.core.common.Constants.APP_VERSION
 import com.clo.accloss.core.common.toStringFormat
-import com.clo.accloss.core.domain.state.RequestState
 import com.clo.accloss.core.modules.syncronize.presentation.model.Synchronization
 import com.clo.accloss.core.modules.syncronize.presentation.model.Synchronize
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.customer.domain.repository.CustomerRepository
 import com.clo.accloss.management.domain.repository.ManagementRepository
 import com.clo.accloss.order.domain.repository.OrderRepository
@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.util.Date
 
+//TODO: DELETE ALL AND INSERT
 class GetSynchronization(
     private val getCurrentSession: GetCurrentSession,
     private val sessionRepository: SessionRepository,

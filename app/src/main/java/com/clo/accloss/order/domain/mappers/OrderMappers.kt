@@ -88,7 +88,7 @@ fun List<GetOrderWithLines>.toUi(): OrderDetails {
     var orderDetails = OrderDetails()
 
     group.forEach { (key, value) ->
-        orderDetails = OrderDetails(
+        orderDetails = orderDetails.copy(
             order = key,
             orderLines = value.map { getOrderWithLines ->
                 OrderLines(

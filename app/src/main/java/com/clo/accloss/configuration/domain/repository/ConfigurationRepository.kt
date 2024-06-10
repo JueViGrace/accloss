@@ -2,7 +2,7 @@ package com.clo.accloss.configuration.domain.repository
 
 import com.clo.accloss.configuration.data.source.ConfigurationDataSource
 import com.clo.accloss.configuration.domain.model.Configuration
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 
 interface ConfigurationRepository {
     val configurationDataSource: ConfigurationDataSource

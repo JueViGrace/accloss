@@ -1,4 +1,4 @@
-package com.clo.accloss.core.domain.state
+package com.clo.accloss.core.state
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope

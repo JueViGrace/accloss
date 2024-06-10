@@ -50,11 +50,13 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.clo.accloss.R
+import com.clo.accloss.bills.presentation.screens.BillsScreen
 import com.clo.accloss.core.common.Constants.dashboardOptionsMenu
 import com.clo.accloss.core.common.Constants.dashboardStatisticsMenu
 import com.clo.accloss.core.common.roundFormat
 import com.clo.accloss.core.modules.dashboard.presentation.components.DashboardMenu
 import com.clo.accloss.core.modules.dashboard.presentation.viewmodel.DashboardViewModel
+import com.clo.accloss.core.modules.offers.presentation.screens.OffersScreen
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomClickableCard
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
 import com.clo.accloss.core.presentation.components.ErrorComponents.ErrorComponent
@@ -353,16 +355,16 @@ class DashboardScreen : Screen {
                 { navigator.parent?.parent?.push(CustomersScreen()) }
             }
             is DashboardMenu.Offers -> {
-                { }
+                { navigator.parent?.parent?.push(OffersScreen) }
             }
-            DashboardMenu.Catalogue -> {
+            is DashboardMenu.Catalogue -> {
                 { navigator.parent?.parent?.push(ProductsScreen) }
             }
             is DashboardMenu.Orders -> {
                 { navigator.parent?.parent?.push(OrdersScreen()) }
             }
             is DashboardMenu.Bills -> {
-                { }
+                { navigator.parent?.parent?.push(BillsScreen()) }
             }
         }
     }

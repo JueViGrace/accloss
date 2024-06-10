@@ -2,7 +2,7 @@ package com.clo.accloss.core.modules.syncronize.presentation.model
 
 import com.clo.accloss.bills.domain.model.Bill
 import com.clo.accloss.configuration.domain.model.Configuration
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.customer.domain.model.Customer
 import com.clo.accloss.management.domain.model.Management
 import com.clo.accloss.order.domain.model.Order

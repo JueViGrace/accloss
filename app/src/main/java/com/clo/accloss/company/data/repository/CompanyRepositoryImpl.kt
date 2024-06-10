@@ -7,7 +7,7 @@ import com.clo.accloss.company.domain.model.Company
 import com.clo.accloss.company.domain.repository.CompanyRepository
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.data.network.ApiOperation
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

@@ -38,6 +38,7 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.R
+import com.clo.accloss.bills.presentation.screens.BillsScreen
 import com.clo.accloss.core.modules.contact.presentation.viewmodel.ContactDetailsViewModel
 import com.clo.accloss.core.presentation.components.DisplayComponents.CardLabel
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomClickableCard
@@ -49,6 +50,7 @@ import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultTopB
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultTopBarActions
 import com.clo.accloss.core.presentation.components.TopBarActions
 import com.clo.accloss.customer.presentation.screens.CustomersScreen
+import com.clo.accloss.order.presentation.screens.OrdersScreen
 import com.clo.accloss.salesman.domain.model.Salesman
 import com.clo.accloss.statistic.presentation.screen.StatisticDetailsScreen
 import org.koin.core.parameter.parametersOf
@@ -84,10 +86,23 @@ data class ContactDetailsScreen(
                                         navigator.push(CustomersScreen(id))
                                     }
 
+                                    is TopBarActions.Orders -> {
+                                        navigator.push(OrdersScreen(id))
+                                    }
+
+                                    is TopBarActions.Bills -> {
+                                        navigator.push(BillsScreen(id))
+                                    }
+
                                     else -> {}
                                 }
                             },
-                            items = listOf(TopBarActions.Statistics, TopBarActions.Customers)
+                            items = listOf(
+                                TopBarActions.Statistics,
+                                TopBarActions.Customers,
+                                TopBarActions.Orders,
+                                TopBarActions.Bills
+                            )
                         )
                     }
                 )

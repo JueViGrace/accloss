@@ -208,7 +208,7 @@ class ProfileScreen : Screen {
                                     verticalArrangement = Arrangement.SpaceEvenly,
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    CustomText(text = stringResource(R.string.paid))
+                                    CustomText(text = stringResource(R.string.charged))
                                     CustomText(
                                         text = "${statistics.paid.roundFormat()} $",
                                         fontSize = MaterialTheme.typography.bodySmall.fontSize,

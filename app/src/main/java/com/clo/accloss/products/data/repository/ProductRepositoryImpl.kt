@@ -5,7 +5,7 @@ import androidx.compose.ui.text.intl.Locale
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
 import com.clo.accloss.core.common.log
 import com.clo.accloss.core.data.network.ApiOperation
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.products.data.source.ProductDataSource
 import com.clo.accloss.products.domain.mappers.toDatabase
 import com.clo.accloss.products.domain.mappers.toDomain

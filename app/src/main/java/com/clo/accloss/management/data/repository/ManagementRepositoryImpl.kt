@@ -1,7 +1,7 @@
 package com.clo.accloss.management.data.repository
 
 import com.clo.accloss.core.data.network.ApiOperation
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.management.data.source.ManagementDataSource
 import com.clo.accloss.management.domain.mappers.toDatabase
 import com.clo.accloss.management.domain.mappers.toDomain

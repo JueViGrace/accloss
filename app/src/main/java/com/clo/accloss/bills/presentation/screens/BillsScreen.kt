@@ -4,7 +4,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -24,6 +27,11 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.clo.accloss.R
 import com.clo.accloss.bills.domain.model.Bill
 import com.clo.accloss.bills.presentation.viewmodel.BillsViewModel
+import com.clo.accloss.core.common.Constants.calculateDocStatus
+import com.clo.accloss.core.common.roundFormat
+import com.clo.accloss.core.common.toDateFormat
+import com.clo.accloss.core.common.toStringFormat
+import com.clo.accloss.core.presentation.components.DisplayComponents.CustomClickableCard
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
 import com.clo.accloss.core.presentation.components.ErrorComponents.ErrorScreen
 import com.clo.accloss.core.presentation.components.LayoutComponents
@@ -36,9 +44,10 @@ import com.clo.accloss.core.presentation.components.ListComponents.ListStickyHea
 import com.clo.accloss.core.presentation.components.TextFieldComponents
 import com.clo.accloss.core.presentation.components.TopBarActions
 import org.koin.core.parameter.parametersOf
+import java.util.Date
 
 data class BillsScreen(
-    val id: String
+    val id: String = ""
 ) : Screen {
     override val key: ScreenKey = super.key + uniqueScreenKey
 
@@ -144,17 +153,19 @@ data class BillsScreen(
             },
             content = { bill ->
                 BillListComponent(
-                    modifier = Modifier.padding(horizontal = 10.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 10.dp),
                     bill = bill,
                     onClick = { billId ->
-                        // Bill details
+                        navigator.push(BillDetailScreen(billId))
                     }
                 )
             },
             footer = {
                 ListFooter(text = stringResource(id = R.string.end_of_list))
             },
-            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         )
     }
@@ -165,6 +176,85 @@ data class BillsScreen(
         bill: Bill,
         onClick: (String) -> Unit
     ) {
+        val debt = bill.dtotalfinal - bill.dtotpagos
 
+        CustomClickableCard(
+            modifier = modifier,
+            onClick = {
+                onClick(bill.documento)
+            }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CustomText(text = "Nº ${bill.documento}")
+                    CustomText(
+                        text = stringResource(id = calculateDocStatus(bill.estatusdoc))
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CustomText(text = "${stringResource(R.string.amount)}: ${bill.dtotalfinal.roundFormat()} $")
+                    CustomText(
+                        text = "${stringResource(R.string.debt)}: ${debt.roundFormat()} $"
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CustomText(text = "${stringResource(R.string.customer)}: ${bill.codcliente}")
+                    CustomText(
+                        text = calculateExpiringStatus(bill.vence),
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun calculateExpiringStatus(expires: String): String {
+        val date1 = expires.toDateFormat(1)
+
+        val date2 = Date().toStringFormat(1).toDateFormat(1)
+
+        val diff = date1.time - date2.time
+        val seconds = diff / 1000
+        val minutes = seconds / 60
+        val hours = minutes / 60
+        val days = hours / 24
+
+        return when {
+            date1 == date2 -> {
+                stringResource(R.string.expires_today)
+            }
+
+            date1 > date2 -> {
+                "${
+                    stringResource(id = R.string.expires)
+                } ${
+                    stringResource(id = R.string.in_string)
+                } $days ${stringResource(id = R.string.days)}"
+            }
+
+            else -> {
+                stringResource(R.string.expired)
+            }
+        }
     }
 }

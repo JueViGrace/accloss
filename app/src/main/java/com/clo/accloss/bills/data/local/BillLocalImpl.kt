@@ -3,6 +3,7 @@ package com.clo.accloss.bills.data.local
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
+import com.clo.accloss.GetBillWithLines
 import com.clo.accloss.core.data.database.helper.DbHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,15 +45,29 @@ class BillLocalImpl(
     override suspend fun getBill(
         document: String,
         company: String
-    ): Flow<BillEntity> = scope.async {
+    ): BillEntity? = scope.async {
         dbHelper.withDatabase { db ->
             db.facturaQueries
                 .getFactura(
                     documento = document,
                     empresa = company
                 )
+                .executeAsOneOrNull()
+        }
+    }.await()
+
+    override suspend fun getBillWithLines(
+        bill: String,
+        company: String,
+    ): Flow<List<GetBillWithLines>> = scope.async {
+        dbHelper.withDatabase { db ->
+            db.facturaQueries
+                .getBillWithLines(
+                    documento = bill,
+                    empresa = company
+                )
                 .asFlow()
-                .mapToOne(scope.coroutineContext)
+                .mapToList(scope.coroutineContext)
         }.flowOn(Dispatchers.IO)
     }.await()
 

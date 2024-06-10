@@ -2,7 +2,7 @@ package com.clo.accloss.customer.domain.usecase
 
 import com.clo.accloss.core.common.Constants.UNEXPECTED_ERROR
 import com.clo.accloss.core.common.log
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.customer.domain.repository.CustomerRepository
 import com.clo.accloss.customer.presentation.model.CustomerData
 import com.clo.accloss.session.domain.usecase.GetCurrentUser

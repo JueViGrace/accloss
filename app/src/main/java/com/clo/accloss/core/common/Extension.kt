@@ -18,6 +18,26 @@ fun Date.toStringFormat(format: Int? = null): String =
         }
     }
 
+fun String.toStringFormat(format: Int? = null): String =
+    when (format) {
+        1 -> {
+            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(this)
+        }
+        else -> {
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(this)
+        }
+    }
+
+fun String.toDateFormat(format: Int? = null): Date =
+    when (format) {
+        1 -> {
+            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(this) as Date
+        }
+        else -> {
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(this) as Date
+        }
+    }
+
 fun String.toDate(): Date =
     SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(this) as Date
 

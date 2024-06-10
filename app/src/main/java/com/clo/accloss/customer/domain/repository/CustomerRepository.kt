@@ -1,6 +1,6 @@
 package com.clo.accloss.customer.domain.repository
 
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.customer.data.source.CustomerDataSource
 import com.clo.accloss.customer.domain.model.Customer
 import com.clo.accloss.customer.presentation.model.CustomerData

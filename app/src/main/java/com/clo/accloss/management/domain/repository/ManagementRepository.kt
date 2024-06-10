@@ -1,6 +1,6 @@
 package com.clo.accloss.management.domain.repository
 
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.management.data.source.ManagementDataSource
 import com.clo.accloss.management.domain.model.Management
 

@@ -1,6 +1,6 @@
 package com.clo.accloss.products.presentation.state
 
-import com.clo.accloss.core.domain.state.RequestState
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.products.presentation.model.ProductDetails
 
 data class ProductDetailState(
