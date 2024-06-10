@@ -51,7 +51,7 @@ class RateRepositoryImpl(
 
     override suspend fun getRate(
         company: String
-    ): Flow<RequestState<Rate>> = flow<RequestState<Rate>> {
+    ): Flow<RequestState<Rate>> = flow {
         emit(RequestState.Loading)
 
         rateDataSource.rateLocal.getRate(company)
@@ -60,11 +60,19 @@ class RateRepositoryImpl(
                 e.log("RATES REPOSITORY: getRate")
             }
             .collect { rateEntity ->
-                emit(
-                    RequestState.Success(
-                        data = rateEntity.toDomain()
+                if (rateEntity != null) {
+                    emit(
+                        RequestState.Success(
+                            data = rateEntity.toDomain()
+                        )
                     )
-                )
+                } else {
+                    emit(
+                        RequestState.Error(
+                            message = "No rates"
+                        )
+                    )
+                }
             }
     }.flowOn(Dispatchers.IO)
 

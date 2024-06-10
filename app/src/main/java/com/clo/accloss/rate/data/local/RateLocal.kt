@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import com.clo.accloss.Tasas as RateEntity
 
 interface RateLocal {
-    suspend fun getRate(company: String): Flow<RateEntity>
+    suspend fun getRate(company: String): Flow<RateEntity?>
 
     suspend fun addRate(rate: RateEntity)
 
