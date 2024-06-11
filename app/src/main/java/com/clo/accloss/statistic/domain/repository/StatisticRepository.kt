@@ -1,14 +1,16 @@
 package com.clo.accloss.statistic.domain.repository
 
-import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.core.modules.profile.presentation.model.ProfileStatisticsModel
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.statistic.data.source.StatisticDataSource
 import com.clo.accloss.statistic.domain.model.Statistic
 import com.clo.accloss.statistic.presentation.model.PersonalStatistics
 import kotlinx.coroutines.flow.Flow
+import kotlin.coroutines.CoroutineContext
 
 interface StatisticRepository {
     val statisticDataSource: StatisticDataSource
+    val coroutineContext: CoroutineContext
 
     suspend fun getRemoteStatistics(
         baseUrl: String,
@@ -45,4 +47,6 @@ interface StatisticRepository {
     ): Flow<RequestState<ProfileStatisticsModel>>
 
     suspend fun addStatistic(statistics: List<Statistic>)
+
+    suspend fun deleteStatistics(company: String)
 }

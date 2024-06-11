@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.SharingStarted
 object Constants {
     const val APP_VERSION: String = "${BuildConfig.BUILD_TYPE} ${BuildConfig.VERSION_NAME}"
 
-    const val SERVER_ERROR = "Internal Server Error"
+    val SERVER_ERROR = R.string.internal_server_error
 
-    const val DB_ERROR_MESSAGE = "Database is not available"
+    val DB_ERROR_MESSAGE = R.string.database_is_not_available
 
-    const val UNEXPECTED_ERROR = "An unexpected error occurred"
+    val UNEXPECTED_ERROR = R.string.an_unexpected_error_occurred
 
     const val BASE_URL: String = "https://cloccidental.com"
 

@@ -4,9 +4,11 @@ import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.products.data.source.ProductDataSource
 import com.clo.accloss.products.domain.model.Product
 import kotlinx.coroutines.flow.Flow
+import kotlin.coroutines.CoroutineContext
 
 interface ProductRepository {
     val productDataSource: ProductDataSource
+    val coroutineContext: CoroutineContext
 
     suspend fun getRemoteProducts(
         baseUrl: String,
@@ -26,4 +28,6 @@ interface ProductRepository {
     ): Flow<RequestState<Product>>
 
     suspend fun addProducts(products: List<Product>)
+
+    suspend fun deleteProducts(company: String)
 }

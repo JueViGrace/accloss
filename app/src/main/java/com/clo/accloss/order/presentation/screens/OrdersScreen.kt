@@ -125,7 +125,7 @@ data class OrdersScreen(
                 )
             } else {
                 ErrorScreen(
-                    message = stringResource(id = R.string.empty_list)
+                    message = R.string.empty_list
                 )
             }
         }

@@ -142,8 +142,8 @@ object SynchronizeScreen : Screen {
                             )
                         }
                     },
-                    onError = {
-                        ErrorComponent(it)
+                    onError = { message ->
+                        ErrorComponent(message)
                     },
                     onSuccess = { sync ->
                         AnimatedContent(
@@ -259,7 +259,7 @@ object SynchronizeScreen : Screen {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CustomText(
-                            text = it,
+                            text = stringResource(it),
                             color = MaterialTheme.colorScheme.error
                         )
                         Icon(
@@ -307,7 +307,7 @@ object SynchronizeScreen : Screen {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CustomText(
-                            text = it,
+                            text = stringResource(it),
                             color = MaterialTheme.colorScheme.error
                         )
                         Icon(
@@ -355,7 +355,7 @@ object SynchronizeScreen : Screen {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CustomText(
-                            text = it,
+                            text = stringResource(it),
                             color = MaterialTheme.colorScheme.error
                         )
                         Icon(
@@ -403,7 +403,7 @@ object SynchronizeScreen : Screen {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CustomText(
-                            text = it,
+                            text = stringResource(it),
                             color = MaterialTheme.colorScheme.error
                         )
                         Icon(
@@ -451,7 +451,7 @@ object SynchronizeScreen : Screen {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CustomText(
-                            text = it,
+                            text = stringResource(it),
                             color = MaterialTheme.colorScheme.error
                         )
                         Icon(
@@ -499,7 +499,7 @@ object SynchronizeScreen : Screen {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CustomText(
-                            text = it,
+                            text = stringResource(it),
                             color = MaterialTheme.colorScheme.error
                         )
                         Icon(
@@ -547,7 +547,7 @@ object SynchronizeScreen : Screen {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CustomText(
-                            text = it,
+                            text = stringResource(it),
                             color = MaterialTheme.colorScheme.error
                         )
                         Icon(

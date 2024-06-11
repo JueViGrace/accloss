@@ -13,14 +13,14 @@ import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
 
 object ErrorComponents {
     @Composable
-    fun ErrorComponent(message: String? = null) {
+    fun ErrorComponent(message: Int? = null) {
         Box(
             modifier = Modifier
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
             CustomText(
-                text = message ?: stringResource(R.string.empty),
+                text = stringResource(id = message ?: R.string.empty),
                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
                 fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                 color = MaterialTheme.colorScheme.error
@@ -29,14 +29,14 @@ object ErrorComponents {
     }
 
     @Composable
-    fun ErrorScreen(message: String? = null) {
+    fun ErrorScreen(message: Int? = null) {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             CustomText(
-                text = message ?: stringResource(id = R.string.empty),
+                text = stringResource(id = message ?: R.string.empty),
                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
                 fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                 color = MaterialTheme.colorScheme.error

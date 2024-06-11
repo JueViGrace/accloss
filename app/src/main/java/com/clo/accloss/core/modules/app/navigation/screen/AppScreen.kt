@@ -6,12 +6,11 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
-import com.clo.accloss.core.presentation.components.CustomScreenTransition
 
 internal data class AppScreen(
     val initialScreen: Screen
 ) : Screen {
-    override val key: ScreenKey = super.key + uniqueScreenKey
+    override val key: ScreenKey = uniqueScreenKey + super.key
 
     @Composable
     override fun Content() {
@@ -20,8 +19,6 @@ internal data class AppScreen(
             disposeBehavior = NavigatorDisposeBehavior(
                 disposeNestedNavigators = true
             ),
-        ) { navigator ->
-            CustomScreenTransition(navigator = navigator)
-        }
+        )
     }
 }

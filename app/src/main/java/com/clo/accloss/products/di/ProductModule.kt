@@ -1,10 +1,10 @@
 package com.clo.accloss.products.di
 
 import com.clo.accloss.products.data.local.ProductLocal
-import com.clo.accloss.products.data.local.ProductLocalImpl
+import com.clo.accloss.products.data.local.DefaultProductLocal
 import com.clo.accloss.products.data.remote.source.ProductRemote
-import com.clo.accloss.products.data.remote.source.ProductRemoteImpl
-import com.clo.accloss.products.data.repository.ProductRepositoryImpl
+import com.clo.accloss.products.data.remote.source.DefaultProductRemote
+import com.clo.accloss.products.data.repository.DefaultProductRepository
 import com.clo.accloss.products.data.source.ProductDataSource
 import com.clo.accloss.products.data.source.ProductDataSourceImpl
 import com.clo.accloss.products.domain.repository.ProductRepository
@@ -18,13 +18,13 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val productModule = module {
-    singleOf(::ProductLocalImpl) bind ProductLocal::class
+    singleOf(::DefaultProductLocal) bind ProductLocal::class
 
-    singleOf(::ProductRemoteImpl) bind ProductRemote::class
+    singleOf(::DefaultProductRemote) bind ProductRemote::class
 
     singleOf(::ProductDataSourceImpl) bind ProductDataSource::class
 
-    singleOf(::ProductRepositoryImpl) bind ProductRepository::class
+    singleOf(::DefaultProductRepository) bind ProductRepository::class
 
     singleOf(::GetProducts)
 

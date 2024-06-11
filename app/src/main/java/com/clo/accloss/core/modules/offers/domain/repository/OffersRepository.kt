@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext
 
 interface OffersRepository {
-    val coroutineContext: CoroutineContext
     val offersDataSource: OffersDataSource
+    val coroutineContext: CoroutineContext
 
     suspend fun getRemoteImages(
         baseUrl: String,

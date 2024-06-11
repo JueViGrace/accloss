@@ -44,10 +44,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.clo.accloss.R
-import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.core.presentation.components.DisplayComponents.CustomText
 import com.clo.accloss.core.presentation.components.LoadingComponents.LoadingComponent
 import com.clo.accloss.core.presentation.components.TextFieldComponents.CustomOutlinedTextField
+import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 
 object SessionComponents {

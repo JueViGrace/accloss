@@ -1,5 +1,6 @@
 package com.clo.accloss.core.data.network
 
+import com.clo.accloss.R
 import com.clo.accloss.core.common.Constants.BASE_URL
 import com.clo.accloss.core.common.Constants.SERVER_ERROR
 import io.ktor.client.HttpClient
@@ -46,17 +47,17 @@ class KtorClient {
     }.flowOn(Dispatchers.Default)*/
 
     // TODO: MESSAGE AS R
-    suspend inline fun <T> safeApiCall(crossinline apiCall: suspend () -> T): ApiOperation<T> {
+    inline fun <T> safeApiCall(apiCall: () -> T): ApiOperation<T> {
         return try {
             ApiOperation.Success(data = apiCall())
         } catch (e: Exception) {
             ApiOperation.Failure(
                 error = when (e) {
                     is NoTransformationFoundException -> {
-                        "Invalid response body, try again later."
+                        R.string.invalid_response_body_try_again_later
                     }
                     is SocketTimeoutException -> {
-                        "Server took too long to answer."
+                        R.string.server_took_too_long_to_answer
                     }
                     else -> {
                         SERVER_ERROR

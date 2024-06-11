@@ -1,10 +1,10 @@
 package com.clo.accloss.statistic.di
 
 import com.clo.accloss.statistic.data.local.StatisticLocal
-import com.clo.accloss.statistic.data.local.StatisticsLocalImpl
+import com.clo.accloss.statistic.data.local.DefaultStatisticsLocal
 import com.clo.accloss.statistic.data.remote.source.StatisticRemote
-import com.clo.accloss.statistic.data.remote.source.StatisticRemoteImpl
-import com.clo.accloss.statistic.data.repository.StatisticRepositoryImpl
+import com.clo.accloss.statistic.data.remote.source.DefaultStatisticRemote
+import com.clo.accloss.statistic.data.repository.DefaultStatisticRepository
 import com.clo.accloss.statistic.data.source.StatisticDataSource
 import com.clo.accloss.statistic.data.source.StatisticDataSourceImpl
 import com.clo.accloss.statistic.domain.repository.StatisticRepository
@@ -20,13 +20,13 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val statisticModule = module {
-    singleOf(::StatisticRemoteImpl) bind StatisticRemote::class
+    singleOf(::DefaultStatisticRemote) bind StatisticRemote::class
 
-    singleOf(::StatisticsLocalImpl) bind StatisticLocal::class
+    singleOf(::DefaultStatisticsLocal) bind StatisticLocal::class
 
     singleOf(::StatisticDataSourceImpl) bind StatisticDataSource::class
 
-    singleOf(::StatisticRepositoryImpl) bind StatisticRepository::class
+    singleOf(::DefaultStatisticRepository) bind StatisticRepository::class
 
     singleOf(::GetProfileStatistics)
 

@@ -60,21 +60,14 @@ class DefaultOffersRepository(
                 e.log("OFFERS REPOSITORY: getImages")
             }
             .collect { list ->
-                if (list.isNotEmpty()){
-                    emit(
-                        RequestState.Success(
-                            data = list.map { imageEntity ->
-                                imageEntity.toDomain()
-                            }
-                        )
+
+                emit(
+                    RequestState.Success(
+                        data = list.map { imageEntity ->
+                            imageEntity.toDomain()
+                        }
                     )
-                } else {
-                    emit(
-                        RequestState.Error(
-                            message = "No images"
-                        )
-                    )
-                }
+                )
             }
     }.flowOn(coroutineContext)
 
@@ -89,15 +82,19 @@ class DefaultOffersRepository(
     }
 
     override suspend fun addImages(images: List<Image>) {
-        offersDataSource.offersLocal
-            .addImages(
-                images.map { image: Image ->
-                    image.toDatabase()
-                }
-            )
+        withContext(coroutineContext) {
+            offersDataSource.offersLocal
+                .addImages(
+                    images.map { image: Image ->
+                        image.toDatabase()
+                    }
+                )
+        }
     }
 
     override suspend fun deleteImages(company: String) {
-        offersDataSource.offersLocal.deleteImages(company)
+        withContext(coroutineContext) {
+            offersDataSource.offersLocal.deleteImages(company)
+        }
     }
 }

@@ -30,7 +30,7 @@ import com.clo.accloss.core.presentation.components.LoadingComponents.LoadingScr
 import com.clo.accloss.login.presentation.screen.LoginScreen
 
 class HomeScreen : Screen {
-    override val key: ScreenKey = uniqueScreenKey
+    override val key: ScreenKey = uniqueScreenKey + super.key
 
     @Composable
     override fun Content() {

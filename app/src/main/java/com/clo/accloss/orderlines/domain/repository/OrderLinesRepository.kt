@@ -21,4 +21,6 @@ interface OrderLinesRepository {
     ): List<OrderLines>
 
     suspend fun addOrderLines(orderLines: List<OrderLines>)
+
+    suspend fun deleteOrderLines(company: String)
 }

@@ -8,12 +8,13 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
+import com.clo.accloss.R
 
 sealed class RequestState<out T> {
     data object Idle : RequestState<Nothing>()
     data object Loading : RequestState<Nothing>()
     data class Success<T>(val data: T) : RequestState<T>()
-    data class Error(val message: String) : RequestState<Nothing>()
+    data class Error(val message: Int) : RequestState<Nothing>()
 
     fun isLoading() = this is Loading
     fun isSuccess() = this is Success
@@ -38,11 +39,11 @@ sealed class RequestState<out T> {
      * @throws ClassCastException If the current state is not [Error]
      *  */
     fun getErrorMessage() = (this as Error).message
-    fun getErrorMessageOrEmpty(): String {
+    fun getErrorMessageOrEmpty(): Int {
         return try {
             (this as Error).message
         } catch (e: Exception) {
-            ""
+            R.string.unknown_error
         }
     }
 
@@ -51,7 +52,7 @@ sealed class RequestState<out T> {
         onIdle: (@Composable () -> Unit)? = null,
         onLoading: @Composable () -> Unit,
         onSuccess: @Composable (T) -> Unit,
-        onError: @Composable (String) -> Unit,
+        onError: @Composable (Int) -> Unit,
         transitionSpec: AnimatedContentTransitionScope<*>.() -> ContentTransform = {
             fadeIn(tween(durationMillis = 300)) togetherWith
                 fadeOut(tween(durationMillis = 300))

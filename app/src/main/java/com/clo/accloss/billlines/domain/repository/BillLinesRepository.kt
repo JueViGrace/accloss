@@ -21,4 +21,6 @@ interface BillLinesRepository {
     ): List<BillLines>
 
     suspend fun addBillLines(billLines: List<BillLines>)
+
+    suspend fun deleteBillLines(company: String)
 }

@@ -38,4 +38,6 @@ interface OrderRepository {
     ): RequestState<Order>
 
     suspend fun addOrder(orders: List<Order>)
+
+    suspend fun deleteOrders(company: String)
 }

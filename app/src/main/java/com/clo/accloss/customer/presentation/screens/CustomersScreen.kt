@@ -129,7 +129,7 @@ data class CustomersScreen(
                     customers = list
                 )
             } else {
-                ErrorScreen(message = stringResource(R.string.empty_list))
+                ErrorScreen(message = R.string.empty_list)
             }
         }
     }

@@ -12,7 +12,7 @@ data class LoginState(
     val user: User? = null,
     val loadingCompany: Boolean = false,
     val loadingUser: Boolean = false,
-    val errorMessage: String? = null,
+    val errorMessage: Int? = null,
     val canLogin: Boolean = false,
     val companyError: Int? = null,
     val usernameError: Int? = null,

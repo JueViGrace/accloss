@@ -7,7 +7,7 @@ import com.clo.accloss.configuration.data.remote.source.DefaultConfigurationRemo
 import com.clo.accloss.configuration.data.source.ConfigurationDataSource
 import com.clo.accloss.configuration.data.source.DefaultConfigurationDataSource
 import com.clo.accloss.configuration.domain.repository.ConfigurationRepository
-import com.clo.accloss.configuration.domain.repository.DefaultConfigurationRepository
+import com.clo.accloss.configuration.data.repository.DefaultConfigurationRepository
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module

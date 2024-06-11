@@ -146,4 +146,24 @@
     <string name="total_amount">Total amount</string>
     <string name="date_of_receipt">Date of receipt</string>
     <string name="expiration_date">Expiration Date</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="invalid_response_body_try_again_later">Invalid response body, try again later.</string>
+    <string name="server_took_too_long_to_answer">Server took too long to answer.</string>
+    <string name="internal_server_error">Internal Server Error</string>
+    <string name="database_is_not_available">Database is not available</string>
+    <string name="an_unexpected_error_occurred">An unexpected error occurred</string>
+    <string name="this_bill_doesn_t_exists">This bill doesn\'t exists</string>
+    <string name="this_company_doesn_t_exists">This company doesn\'t exists</string>
+    <string name="this_customer_doesn_t_exists">This customer doesn\'t exists</string>
+    <string name="this_order_doesn_t_exists">This order doesn\'t exists</string>
+    <string name="this_product_doesn_t_exists">This product doesn\'t exists</string>
+    <string name="there_are_no_rates">There are no rates</string>
+    <string name="this_salesman_doesn_t_exists">This salesman doesn\'t exists</string>
+    <string name="invalid_session">Invalid session</string>
+    <string name="session_is_not_available">Session is not available</string>
+    <string name="no_statistics_found">No statistics found</string>
+    <string name="no_users_found">No users found</string>
+    <string name="this_user_doesn_t_exists">This user doesn\'t exists</string>
+    <string name="you_have_an_outdated_version_please_update">You have an outdated version, please update.</string>
+    <string name="there_are_no_images">There are no images</string>
 </resources>

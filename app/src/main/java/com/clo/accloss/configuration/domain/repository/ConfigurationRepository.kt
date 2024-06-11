@@ -3,9 +3,11 @@ package com.clo.accloss.configuration.domain.repository
 import com.clo.accloss.configuration.data.source.ConfigurationDataSource
 import com.clo.accloss.configuration.domain.model.Configuration
 import com.clo.accloss.core.state.RequestState
+import kotlin.coroutines.CoroutineContext
 
 interface ConfigurationRepository {
     val configurationDataSource: ConfigurationDataSource
+    val coroutineContext: CoroutineContext
 
     suspend fun getRemoteConfiguration(
         baseUrl: String,
@@ -22,4 +24,6 @@ interface ConfigurationRepository {
     suspend fun getConfigDate(key: String, company: String): RequestState<String>
 
     suspend fun addConfiguration(configurations: List<Configuration>)
+
+    suspend fun deleteConfiguration(company: String)
 }

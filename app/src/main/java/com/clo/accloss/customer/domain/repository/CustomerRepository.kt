@@ -41,4 +41,6 @@ interface CustomerRepository {
     ): Flow<RequestState<Customer>>
 
     suspend fun addCustomer(customers: List<Customer>)
+
+    suspend fun deleteCustomers(company: String)
 }

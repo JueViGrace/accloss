@@ -1,6 +1,7 @@
 package com.clo.accloss.session.domain.usecase
 
 import com.clo.accloss.core.common.Constants.DB_ERROR_MESSAGE
+import com.clo.accloss.core.common.log
 import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 import com.clo.accloss.session.domain.repository.SessionRepository
@@ -18,9 +19,10 @@ class GetCurrentUser(
             .catch { e ->
                 emit(
                     RequestState.Error(
-                        message = e.message ?: DB_ERROR_MESSAGE
+                        message = DB_ERROR_MESSAGE
                     )
                 )
+                e.log("GET CURRENT USER USE CASE")
             }
             .collect { result ->
                 when (result) {

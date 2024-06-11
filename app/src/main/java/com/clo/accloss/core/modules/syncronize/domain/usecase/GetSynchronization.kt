@@ -47,6 +47,15 @@ class GetSynchronization(
                     )
                 }
                 is RequestState.Success -> {
+                    configurationRepository.deleteConfiguration(company = sessionResult.data.empresa)
+                    managementRepository.deleteManagements(company = sessionResult.data.empresa)
+                    salesmanRepository.deleteSalesmen(company = sessionResult.data.empresa)
+                    statisticRepository.deleteStatistics(company = sessionResult.data.empresa)
+                    customerRepository.deleteCustomers(company = sessionResult.data.empresa)
+                    orderRepository.deleteOrders(company = sessionResult.data.empresa)
+                    billRepository.deleteBills(company = sessionResult.data.empresa)
+                    productRepository.deleteProducts(company = sessionResult.data.empresa)
+
                     var synchronize = Synchronize()
 
                     synchronize = synchronize.copy(

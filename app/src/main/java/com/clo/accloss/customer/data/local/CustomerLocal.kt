@@ -3,10 +3,13 @@ package com.clo.accloss.customer.data.local
 import com.clo.accloss.GetCustomerData
 import com.clo.accloss.GetCustomersData
 import com.clo.accloss.GetCustomersDataBySalesman
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import com.clo.accloss.Cliente as CustomerEntity
 
 interface CustomerLocal {
+    val scope: CoroutineScope
+
     suspend fun getCustomers(company: String): Flow<List<CustomerEntity>>
 
     suspend fun getCustomersData(company: String): Flow<List<GetCustomersData>>
@@ -21,7 +24,9 @@ interface CustomerLocal {
         id: String
     ): Flow<GetCustomerData?>
 
-    suspend fun getCustomer(code: String, company: String): Flow<CustomerEntity>
+    suspend fun getCustomer(code: String, company: String): Flow<CustomerEntity?>
 
     suspend fun addCustomer(customers: List<CustomerEntity>)
+
+    suspend fun deleteCustomers(company: String)
 }

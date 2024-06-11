@@ -37,4 +37,6 @@ interface BillRepository {
     ): Flow<RequestState<BillDetails>>
 
     suspend fun addBills(bills: List<Bill>)
+
+    suspend fun deleteBills(company: String)
 }

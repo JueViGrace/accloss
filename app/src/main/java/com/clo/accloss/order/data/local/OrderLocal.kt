@@ -1,10 +1,13 @@
 package com.clo.accloss.order.data.local
 
 import com.clo.accloss.GetOrderWithLines
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import com.clo.accloss.Pedido as OrderEntity
 
 interface OrderLocal {
+    val scope: CoroutineScope
+
     suspend fun getOrders(company: String): Flow<List<OrderEntity>>
 
     suspend fun getOrdersBySalesman(
@@ -23,4 +26,6 @@ interface OrderLocal {
     ): OrderEntity?
 
     suspend fun addOrder(orders: List<OrderEntity>)
+
+    suspend fun deleteOrders(company: String)
 }

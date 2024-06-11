@@ -3,8 +3,11 @@ package com.clo.accloss.session.domain.repository
 import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.session.domain.model.Session
 import kotlinx.coroutines.flow.Flow
+import kotlin.coroutines.CoroutineContext
 
 interface SessionRepository {
+    val coroutineContext: CoroutineContext
+
     val getCurrentUser: Flow<RequestState<Session>>
 
     val getCurrentSession: Flow<RequestState<Session>>

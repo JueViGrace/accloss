@@ -4,9 +4,11 @@ import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.salesman.data.source.SalesmanDataSource
 import com.clo.accloss.salesman.domain.model.Salesman
 import kotlinx.coroutines.flow.Flow
+import kotlin.coroutines.CoroutineContext
 
 interface SalesmanRepository {
     val salesmanDataSource: SalesmanDataSource
+    val coroutineContext: CoroutineContext
 
     suspend fun getRemoteSalesman(
         baseUrl: String,
@@ -31,4 +33,6 @@ interface SalesmanRepository {
     ): Flow<RequestState<Salesman>>
 
     suspend fun addSalesmen(salesmen: List<Salesman>)
+
+    suspend fun deleteSalesmen(company: String)
 }

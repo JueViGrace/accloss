@@ -339,11 +339,11 @@ class LoginScreen : Screen {
                     }
                 )
 
-                if (state.errorMessage?.isNotEmpty() == true) {
+                if (state.errorMessage != null) {
                     CustomText(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        text = state.errorMessage,
+                        text = stringResource(id = state.errorMessage),
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.error
                     )
