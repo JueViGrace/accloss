@@ -40,7 +40,7 @@ class GetProducts(
                                     val apiResult = productRepository.getRemoteProducts(
                                         baseUrl = sessionResult.data.enlaceEmpresa,
                                         company = sessionResult.data.empresa,
-                                        lastSync = sessionResult.data.lastSync
+                                        lastSync = "1000:01:01 00:00:00"
                                     )
 
                                     when (apiResult) {

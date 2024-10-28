@@ -48,9 +48,9 @@ import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultBack
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultLayoutComponent
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultTopBar
 import com.clo.accloss.core.presentation.components.LayoutComponents.DefaultTopBarActions
+import com.clo.accloss.core.presentation.components.ListComponents.CustomLazyColumn
 import com.clo.accloss.core.presentation.components.TopBarActions
 import com.clo.accloss.core.presentation.components.ListComponents.ListFooter
-import com.clo.accloss.core.presentation.components.ListComponents.PullToRefreshLazyColumn
 import com.clo.accloss.core.presentation.components.TextFieldComponents.SearchBarComponent
 import com.clo.accloss.products.domain.model.Product
 import com.clo.accloss.products.presentation.viewmodel.ProductViewModel
@@ -149,7 +149,7 @@ object ProductsScreen : Screen {
         onSelect: (String) -> Unit,
         onRefresh: () -> Unit
     ) {
-        PullToRefreshLazyColumn(
+        CustomLazyColumn(
             modifier = modifier,
             items = products,
             contentPadding = PaddingValues(5.dp),
@@ -175,8 +175,6 @@ object ProductsScreen : Screen {
             footer = {
                 ListFooter(text = stringResource(R.string.end_of_list))
             },
-            isRefreshing = isRefreshing,
-            onRefresh = onRefresh
         )
     }
 

@@ -12,13 +12,11 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
     }
 }
 
-rootProject.name = "AC CLOSS"
+rootProject.name = "accloss"
 include(":app")
- 

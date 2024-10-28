@@ -4,17 +4,16 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.sqldelight)
-    alias(libs.plugins.dokka)
 }
 
 android {
     namespace = "com.clo.accloss"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.clo.accloss"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
 
@@ -35,18 +34,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "21"
     }
     buildFeatures {
         compose = true
         buildConfig = true
     }
     composeCompiler {
-        enableStrongSkippingMode = true
     }
     packaging {
         resources {
@@ -78,6 +76,10 @@ dependencies {
     testImplementation(libs.truth)
     androidTestImplementation(libs.truth)
 
+    // App Update
+    implementation(libs.androidx.app.update)
+    implementation(libs.androidx.app.update.ktx)
+
     // Coil
     implementation(libs.coil.compose)
 
@@ -107,9 +109,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
 
     // Koin
-    implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
+    implementation(libs.koin.android)
 
     // Ktor
     implementation(libs.ktor.client.core)
@@ -129,9 +131,6 @@ dependencies {
     implementation(libs.paging.compose)
 
     implementation(kotlin("reflect"))
-
-    // Dokka
-    dokkaPlugin(libs.android.dokka)
 }
 
 sqldelight {

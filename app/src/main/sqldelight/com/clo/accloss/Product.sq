@@ -41,12 +41,12 @@ CREATE INDEX product_company ON product(empresa);
 countProducts:
 SELECT COUNT(*)
 FROM product
-WHERE empresa == :empresa;
+WHERE (existencia - comprometido) > 0 AND discont = 0 AND empresa == :empresa;
 
 getProducts:
 SELECT *
 FROM product
-WHERE empresa == :empresa;
+WHERE (existencia - comprometido) > 0 AND discont = 0 AND empresa == :empresa;
 
 getProduct:
 SELECT *

@@ -121,7 +121,7 @@ class GetSynchronization(
                     synchronize = synchronize.copy(
                         products = productRepository.getRemoteProducts(
                             baseUrl = sessionResult.data.enlaceEmpresa,
-                            lastSync = sessionResult.data.lastSync,
+                            lastSync = "1000:01:01 00:00:00",
                             company = sessionResult.data.empresa,
                         )
                     )
