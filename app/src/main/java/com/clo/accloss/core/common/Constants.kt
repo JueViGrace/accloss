@@ -9,7 +9,7 @@ import com.clo.accloss.core.modules.profile.presentation.components.ProfileMenu
 import kotlinx.coroutines.flow.SharingStarted
 
 object Constants {
-    const val APP_VERSION: String = "${BuildConfig.BUILD_TYPE} ${BuildConfig.VERSION_NAME}"
+    const val APP_VERSION: String = BuildConfig.VERSION_NAME
 
     val SERVER_ERROR = R.string.internal_server_error
 
