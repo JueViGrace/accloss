@@ -8,7 +8,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.clo.accloss.R
 import com.clo.accloss.company.domain.repository.CompanyRepository
 import com.clo.accloss.company.domain.rules.CompanyValidator
-import com.clo.accloss.core.common.toStringFormat
+import com.clo.accloss.core.common.Constants.INITIAL_DATE
 import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.login.domain.model.Login
 import com.clo.accloss.login.domain.rules.LoginValidator
@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Date
 
 class LoginViewModel(
     private val companyRepository: CompanyRepository,
@@ -185,7 +184,7 @@ class LoginViewModel(
                                                 enlaceEmpresa = "https://${company.enlaceEmpresa}",
                                                 enlaceEmpresaPost = "http://${company.enlaceEmpresa}:5001",
                                                 active = false,
-                                                lastSync = Date().toStringFormat()
+                                                lastSync = INITIAL_DATE
                                             )
 
                                             companyRepository.addCompany(

@@ -26,45 +26,40 @@ class GetRate(
                     )
                 }
                 is RequestState.Success -> {
-                    val apiResult = ratesRepository.getRemoteRate(
-                        baseUrl = sessionResult.data.enlaceEmpresa,
+                    ratesRepository.getRate(
                         company = sessionResult.data.empresa
-                    )
-                    when (apiResult) {
-                        is RequestState.Error -> {
-                            emit(
-                                RequestState.Error(
-                                    apiResult.message
+                    ).collect { result ->
+                        when (result) {
+                            is RequestState.Error -> {
+                                ratesRepository.deleteRate(
+                                    company = sessionResult.data.empresa
                                 )
-                            )
-                        }
-                        is RequestState.Success -> {
-                            ratesRepository.getRate(
-                                company = sessionResult.data.empresa
-                            ).collect { result ->
-                                when (result) {
+                                val apiResult = ratesRepository.getRemoteRate(
+                                    baseUrl = sessionResult.data.enlaceEmpresa,
+                                    company = sessionResult.data.empresa
+                                )
+                                when (apiResult) {
                                     is RequestState.Error -> {
-                                        ratesRepository.deleteRate(
-                                            company = sessionResult.data.empresa
-                                        )
                                         emit(
                                             RequestState.Error(
-                                                message = result.message
+                                                apiResult.message
                                             )
                                         )
                                     }
                                     is RequestState.Success -> {
-                                        emit(
-                                            RequestState.Success(
-                                                data = result.data
-                                            )
-                                        )
                                     }
                                     else -> emit(RequestState.Loading)
                                 }
                             }
+                            is RequestState.Success -> {
+                                emit(
+                                    RequestState.Success(
+                                        data = result.data
+                                    )
+                                )
+                            }
+                            else -> emit(RequestState.Loading)
                         }
-                        else -> emit(RequestState.Loading)
                     }
                 }
                 else -> emit(RequestState.Loading)

@@ -1,17 +1,17 @@
 package com.clo.accloss.core.modules.dashboard.presentation.tab
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
@@ -31,10 +31,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -48,8 +49,6 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.clo.accloss.R
 import com.clo.accloss.bills.presentation.screens.BillsScreen
 import com.clo.accloss.core.common.Constants
@@ -87,14 +86,13 @@ object DashboardTab : Tab {
             }
         }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = koinScreenModel<DashboardViewModel>()
         val state by viewModel.state.collectAsStateWithLifecycle()
 
-        val list = emptyList<String>()
+        val list = listOf(painterResource(R.drawable.dashbanner))
 
         val pagerState = rememberPagerState(pageCount = { list.size })
 
@@ -117,9 +115,16 @@ object DashboardTab : Tab {
                     .height(130.dp)
                     .padding(top = 20.dp, start = 10.dp, end = 10.dp)
             ) {
-                if (list.isNotEmpty()) {
+                Image(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(20)),
+                    painter = painterResource(R.drawable.dashbanner),
+                    contentScale = ContentScale.FillWidth,
+                    contentDescription = "banner"
+                )
+                /*if (list.isNotEmpty()) {
                     HorizontalPager(
-                        contentPadding = PaddingValues(horizontal = 110.dp),
                         state = pagerState,
                     ) { page ->
                         DisplayComponents.CustomClickableCard(
@@ -140,21 +145,20 @@ object DashboardTab : Tab {
                             shape = RoundedCornerShape(10),
                             elevation = CardDefaults.cardElevation(0.dp),
                         ) {
-                            AsyncImage(
+                            Image(
                                 modifier = Modifier
-                                    .size(100.dp)
+                                    .fillMaxWidth()
+                                    .heightIn(
+                                        min = 60.dp,
+                                        max = 130.dp
+                                    )
                                     .background(
                                         color = Color.White,
                                         shape = RoundedCornerShape(20.dp)
                                     )
-                                    .padding(10.dp),
-                                model =
-                                ImageRequest.Builder(LocalContext.current)
-                                    .data(list[page])
-                                    .crossfade(enable = true)
-                                    .crossfade(200)
-                                    .build(),
-                                contentDescription = "",
+                                    .padding(4.dp),
+                                painter = list[page],
+                                contentDescription = "banner"
                             )
                         }
                     }
@@ -170,7 +174,7 @@ object DashboardTab : Tab {
                             )
                         }
                     }
-                }
+                }*/
             }
 
             Box(
@@ -236,33 +240,34 @@ object DashboardTab : Tab {
                             }
                         }
                         Spacer(modifier = Modifier.height(10.dp))
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            DisplayComponents.CustomText(
-                                text = stringResource(R.string.rate_of_today),
-                                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                                fontWeight = MaterialTheme.typography.titleLarge.fontWeight
-                            )
-                            state.rates.DisplayResult(
-                                onLoading = {
-                                    LoadingComponents.LoadingComponent(
-                                        modifier = Modifier.size(30.dp)
+
+                        state.rates.DisplayResult(
+                            onLoading = {
+                                LoadingComponents.LoadingComponent(
+                                    modifier = Modifier.size(30.dp)
+                                )
+                            },
+                            onError = { ErrorComponents.ErrorComponent(it) },
+                            onSuccess = { remoteRate ->
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    DisplayComponents.CustomText(
+                                        text = stringResource(R.string.rate_of_today),
+                                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight
                                     )
-                                },
-                                onError = { ErrorComponents.ErrorComponent() },
-                                onSuccess = { remoteRate ->
                                     DisplayComponents.CustomText(
                                         text = "Bs. ${remoteRate.tasa.roundFormat()}",
                                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
                                         fontWeight = MaterialTheme.typography.titleLarge.fontWeight
                                     )
-                                },
-                            )
-                        }
+                                }
+                            },
+                        )
                     }
                 }
             }

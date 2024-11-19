@@ -146,4 +146,20 @@
     <string name="total_amount">Monto total</string>
     <string name="date_of_receipt">Fecha de recepción</string>
     <string name="expiration_date">Fecha de vencimiento</string>
+    <string name="there_are_no_images">No se encontraron imágenes</string>
+    <string name="internet_error">Compruebe su conexión a internet e intentelo de nuevo</string>
+    <string name="unknown_error">Error desconocido</string>
+    <string name="this_bill_doesn_t_exists">Esta factura no existe</string>
+    <string name="this_company_doesn_t_exists">Esta empresa no existe</string>
+    <string name="this_customer_doesn_t_exists">Este cliente no existe</string>
+    <string name="this_order_doesn_t_exists">Este pedido no existe</string>
+    <string name="this_product_doesn_t_exists">Este artículo no existe</string>
+    <string name="there_are_no_rates">No se encontraron tasas</string>
+    <string name="this_salesman_doesn_t_exists">Este vendedor no existe</string>
+    <string name="invalid_session">Sesión invalida</string>
+    <string name="session_is_not_available">La sesión no esta disponible</string>
+    <string name="no_statistics_found">No se encontraron estadísticas</string>
+    <string name="no_users_found">No se encontraron usuarios</string>
+    <string name="this_user_doesn_t_exists">Este usuario no existe</string>
+    <string name="you_have_an_outdated_version_please_update">Tienes una versión descontinuada, por favor actualiza.</string>
 </resources>

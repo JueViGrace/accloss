@@ -21,8 +21,8 @@ object ErrorComponents {
         ) {
             CustomText(
                 text = stringResource(id = message ?: R.string.empty),
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
                 color = MaterialTheme.colorScheme.error
             )
         }
@@ -37,8 +37,8 @@ object ErrorComponents {
         ) {
             CustomText(
                 text = stringResource(id = message ?: R.string.empty),
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
                 color = MaterialTheme.colorScheme.error
             )
         }

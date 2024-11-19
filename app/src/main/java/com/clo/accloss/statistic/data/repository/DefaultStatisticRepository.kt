@@ -74,6 +74,13 @@ class DefaultStatisticRepository(
                 e.log("STATISTIC REPOSITORY: getStatistics")
             }
             .collect { cachedList ->
+                if (cachedList.isEmpty()) {
+                    return@collect emit(
+                        RequestState.Error(
+                            message = R.string.empty_list
+                        )
+                    )
+                }
                 emit(
                     RequestState.Success(
                         data = cachedList.map { statisticEntity ->
@@ -126,6 +133,14 @@ class DefaultStatisticRepository(
                 e.log("MANAGEMENT REPOSITORY: getManagementsStatistics")
             }
             .collect { list ->
+                if (list.isEmpty()) {
+                    return@collect emit(
+                        RequestState.Error(
+                            message = R.string.empty_list
+                        )
+                    )
+                }
+
                 emit(
                     RequestState.Success(
                         data = list.map { getManagementsStatistics ->

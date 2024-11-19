@@ -104,6 +104,14 @@ class DefaultSalesmanRepository(
                 e.log("SALESMAN REPOSITORY: getSalesmen")
             }
             .collect { cachedList ->
+                if (cachedList.isEmpty()) {
+                    return@collect emit(
+                        RequestState.Error(
+                            message = R.string.empty_list
+                        )
+                    )
+                }
+
                 emit(
                     RequestState.Success(
                         data = cachedList.map { salesman ->

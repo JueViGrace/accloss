@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.SharingStarted
 object Constants {
     const val APP_VERSION: String = BuildConfig.VERSION_NAME
 
+    const val INITIAL_DATE = "1000:01:01 00:00:00"
+
     val SERVER_ERROR = R.string.internal_server_error
 
     val DB_ERROR_MESSAGE = R.string.database_is_not_available

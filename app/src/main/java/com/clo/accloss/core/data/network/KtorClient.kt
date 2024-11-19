@@ -14,6 +14,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import java.net.UnknownHostException
 
 class KtorClient {
     fun client(baseUrl: String? = null): HttpClient = HttpClient {
@@ -58,6 +59,9 @@ class KtorClient {
                     }
                     is SocketTimeoutException -> {
                         R.string.server_took_too_long_to_answer
+                    }
+                    is UnknownHostException -> {
+                        R.string.internet_error
                     }
                     else -> {
                         SERVER_ERROR

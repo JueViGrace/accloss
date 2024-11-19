@@ -1,5 +1,6 @@
 package com.clo.accloss.products.domain.usecase
 
+import com.clo.accloss.core.common.Constants.INITIAL_DATE
 import com.clo.accloss.core.state.RequestState
 import com.clo.accloss.products.domain.model.Product
 import com.clo.accloss.products.domain.repository.ProductRepository
@@ -40,7 +41,7 @@ class GetProducts(
                                     val apiResult = productRepository.getRemoteProducts(
                                         baseUrl = sessionResult.data.enlaceEmpresa,
                                         company = sessionResult.data.empresa,
-                                        lastSync = "1000:01:01 00:00:00"
+                                        lastSync = INITIAL_DATE
                                     )
 
                                     when (apiResult) {

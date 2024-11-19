@@ -82,18 +82,19 @@ data class StatisticDetailsScreen(
                         {
                             DefaultTopBarActions(
                                 onMenuClick = { action ->
-                                    when {
-                                        action is TopBarActions.Customers -> {
+                                    when (action) {
+                                        is TopBarActions.Customers -> {
                                             navigator.push(CustomersScreen(id))
                                         }
 
-                                        action is TopBarActions.Orders -> {
+                                        is TopBarActions.Orders -> {
                                             navigator.push(OrdersScreen(id))
                                         }
 
-                                        action is TopBarActions.Bills -> {
+                                        is TopBarActions.Bills -> {
                                             navigator.push(BillsScreen(id))
                                         }
+                                        else -> {}
                                     }
                                 },
                                 items = listOf(
